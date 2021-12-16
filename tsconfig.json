@@ -20,7 +20,6 @@
     "**/*.ts",
     "**/*.tsx",
     "next.config.js",
-    ".eslintrc.js"
   ],
   "exclude": ["node_modules"]
 }
