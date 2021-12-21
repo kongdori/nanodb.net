@@ -24,6 +24,9 @@
     "project": "./tsconfig.json"
   },
 
+  // ignore *.config.js
+  "ignorePatterns": "*.config.js",
+
   "rules": {
     // https://www.npmjs.com/package/eslint-plugin-prettier
     "prettier/prettier": "error",
