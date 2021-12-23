@@ -1,5 +1,8 @@
 import { AppProps } from 'next/app';
 import Head from 'next/head';
+import Layout from '@components/layout/layout';
+
+import '@styles/common.css';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
     return (
@@ -16,7 +19,9 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
                 />
                 <title>나노디비</title>
             </Head>
-            <Component {...pageProps} />
+            <Layout>
+                <Component {...pageProps} />
+            </Layout>
         </>
     );
 };
