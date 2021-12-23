@@ -50,7 +50,18 @@
 
     // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-props-no-spreading.md
     // <Component one_prop={one_prop} /> 변환 <Component {...pageProps} />
-    "react/jsx-props-no-spreading": "off"
+    "react/jsx-props-no-spreading": "off",
+
+    // https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/30deacbf240f8cea7b88a977a72ed54b499c134e/docs/rules/anchor-is-valid.md
+    // Next.js - import Link from next/link <a> 태그 빈속성 에러
+    "jsx-a11y/anchor-is-valid": [
+      "error",
+      {
+        "components": ["Link"],
+        "specialLink": ["hrefLeft", "hrefRight"],
+        "aspects": ["invalidHref", "preferButton"]
+      }
+    ]
   },
 
   "env": {
