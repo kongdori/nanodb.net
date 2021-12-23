@@ -4,7 +4,20 @@ module.exports = {
         './components/**/*.{js,ts,jsx,tsx}'
     ],
     theme: {
-        extend: {}
+        fontFamily: {
+            sans: [
+                '-apple-system',
+                'BlinkMacSystemFont',
+                'Segoe UI',
+                'Helvetica',
+                'Roboto',
+                'Noto Sans KR',
+                'Arial',
+                'sans-serif',
+                'Apple Color Emoji',
+                'Segoe UI Emoji'
+            ]
+        }
     },
     plugins: []
 };
