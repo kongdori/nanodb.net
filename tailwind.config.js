@@ -21,7 +21,8 @@ module.exports = {
         },
         extend: {
             colors: {
-                nanodb: '#2f2e2b'
+                nanodb: '#2f2e2b',
+                dark: 'var(--color-dark)'
             }
         }
     },

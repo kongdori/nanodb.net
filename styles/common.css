@@ -2,7 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --color-dark: #202124;
+}
+
 html.dark,
 html.dark body {
-    background: #202124;
+    background: var(--color-dark);
 }
