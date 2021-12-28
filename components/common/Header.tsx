@@ -37,7 +37,7 @@ const Header = () => {
                     'dark:bg-neutral-900'
                 )}
             >
-                <div className="max-w-7xl mx-auto h-8 px-4 flex items-center justify-between">
+                <div className="max-w-6xl mx-auto h-8 px-4 flex items-center justify-between">
                     <div className="flex">
                         <div className="flex items-center space-x-3">
                             {aboutLinks.map((link) => {
@@ -95,10 +95,10 @@ const Header = () => {
                 className={classNames(
                     'sticky top-0 z-40 w-full backdrop-blur border-b shadow-sm',
                     'border-b-black/10 bg-white/20',
-                    'dark:border-b-white/10 dark:bg-[#202124]'
+                    'dark:border-b-white/10 dark:bg-dark'
                 )}
             >
-                <div className="max-w-7xl mx-auto">
+                <div className="max-w-6xl mx-auto">
                     <div className="px-4 py-2.5">
                         <div className="relative flex items-center">
                             <Link href="/">
