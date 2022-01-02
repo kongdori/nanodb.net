@@ -10,3 +10,15 @@ html.dark,
 html.dark body {
     background: var(--color-dark);
 }
+
+.wrapper {
+    @apply max-w-6xl mx-auto px-4;
+}
+
+.bg-theme {
+    @apply bg-white dark:bg-dark;
+}
+
+.border-theme {
+    @apply border-white dark:border-dark;
+}
