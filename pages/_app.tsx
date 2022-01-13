@@ -1,7 +1,8 @@
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { ThemeProvider } from 'next-themes';
-import Layout from '@components/layout/Layout';
+import { siteName } from 'site.config.js';
+import LayoutContainer from '@containers/LayoutContainer';
 
 import '@styles/common.css';
 
@@ -23,12 +24,12 @@ const MyApp = ({ Component, pageProps }: AppProps) => (
                 sizes="32x32"
                 href="/favicons/favicon.png"
             />
-            <title>나노디비</title>
+            <title>{siteName}</title>
         </Head>
         <ThemeProvider attribute="class" defaultTheme="system">
-            <Layout>
+            <LayoutContainer>
                 <Component {...pageProps} />
-            </Layout>
+            </LayoutContainer>
         </ThemeProvider>
     </>
 );

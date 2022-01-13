@@ -26,16 +26,16 @@ const ThemeSwitch = () => {
                     setTheme(theme === 'light' ? 'dark' : 'light');
                 }}
                 className={classNames(
-                    theme === 'dark' ? 'bg-yellow-500' : 'bg-neutral-500',
-                    'relative inline-flex flex-shrink-0 h-4 w-8 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 '
+                    'relative inline-flex flex-shrink-0 h-4 w-8 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200',
+                    theme === 'dark' ? 'bg-yellow-500' : 'bg-neutral-500'
                 )}
             >
                 <span className="sr-only">Choose theme</span>
                 <span
                     aria-hidden="true"
                     className={classNames(
-                        theme === 'dark' ? 'translate-x-4' : 'translate-x-0',
-                        'pointer-events-none inline-block h-3 w-3 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200'
+                        'pointer-events-none inline-block h-3 w-3 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200',
+                        theme === 'dark' ? 'translate-x-4' : 'translate-x-0'
                     )}
                 />
             </Switch>
