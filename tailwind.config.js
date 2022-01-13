@@ -1,3 +1,12 @@
+function withOpacityValue(variable) {
+    return ({ opacityValue }) => {
+        if (opacityValue === undefined) {
+            return `rgb(var(${variable}))`;
+        }
+        return `rgb(var(${variable}) / ${opacityValue})`;
+    };
+}
+
 module.exports = {
     darkMode: 'class',
     content: [
@@ -21,8 +30,8 @@ module.exports = {
         },
         extend: {
             colors: {
-                nanodb: '#2f2e2b',
-                dark: 'var(--color-dark)'
+                primary: withOpacityValue('--color-primary'),
+                dark: withOpacityValue('--color-dark')
             }
         }
     },

@@ -3,16 +3,19 @@
 @tailwind utilities;
 
 :root {
-    --color-dark: #202124;
+    --color-primary: 47 46 43; /* #2f2e2b */
+    --color-dark: 32 33 36; /* #202124 */
+    --color-background: 245 246 250; /* #f5f6fa */
+    --color-background-dark: 14 14 15; /* #0e0e0f */
+}
+
+body {
+    background-color: rgb(var(--color-background));
 }
 
 html.dark,
 html.dark body {
-    background: var(--color-dark);
-}
-
-.wrapper {
-    @apply max-w-6xl mx-auto px-4;
+    background-color: rgb(var(--color-background-dark));
 }
 
 .bg-theme {
@@ -21,4 +24,12 @@ html.dark body {
 
 .border-theme {
     @apply border-white dark:border-dark;
+}
+
+.responsive {
+    @apply max-w-6xl mx-auto px-4;
+}
+
+.content-item {
+    @apply bg-white dark:bg-dark shadow rounded-sm p-2;
 }
