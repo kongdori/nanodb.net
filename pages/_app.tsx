@@ -1,6 +1,7 @@
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { ThemeProvider } from 'next-themes';
+import NextNprogress from 'nextjs-progressbar';
 import { siteName } from 'site.config.js';
 import LayoutContainer from '@containers/LayoutContainer';
 
@@ -27,6 +28,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => (
             <title>{siteName}</title>
         </Head>
         <ThemeProvider attribute="class" defaultTheme="system">
+            <NextNprogress color="#facc15" />
             <LayoutContainer>
                 <Component {...pageProps} />
             </LayoutContainer>

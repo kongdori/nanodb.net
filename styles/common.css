@@ -33,3 +33,7 @@ html.dark body {
 .content-item {
     @apply bg-white dark:bg-dark shadow rounded-sm p-2;
 }
+
+#nprogress .peg {
+    box-shadow: none !important;
+}
