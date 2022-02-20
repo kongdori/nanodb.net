@@ -1,5 +1,15 @@
 {
-  "presets": ["next/babel"],
+  "presets": [
+    [
+      "next/babel",
+      {
+        "preset-react": {},
+        "preset-env": {},
+        "preset-typescript": {},
+        "transform-runtime": {}
+      }
+    ]
+  ],
   "plugins": [
     [
       "module-resolver",
@@ -12,6 +22,6 @@
         }
       }
     ],
-    ["babel-plugin-styled-components"]
+    ["@emotion"]
   ]
 }
