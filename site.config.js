@@ -5,6 +5,7 @@ module.exports = {
             {
                 name: '게임',
                 href: '/games',
+                active: ['games', 'game'],
                 subNav: [
                     {
                         name: '한국어화',

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React, { Fragment, useRef } from 'react';
 import * as site from 'site.config.js';
 import { useRouter } from 'next/router';
@@ -68,6 +67,18 @@ const GlobalNav = () => {
         }
     };
 
+    const hoverClassNames = (active: string[], open: boolean) => {
+        if (currentRootPath && active.includes(currentRootPath)) {
+            return 'text-neutral-900 dark:text-neutral-100';
+        }
+
+        if (open) {
+            return 'text-neutral-800 dark:text-neutral-700';
+        }
+
+        return 'text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200';
+    };
+
     return (
         <Popover.Group
             as="nav"
@@ -93,14 +104,10 @@ const GlobalNav = () => {
                                         onFocus(open, index);
                                     }}
                                     className={classNames(
-                                        currentRootPath &&
-                                            item.href.replace(/\//g, '') ===
-                                                currentRootPath
-                                            ? 'text-gray-900 dark:text-gray-100'
-                                            : 'text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200',
-                                        open
-                                            ? 'bg-black/5 dark:bg-white/10'
-                                            : '',
+                                        hoverClassNames(
+                                            item.active as string[],
+                                            open
+                                        ),
                                         'block rounded py-1 px-4 text-center font-semibold text-sm whitespace-nowrap outline-none transition-colors focus:bg-black/5 dark:focus:bg-white/10'
                                     )}
                                 >
@@ -134,8 +141,8 @@ const GlobalNav = () => {
                                                     className={classNames(
                                                         router.pathname ===
                                                             item2.href
-                                                            ? 'text-gray-900 dark:text-gray-100'
-                                                            : 'text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200',
+                                                            ? 'text-neutral-900 dark:text-neutral-100'
+                                                            : 'text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200',
                                                         'block rounded py-1.5 px-2 font-medium text-sm hover:bg-black/5 dark:hover:bg-white/10'
                                                     )}
                                                 >
