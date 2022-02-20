@@ -18,12 +18,24 @@ html.dark body {
     background-color: rgb(var(--color-background-dark));
 }
 
-.bg-theme {
+/* .bg-theme {
     @apply bg-white dark:bg-dark;
+} */
+
+/* .border-theme {
+    @apply border-white dark:border-dark;
+} */
+
+.nav-anchor {
+    @apply text-sm rounded transition-colors ease-out text-gray-600 hover:text-gray-700 hover:bg-black/5 active:bg-black/10 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:bg-white/5 dark:active:bg-white/10;
 }
 
-.border-theme {
-    @apply border-white dark:border-dark;
+.nav-group-anchor {
+    @apply text-sm rounded transition-colors ease-out text-gray-600 group-hover:text-gray-700 group-hover:bg-black/5 group-active:bg-black/10 dark:text-gray-400 dark:group-hover:text-gray-300 dark:group-hover:bg-white/5 dark:group-active:bg-white/10;
+}
+
+.nav-popover {
+    @apply relative backdrop-blur bg-white/80 border border-black/10 shadow rounded outline-0 dark:bg-dark/80 dark:border-white/10 dark:shadow-black;
 }
 
 .responsive {
@@ -31,9 +43,47 @@ html.dark body {
 }
 
 .content-item {
-    @apply bg-white dark:bg-dark shadow rounded-sm p-2;
+    @apply bg-white dark:bg-dark shadow rounded;
+}
+
+.flex-center {
+    @apply flex items-center justify-center;
 }
 
 #nprogress .peg {
     box-shadow: none !important;
+}
+
+.steam_review_summary {
+    /* color: #a34c25; */
+    @apply text-yellow-600 dark:text-yellow-500;
+}
+.steam_review_summary.mixed {
+    /* color: #b9a074; */
+    @apply text-amber-700 dark:text-amber-600;
+}
+.steam_review_summary.positive {
+    /* color: #1774ee; */
+    @apply text-sky-600 dark:text-sky-500;
+}
+.steam_review_summary.no_reviews,
+.steam_review_summary.not_enough_reviews {
+    /* color: #929396; */
+    @apply text-neutral-500 dark:text-neutral-400;
+}
+
+.metacritic_review_summary.positive {
+    /* background: #6c3; */
+    @apply bg-green-600 dark:bg-green-700;
+    color: #fff;
+}
+.metacritic_review_summary.mixed {
+    /* background: #fc3; */
+    @apply bg-yellow-400 dark:bg-yellow-600;
+    color: #fff;
+}
+.metacritic_review_summary.negative {
+    /* background: #f00; */
+    @apply bg-red-600 dark:bg-red-700;
+    color: #fff;
 }
