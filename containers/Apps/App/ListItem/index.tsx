@@ -83,7 +83,7 @@ const ListItem = ({ source, item }: ListSourceItemProps) => {
                 <div className="block relative h-24 w-48 rounded-sm overflow-hidden">
                     <ImageWithFallback
                         src={item.image_header}
-                        fallbackSrc="/assets/app/no_image_header.jpg"
+                        fallbackSrc={`/assets/apps/${source}/no_image_header.jpg`}
                         layout="fill"
                         objectFit="cover"
                         priority
@@ -95,7 +95,7 @@ const ListItem = ({ source, item }: ListSourceItemProps) => {
                     <div className="relative saturate-50 w-full h-full rounded overflow-hidden">
                         <ImageWithFallback
                             src={item.image_hero}
-                            fallbackSrc="/assets/app/no_image_hero.jpg"
+                            fallbackSrc={`/assets/apps/${source}/no_image_hero.jpg`}
                             layout="fill"
                             objectFit="cover"
                         />
