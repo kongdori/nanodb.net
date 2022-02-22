@@ -6,7 +6,6 @@ import ImageWithFallback from '@components/ImageWithFallback';
 import { ListItemProps } from '@lib/apps';
 import { AppPrices, AppReviews } from '@lib/apps/app';
 import { HangeulIcon, Platform } from '@containers/Apps/Game/components';
-import { platform } from 'os';
 
 type Source = 'game';
 
@@ -30,7 +29,7 @@ const ReviewList = ({ reviews }: ReviewListProps) => (
                                         key={review.name}
                                         href={item.url}
                                         target="_blank"
-                                        rel="external nopener noreferer"
+                                        rel="external noopener noreferrer"
                                         className={classNames(
                                             `steam_review_summary ${review.summary}`,
                                             'flex items-baseline hover:underline'
@@ -66,7 +65,7 @@ const ReviewList = ({ reviews }: ReviewListProps) => (
                             {item.url ? (
                                 <a
                                     href={item.url}
-                                    rel="external nopener noreferer"
+                                    rel="external noopener noreferrer"
                                     target="_blank"
                                     className={classNames(
                                         'w-6 h-6 leading-6 text-xs font-medium',
@@ -170,7 +169,7 @@ const Abouts = ({ source, item }: ListSourceItemProps) => {
                                 </i>
                             </a>
                         ) : (
-                            <i></i>
+                            <i />
                         )
                     )}
                 </div>
