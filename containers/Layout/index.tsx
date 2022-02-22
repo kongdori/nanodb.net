@@ -27,7 +27,7 @@ export default function LayoutContainer({ children }: LayoutContainerProps) {
                     href={`/favicons/${favicon}.svg`}
                 />
                 <link
-                    rel="icon"
+                    rel="alternate icon"
                     type="image/png"
                     href={`/favicons/${favicon}.png`}
                 />
