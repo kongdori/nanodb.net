@@ -8,39 +8,38 @@ export type AppType = GameTypes;
 */
 
 export interface AppPricesItem {
-    [key: string]: {
-        initial_formatted: string;
-        discount_formatted: string;
-        final_formatted: string;
-        url?: string;
-    };
+    store: string;
+    initial_formatted: string;
+    discount_formatted: string;
+    final_formatted: string;
+    url?: string;
 }
 
 export interface AppPrices extends Array<AppPricesItem> {}
 
-export interface AppReviews {
-    steam?: {
-        recently: null | {
-            tooltip: string;
-            summary: string;
-            summary_label: string;
-            responsive: number;
-        };
-        all: {
-            tooltip: string;
-            summary: string;
-            summary_label: string;
-            responsive: number;
-        };
-    };
-    metacritic?: {
-        url: string;
-        score: string;
-        summary: string;
-    };
+export interface SteamReviewsItem {
+    name: '모든 평가' | '최근 평가';
+    tooltip: string;
+    summary: string;
+    summary_label: string;
+    responsive: number;
+}
+export interface SteamReview {
+    url: string;
+    reviews: Array<SteamReviewsItem>;
 }
 
-//
+export interface MetacriticReview {
+    url: string;
+    score: string;
+    summary: string;
+}
+
+export interface AppReviewsItem extends SteamReview, MetacriticReview {
+    name: 'steam' | 'metacritic';
+}
+
+export interface AppReviews extends Array<AppReviewsItem> {}
 
 /*
     App
@@ -64,7 +63,6 @@ export interface AppListItem {
     is_adult: boolean;
     tags: Array<string>;
     prices: AppPrices;
-    lowest_price: AppPricesItem;
     reviews: AppReviews;
 }
 

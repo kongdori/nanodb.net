@@ -1,25 +1,24 @@
 import useSWR from 'swr';
-import { FaWindows, FaApple, FaLinux } from 'react-icons/fa';
 import fetcher from '../fetcher';
 import { AppID, AppListItem } from './app';
 import { useCursorPage, APIResponseCursorPage } from '../api';
 
-export const gamePlatformItem = {
-    win: <FaWindows />,
-    mac: <FaApple />,
-    linux: <FaLinux />
+export type EsdsItem = {
+    store: string;
+    url: string;
 };
+
+export type Esds = Array<EsdsItem>;
+
+export type GamePlatformsItem = 'win' | 'mac' | 'linux';
+export type GamePlatforms = Array<GamePlatformsItem>;
 
 export type HangeulsSupportedItem = '공식' | '유저';
 export type HangeulsSupported = Array<HangeulsSupportedItem>;
 
-export type GamePlatform = Array<keyof typeof gamePlatformItem>;
-
 interface GameData {
-    esds: {
-        [key: string]: string;
-    };
-    platforms: GamePlatform;
+    esds: Esds;
+    platforms: GamePlatforms;
     hangeuls_supported: HangeulsSupported;
     is_free: boolean;
 }
@@ -45,7 +44,7 @@ export const useGameList = () => useCursorPage<GameListItem>(getGameListKey);
     Game Hangeuls
 */
 
-export interface GameHangeulsIndexRecordsListItem {
+export interface GameHangeulsIndexGamesItem {
     appid: AppID;
     name: string;
     image_capsule_sm_120: string;
@@ -53,28 +52,29 @@ export interface GameHangeulsIndexRecordsListItem {
     hangeuls: any[];
 }
 
-export interface GameHangeulsIndexRecordsList
-    extends Array<GameHangeulsIndexRecordsListItem> {}
+export interface GameHangeulsIndexGames
+    extends Array<GameHangeulsIndexGamesItem> {}
 
 export interface GameHangeulsIndexListItem {
     id: number;
-    nlabel: string;
-    nvalue: string;
+    label: string;
+    char: string;
+    desc: string;
     public_counted: number;
     user_counted: number;
     counted: number;
-    records?: GameHangeulsIndexRecordsList;
+    games?: GameHangeulsIndexGames;
 }
 
 export interface GameHangeulsIndexList
     extends Array<GameHangeulsIndexListItem> {}
 
-export const getGameHangeulsIndexListKey = (nvalue?: string) =>
-    `/game/hangeuls/${encodeURI(nvalue as string)}`;
+export const getGameHangeulsIndexListKey = (char?: string) =>
+    `/game/hangeuls/${encodeURI(char as string)}`;
 
-export const getGameHangeulsIndexList = (nvalue?: string) =>
+export const getGameHangeulsIndexList = (char?: string) =>
     fetcher
-        .get<GameHangeulsIndexList>(getGameHangeulsIndexListKey(nvalue))
+        .get<GameHangeulsIndexList>(getGameHangeulsIndexListKey(char))
         .then((res) => res.data);
 
 export const useGameHangeulsIndexList = () =>
