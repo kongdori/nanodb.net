@@ -18,22 +18,16 @@ html.dark body {
     background-color: rgb(var(--color-background-dark));
 }
 
-/* .bg-theme {
-    @apply bg-white dark:bg-dark;
-} */
-
-/* .border-theme {
-    @apply border-white dark:border-dark;
-} */
-
-.nav-anchor {
-    /* active:bg-black/10 dark:active:bg-white/10 */
-    @apply text-sm rounded transition-colors ease-out text-gray-600 hover:text-gray-700 hover:bg-black/5 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:bg-white/5;
+._nav-anchor {
+    @apply flex rounded font-medium text-sm whitespace-nowrap transition-colors ease-out duration-100 hover:bg-black/10 dark:hover:bg-white/10;
 }
 
-.nav-group-anchor {
-    /* group-active:bg-black/10 dark:group-active:bg-white/10 */
-    @apply text-sm rounded transition-colors ease-out text-gray-600 group-hover:text-gray-700 group-hover:bg-black/5 dark:text-gray-400 dark:group-hover:text-gray-300 dark:group-hover:bg-white/5;
+.nav-anchor {
+    @apply _nav-anchor text-neutral-700 dark:text-neutral-300 hover:text-neutral-800 dark:hover:text-neutral-200;
+}
+
+.nav-anchor-static {
+    @apply _nav-anchor text-neutral-900 dark:text-neutral-100;
 }
 
 .nav-popover {
@@ -74,18 +68,22 @@ html.dark body {
     @apply text-neutral-500 dark:text-neutral-400;
 }
 
+.metacritic_review_summary {
+    @apply block not-italic text-center rounded transition-colors;
+}
+
 .metacritic_review_summary.positive {
     /* background: #6c3; */
-    @apply bg-green-600 dark:bg-green-700;
+    @apply bg-green-500 dark:bg-green-600 hover:bg-green-600 dark:hover:bg-green-500;
     color: #fff;
 }
 .metacritic_review_summary.mixed {
     /* background: #fc3; */
-    @apply bg-yellow-400 dark:bg-yellow-600;
+    @apply bg-yellow-500 dark:bg-yellow-600 hover:bg-yellow-600 dark:hover:bg-yellow-500;
     color: #fff;
 }
 .metacritic_review_summary.negative {
     /* background: #f00; */
-    @apply bg-red-600 dark:bg-red-700;
+    @apply bg-red-500 dark:bg-red-600 hover:bg-red-600 dark:hover:bg-red-500;
     color: #fff;
 }

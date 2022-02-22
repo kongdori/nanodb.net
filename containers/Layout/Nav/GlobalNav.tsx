@@ -67,16 +67,20 @@ const GlobalNav = () => {
         }
     };
 
-    const hoverClassNames = (active: string[], open: boolean) => {
+    const openerClassNames = (active: string[], open: boolean) => {
         if (currentRootPath && active.includes(currentRootPath)) {
-            return 'text-neutral-900 dark:text-neutral-100';
+            if (open) {
+                return 'nav-anchor-static bg-black/10 dark:bg-white/10';
+            }
+
+            return 'nav-anchor-static';
         }
 
         if (open) {
-            return 'text-neutral-800 dark:text-neutral-700';
+            return '_nav-anchor bg-black/10 dark:bg-white/10 text-neutral-700 dark:text-neutral-300';
         }
 
-        return 'text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200';
+        return '_nav-anchor text-neutral-600 dark:text-neutral-400';
     };
 
     return (
@@ -104,11 +108,11 @@ const GlobalNav = () => {
                                         onFocus(open, index);
                                     }}
                                     className={classNames(
-                                        hoverClassNames(
+                                        openerClassNames(
                                             item.active as string[],
                                             open
                                         ),
-                                        'block rounded py-1 px-4 text-center font-semibold text-sm whitespace-nowrap outline-none transition-colors focus:bg-black/5 dark:focus:bg-white/10'
+                                        'py-1 px-4 outline-none'
                                     )}
                                 >
                                     {item.name}
@@ -141,13 +145,13 @@ const GlobalNav = () => {
                                                     className={classNames(
                                                         router.pathname ===
                                                             item2.href
-                                                            ? 'text-neutral-900 dark:text-neutral-100'
-                                                            : 'text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200',
-                                                        'block rounded py-1.5 px-2 font-medium text-sm hover:bg-black/5 dark:hover:bg-white/10'
+                                                            ? 'nav-anchor-static'
+                                                            : '_nav-anchor text-neutral-600 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300',
+                                                        'flex items-center py-1.5 px-2'
                                                     )}
                                                 >
                                                     {item2.io5Icon && (
-                                                        <i className="inline-block align-middle mr-1 text-base">
+                                                        <i className="flex mr-1 text-base">
                                                             <Io5Icon
                                                                 name={
                                                                     item2.io5Icon
@@ -155,7 +159,7 @@ const GlobalNav = () => {
                                                             />
                                                         </i>
                                                     )}
-                                                    {item2.name}
+                                                    <span>{item2.name}</span>
                                                 </a>
                                             </Link>
                                         </div>

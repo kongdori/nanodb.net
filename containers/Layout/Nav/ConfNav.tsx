@@ -275,12 +275,12 @@ const ConfNav = () => (
         <Popover>
             {({ open, close }) => (
                 <>
-                    <Popover.Button className="relative h-full flex items-center outline-0 group">
+                    <Popover.Button className="relative h-full flex items-center outline-0">
                         <span
                             className={classNames(
                                 open
-                                    ? 'bg-black/10 dark:bg-white/10 transition-none'
-                                    : 'nav-group-anchor',
+                                    ? 'nav-anchor-static bg-black/10 dark:bg-white/10'
+                                    : 'nav-anchor',
                                 'flex items-center justify-center w-10 h-7 rounded'
                             )}
                         >
