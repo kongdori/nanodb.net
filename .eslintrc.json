@@ -70,7 +70,11 @@
       {
         "allowSingleExtends": true
       }
-    ]
+    ],
+
+    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prop-types.md
+    // 타입스크립트 불필요
+    "react/prop-types": "off"
   },
 
   "env": {
