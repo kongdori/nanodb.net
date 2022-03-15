@@ -8,8 +8,16 @@ module.exports = {
                 active: ['games', 'game'],
                 subNav: [
                     {
-                        name: '한국어화',
-                        href: '/game/hangeuls',
+                        name: 'PC 게임',
+                        href: '/games/',
+                        active: ['/games', '/games/[...slug]'],
+                        io5Icon: 'IoDesktopOutline',
+                        grid: true
+                    },
+                    {
+                        name: '한국어 지원',
+                        href: '/game/hangeuls/',
+                        active: ['/game/hangeuls/[[...char]]'],
                         io5Icon: 'IoLanguage'
                     }
                 ]
@@ -20,12 +28,12 @@ module.exports = {
                 {
                     href: 'https://github.com/nanodbnet',
                     name: 'Github',
-                    faIcon: 'FaGithub'
+                    faIcon: 'FaGithubAlt'
                 },
                 {
                     href: 'https://steamcommunity.com/groups/nanodbnet',
                     name: 'Steam',
-                    faIcon: 'FaSteam'
+                    faIcon: 'FaSteamSymbol'
                 }
             ],
             mails: [
