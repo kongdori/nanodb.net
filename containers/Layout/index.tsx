@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import Logo from '@components/Logo';
+import NextNprogress from 'nextjs-progressbar';
 import { useTheme } from 'next-themes';
 import { siteName } from 'site.config';
+import { NanoDB } from '@components/Logo';
 import { GlobalNav, ConfNav } from './Nav';
 
 interface LayoutContainerProps {
@@ -11,8 +13,10 @@ interface LayoutContainerProps {
 }
 
 export default function LayoutContainer({ children }: LayoutContainerProps) {
-    const { systemTheme } = useTheme();
+    const { theme, systemTheme } = useTheme();
     const favicon = systemTheme === 'dark' ? 'favicon-dark' : 'favicon';
+
+    const themeUsing = theme === 'system' ? systemTheme : theme;
 
     return (
         <>
@@ -33,30 +37,30 @@ export default function LayoutContainer({ children }: LayoutContainerProps) {
                 />
                 <title>{siteName}</title>
             </Head>
-            <header className="w-full sticky top-0 z-40 h-12">
-                <div className="relative px-4 h-full">
-                    <div className="absolute w-full h-full left-0 right-0 top-0 bottom-0 backdrop-blur border-b shadow-sm border-b-black/10 bg-white/90 dark:border-b-white/10 dark:bg-dark/90" />
-                    <div className="relative w-full h-full flex items-stretch z-40">
-                        <div className="flex items-center mr-2">
+            <NextNprogress
+                color={themeUsing === 'light' ? '#000000' : '#ffffff'}
+            />
+            <header className="fixed top-0 inset-x-0 z-40">
+                <div className="relative">
+                    <div className="absolute inset-0 backdrop-blur border-b shadow-sm border-b-black/10 bg-white/95 dark:border-b-white/10 dark:bg-dark/95" />
+                    <div className="relative h-12 flex items-stretch gap-8 px-6">
+                        <div className="self-center">
                             <Link href="/">
-                                <a
-                                    aria-label="Home"
-                                    className="flex items-center px-2"
-                                >
-                                    <h1 className="py-1 flex flex-nowrap items-end">
-                                        <Logo />
+                                <a aria-label="Home">
+                                    <h1 className="flex">
+                                        <NanoDB />
                                     </h1>
                                 </a>
                             </Link>
                         </div>
                         <GlobalNav />
-                        <div className="ml-auto flex items-stretch">
+                        <div className="flex items-stretch ml-auto">
                             <ConfNav />
                         </div>
                     </div>
                 </div>
             </header>
-            <main>{children}</main>
+            {children}
         </>
     );
 }
