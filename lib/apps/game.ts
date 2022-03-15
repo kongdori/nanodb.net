@@ -1,81 +1,131 @@
 import useSWR from 'swr';
 import fetcher from '../fetcher';
-import { AppID, AppListItem } from './app';
-import { useCursorPage, APIResponseCursorPage } from '../api';
+import { useAPICursorPage } from '../api';
+import { App, AppID, AppDetailBase, AppListItemBase } from './app';
 
-export type EsdsItem = {
-    store: string;
+export type PlatformListItem = 'win' | 'mac' | 'linux';
+export type PlatformList = PlatformListItem[];
+
+interface HangeulListItem {
+    id: number;
+    source: string;
+    ordered: number;
+    is_voice: boolean;
+    is_subtitle: boolean;
+    is_interface: boolean;
+    brief: string;
     url: string;
-};
-
-export type Esds = Array<EsdsItem>;
-
-export type GamePlatformsItem = 'win' | 'mac' | 'linux';
-export type GamePlatforms = Array<GamePlatformsItem>;
-
-export type HangeulsSupportedItem = '공식' | '유저';
-export type HangeulsSupported = Array<HangeulsSupportedItem>;
-
-interface GameData {
-    esds: Esds;
-    platforms: GamePlatforms;
-    hangeuls_supported: HangeulsSupported;
-    is_free: boolean;
+    guide: string;
+    visit_counted: number;
+    last_updated: Date;
 }
+
+export interface Hangeul {
+    officials: HangeulListItem[];
+    users: HangeulListItem[];
+}
+
+export interface LanguageListItem {
+    voice: boolean;
+    support: string;
+    subtitle: boolean;
+    interface: boolean;
+}
+export type LanguageList = LanguageListItem[];
+
+/*
+    Game Detail
+*/
+
+export interface GameDetail extends AppDetailBase {
+    platforms: PlatformList;
+    developers: string[];
+    publishers: string[];
+    franchises: string[];
+    hangeul: Hangeul;
+    languages: LanguageList;
+}
+
+export const getGameDetailKey = (appid: AppID) => `/games/${appid}`;
+
+export const getGameDetail = (appid: AppID) =>
+    fetcher.get<GameDetail>(getGameDetailKey(appid)).then((res) => res.data);
+
+export const useGameDetail = (appid: AppID) =>
+    useSWR<GameDetail>(getGameDetailKey(appid), (url: string) =>
+        fetcher.get<GameDetail>(url).then((res) => res.data)
+    );
 
 /*
     Game List
 */
 
-export interface GameListItem extends AppListItem, GameData {}
+export interface GameListItem extends AppListItemBase {
+    platforms: PlatformList;
+    is_hangeuls: boolean;
+    is_official_hangeuls: boolean;
+    is_user_hangeuls: boolean;
+}
 
-const getGameListKey = (
-    index: number,
-    previousPageData: APIResponseCursorPage<GameListItem>
-) => {
-    if (index === 0) return '/games/';
-    if (previousPageData.next) return previousPageData.next;
-    return null;
-};
+export interface GameList extends Array<GameListItem> {}
 
-export const useGameList = () => useCursorPage<GameListItem>(getGameListKey);
+export const getGameListKey = () => '/games/';
+
+export const getGameList = () =>
+    fetcher.get<GameList>(getGameListKey()).then((res) => res.data);
+
+export const useGameList = () =>
+    useAPICursorPage<GameListItem>(getGameListKey(), {
+        fallbackData: [useSWR<GameList>(getGameListKey()).data]
+    });
 
 /*
     Game Hangeuls
 */
 
-export interface GameHangeulsIndexGamesItem {
+export interface GameHangeulListItem {
+    app: App;
     appid: AppID;
     name: string;
-    image_capsule_sm_120: string;
-    hangeuls_supported: HangeulsSupported;
-    hangeuls: any[];
+    slug: string;
+    image_header: string;
+    hangeul: Hangeul;
 }
 
-export interface GameHangeulsIndexGames
-    extends Array<GameHangeulsIndexGamesItem> {}
+export interface GameHangeulList extends Array<GameHangeulListItem> {}
 
-export interface GameHangeulsIndexListItem {
-    id: number;
+export const getGameHangeulListKey = (char: string) =>
+    `/game/hangeuls/${encodeURI(char)}/`;
+
+export const getGameHangeulList = (char: string) =>
+    fetcher
+        .get<GameHangeulList>(getGameHangeulListKey(char))
+        .then((res) => res.data);
+
+export const useGameHangeulList = (char: string) =>
+    useAPICursorPage<GameHangeulListItem>(getGameHangeulListKey(char), {
+        fallbackData: [
+            useSWR<GameHangeulList>(getGameHangeulListKey(char)).data
+        ]
+    });
+
+export interface GameHangeulIndexListItem {
     label: string;
     char: string;
     desc: string;
-    public_counted: number;
+    official_counted: number;
     user_counted: number;
     counted: number;
-    games?: GameHangeulsIndexGames;
 }
 
-export interface GameHangeulsIndexList
-    extends Array<GameHangeulsIndexListItem> {}
+export interface GameHangeulIndexList extends Array<GameHangeulIndexListItem> {}
 
-export const getGameHangeulsIndexListKey = (char?: string) =>
-    `/game/hangeuls/${encodeURI(char as string)}`;
+export const getGameHangeulIndexListKey = () => '/game/hangeuls-index/';
 
-export const getGameHangeulsIndexList = (char?: string) =>
+export const getGameHangeulIndexList = () =>
     fetcher
-        .get<GameHangeulsIndexList>(getGameHangeulsIndexListKey(char))
+        .get<GameHangeulIndexList>(getGameHangeulIndexListKey())
         .then((res) => res.data);
 
-export const useGameHangeulsIndexList = () =>
-    useSWR<GameHangeulsIndexList>(getGameHangeulsIndexListKey);
+export const useGameHangeulIndexList = () =>
+    useSWR<GameHangeulIndexList>(getGameHangeulIndexListKey);

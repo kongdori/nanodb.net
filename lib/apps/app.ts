@@ -1,23 +1,43 @@
-export type AppID = string;
+import useSWR, { Key } from 'swr';
 
-type GameTypes = 'GAME' | 'DLC';
-export type AppType = GameTypes;
+export type App = 'game';
+export type AppID = number;
 
 /*
     App Modules
 */
 
-export interface AppPricesItem {
+export interface EsdListItem {
     store: string;
-    initial_formatted: string;
-    discount_formatted: string;
+    initial?: number;
+    initial_formatted?: string;
+    discount?: number;
+    discount_formatted?: string;
+    countdown?: Date;
+    final: number;
     final_formatted: string;
-    url?: string;
+    url: string;
+    last_updated: Date;
 }
 
-export interface AppPrices extends Array<AppPricesItem> {}
+export type EsdList = EsdListItem[];
 
-export interface SteamReviewsItem {
+export interface PriceListItem {
+    store: string;
+    initial?: number;
+    initial_formatted?: string;
+    discount?: number;
+    discount_formatted?: string;
+    countdown?: Date;
+    final: number;
+    final_formatted: string;
+    url: string;
+    last_updated: Date;
+}
+
+export type PriceList = PriceListItem[];
+
+export interface SteamReviewItem {
     name: '모든 평가' | '최근 평가';
     tooltip: string;
     summary: string;
@@ -26,7 +46,7 @@ export interface SteamReviewsItem {
 }
 export interface SteamReview {
     url: string;
-    reviews: Array<SteamReviewsItem>;
+    reviews: SteamReviewItem[];
 }
 
 export interface MetacriticReview {
@@ -35,35 +55,58 @@ export interface MetacriticReview {
     summary: string;
 }
 
-export interface AppReviewsItem extends SteamReview, MetacriticReview {
+export interface ReviewListItem extends SteamReview, MetacriticReview {
     name: 'steam' | 'metacritic';
 }
 
-export interface AppReviews extends Array<AppReviewsItem> {}
+export type ReviewList = ReviewListItem[];
+
+export interface ScreenshotsItem {
+    hd: string;
+    thumb: string;
+}
+export type Screenshots = ScreenshotsItem[];
+
+export interface MoviesItem {
+    mp4: string;
+    mp4_hd: string;
+    webm: string;
+    webm_hd: string;
+    thumb: string;
+}
+export type Movies = MoviesItem[];
 
 /*
-    App
+    App Detail
 */
 
-export interface App {
-    type: AppType;
-    name: string;
-    snippet: string;
-    logo_image: string;
-    header_image: string;
-    hero_image: string;
-}
-
-export interface AppListItem {
+interface AppBase {
+    app: App;
     appid: AppID;
-    apptype: AppType;
     name: string;
+    slug: string;
+    snippet: string;
+    release_date: string;
+    is_adult: boolean;
+    is_free: boolean;
     image_header: string;
     image_hero: string;
-    is_adult: boolean;
     tags: Array<string>;
-    prices: AppPrices;
-    reviews: AppReviews;
+    genres: Array<string>;
+    reviews: ReviewList;
+    prices: PriceList;
+    esds: EsdList;
 }
 
-export interface AppList extends Array<AppListItem> {}
+export interface AppDetailBase extends AppBase {
+    screenshots: Screenshots;
+    movies: Movies;
+}
+
+export const useAppDetail = (key: Key) => useSWR(key);
+
+/*
+    App List
+*/
+
+export interface AppListItemBase extends Omit<AppBase, 'snippet'> {}
