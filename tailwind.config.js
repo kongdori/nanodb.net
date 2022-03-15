@@ -32,7 +32,9 @@ module.exports = {
         extend: {
             colors: {
                 primary: withOpacityValue('--color-primary'),
-                dark: withOpacityValue('--color-dark')
+                dark: withOpacityValue('--color-dark'),
+                background: withOpacityValue('--color-background'),
+                'background-dark': withOpacityValue('--color-background-dark')
             }
         }
     },
