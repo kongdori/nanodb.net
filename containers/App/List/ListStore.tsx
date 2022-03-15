@@ -3,17 +3,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import classNames from 'classnames';
 import ImageWithFallback from '@components/ImageWithFallback';
-import { ListItemProps } from '@lib/apps';
-import { AppPrices, AppReviews } from '@lib/apps/app';
-import { HangeulIcon, Platform } from '@containers/Apps/Game/components';
+import { AppListItemProps } from '@lib/apps';
+import { PriceList, ReviewList } from '@lib/apps/app';
 
-type Source = 'game';
+export type Listapp = 'game';
 
-interface ReviewListProps {
-    reviews: AppReviews;
-}
-
-const ReviewList = ({ reviews }: ReviewListProps) => (
+const Reviews = ({ reviews }: { reviews: ReviewList }) => (
     <div className="flex flex-col gap-2">
         {reviews.map((item) => {
             switch (item.name) {
@@ -29,7 +24,7 @@ const ReviewList = ({ reviews }: ReviewListProps) => (
                                         key={review.name}
                                         href={item.url}
                                         target="_blank"
-                                        rel="external noopener noreferrer"
+                                        rel="external noopener noreferrer nofollow"
                                         className={classNames(
                                             `steam_review_summary ${review.summary}`,
                                             'flex items-baseline hover:underline'
@@ -65,7 +60,7 @@ const ReviewList = ({ reviews }: ReviewListProps) => (
                             {item.url ? (
                                 <a
                                     href={item.url}
-                                    rel="external noopener noreferrer"
+                                    rel="external noopener noreferrer nofollow"
                                     target="_blank"
                                     className={classNames(
                                         'w-6 h-6 leading-6 text-xs font-medium',
@@ -93,11 +88,7 @@ const ReviewList = ({ reviews }: ReviewListProps) => (
     </div>
 );
 
-interface PriceListProps {
-    prices: AppPrices;
-}
-
-const PriceList = ({ prices }: PriceListProps) => {
+const Prices = ({ prices }: { prices: PriceList }) => {
     const oneStore = prices.length === 1;
 
     if (oneStore) {
@@ -106,7 +97,7 @@ const PriceList = ({ prices }: PriceListProps) => {
         return (
             <a
                 href={price.url}
-                rel="external noopener noreferrer"
+                rel="external noopener noreferrer nofollow"
                 target="_blank"
                 className="flex flex-col items-stretch group"
             >
@@ -116,7 +107,7 @@ const PriceList = ({ prices }: PriceListProps) => {
                     </h2>
                     <div className="flex-1 text-right">
                         {price.discount_formatted ? (
-                            <span className="not-italic font-medium text-sm text-neutral-400 line-through">
+                            <span className="font-medium text-sm text-neutral-400 line-through">
                                 {price.initial_formatted}
                             </span>
                         ) : (
@@ -143,22 +134,18 @@ const PriceList = ({ prices }: PriceListProps) => {
     return <div className="flex flex-col items-center gap-y-0.5" />;
 };
 
-interface ListSourceItemProps extends ListItemProps {
-    source: Source;
-}
-
-const Abouts = ({ source, item }: ListSourceItemProps) => {
-    if (source === 'game') {
+const Abouts = ({ listItem }: AppListItemProps) => {
+    if (listItem.app === 'game') {
         return (
             <div className="flex justify-between mb-2">
                 <div className="flex items-center gap-1">
-                    {item.esds.map((esd) =>
+                    {listItem.esds.map((esd) =>
                         esd.store === 'steam' ? (
                             <a
                                 key={esd.store}
                                 href={esd.url}
                                 target="_blank"
-                                rel="noreferrer external"
+                                rel="external noopener noreferrer nofollow"
                                 className="flex w-4 h-4 opacity-80 grayscale hover:opacity-100 hover:grayscale-0"
                             >
                                 <i className="flex relative w-full h-full">
@@ -173,15 +160,6 @@ const Abouts = ({ source, item }: ListSourceItemProps) => {
                         )
                     )}
                 </div>
-                {item.platforms.length > 0 && (
-                    <div className="flex items-center gap-1 text-neutral-400">
-                        {item.platforms.map((platform) => (
-                            <i key={platform}>
-                                <Platform key={platform} platform={platform} />
-                            </i>
-                        ))}
-                    </div>
-                )}
             </div>
         );
     }
@@ -195,20 +173,20 @@ const TagItem = React.memo(({ tag }: { tag: string }) => (
     </span>
 ));
 
-const ListItem = ({ source, item }: ListSourceItemProps) => {
+const ListStore = ({ listItem }: AppListItemProps) => {
     let abouts;
 
-    if (source === 'game') {
-        abouts = <Abouts source={source} item={item} />;
+    if (listItem.app === 'game') {
+        abouts = <Abouts listItem={listItem} />;
     }
 
     return (
         <div className="flex items-stretch border-b border-b-black/20 dark:border-b-white/20">
             <div className="flex-none py-4">
-                <div className="block relative h-24 w-48 rounded-sm overflow-hidden">
+                <div className="relative h-24 w-48 rounded-sm overflow-hidden">
                     <ImageWithFallback
-                        src={item.image_header}
-                        fallbackSrc={`/assets/apps/${source}/no_image_header.jpg`}
+                        src={listItem.image_header}
+                        fallbackSrc={`/assets/apps/${listItem.app}/no_image_header.jpg`}
                         layout="fill"
                         objectFit="cover"
                         priority
@@ -221,8 +199,8 @@ const ListItem = ({ source, item }: ListSourceItemProps) => {
                     <div className="absolute w-full h-full">
                         <div className="relative saturate-50 w-full h-full rounded overflow-hidden">
                             {/* <ImageWithFallback
-                                src={item.image_hero}
-                                fallbackSrc={`/assets/apps/${source}/no_image_hero.jpg`}
+                                src={listItem.image_hero}
+                                fallbackSrc={`/assets/apps/${app}/no_image_hero.jpg`}
                                 layout="fill"
                                 objectFit="cover"
                             /> */}
@@ -238,43 +216,32 @@ const ListItem = ({ source, item }: ListSourceItemProps) => {
                 <div className="h-full relative flex items-stretch">
                     <div className="p-4 flex-1 flex flex-col">
                         <h2 className="mb-2 flex items-center">
-                            <Link href={`/${source}s/${item.appid}`}>
+                            <Link
+                                href={`/${listItem.app}s/${listItem.appid}/${listItem.slug}`}
+                            >
                                 <a className="text-sm font-semibold break-all">
-                                    {source === 'game' &&
-                                        item.hangeuls_supported.length > 0 && (
-                                            <span className="inline-block leading-4 align-baseline mr-2">
-                                                {item.hangeuls_supported.map(
-                                                    (hangeul) => (
-                                                        <HangeulIcon
-                                                            key={hangeul}
-                                                            hangeul={hangeul}
-                                                        />
-                                                    )
-                                                )}
-                                            </span>
-                                        )}
-                                    {item.name}
+                                    {listItem.name}
                                 </a>
                             </Link>
                         </h2>
                         {abouts}
                         <div className="w-full leading-normal text-xs text-neutral-600 dark:text-neutral-400">
-                            {item.tags.map((tag) => (
+                            {listItem.tags.map((tag) => (
                                 <TagItem key={tag} tag={tag} />
                             ))}
                         </div>
                     </div>
                     <div className="w-3/12 py-4">
-                        {item.reviews.length > 0 && (
+                        {listItem.reviews.length > 0 && (
                             <div className="h-full pl-4 border-l border-l-black/10 dark:border-l-white/10">
-                                <ReviewList reviews={item.reviews} />
+                                <Reviews reviews={listItem.reviews} />
                             </div>
                         )}
                     </div>
                     <div className="w-3/12 py-4">
-                        {item.prices.length > 0 && (
+                        {listItem.prices.length > 0 && (
                             <div className="h-full pl-4 border-l border-l-black/10 dark:border-l-white/10">
-                                <PriceList prices={item.prices} />
+                                <Prices prices={listItem.prices} />
                             </div>
                         )}
                     </div>
@@ -285,7 +252,7 @@ const ListItem = ({ source, item }: ListSourceItemProps) => {
 };
 
 export default React.memo(
-    ListItem,
-    (prevProps: ListItemProps, nextProps: ListItemProps) =>
-        prevProps.item.appid === nextProps.item.appid
+    ListStore,
+    (prevProps, nextProps) =>
+        JSON.stringify(prevProps) === JSON.stringify(nextProps)
 );

@@ -1,30 +1,50 @@
-import { useGameList } from '@lib/apps/game';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import ListItem from '@containers/Apps/App/ListItem';
-import SyncLoader from 'react-spinners/SyncLoader';
+import { GetServerSideProps } from 'next';
+import Head from 'next/head';
+import { SWRConfig } from 'swr';
+import { SWRInfiniteConfiguration } from 'swr/infinite';
+import {
+    GameList,
+    getGameList,
+    getGameListKey,
+    useGameList
+} from '@lib/apps/game';
+import AppList from '@containers/App/List';
 
-export default function GameList() {
-    const { data, size, setSize, mutate } = useGameList();
+function GameListPage() {
+    const { ...props } = useGameList();
 
     return (
-        <div className="responsive">
-            <div className="max-w-5xl mt-4 mx-auto px-4 shadow bg-white dark:bg-dark">
-                <InfiniteScroll
-                    dataLength={data ? data.length : 0}
-                    next={() => setSize(size + 1)}
-                    hasMore
-                    loader={
-                        <div className="flex items-center justify-center h-40">
-                            <SyncLoader color="#dddddd" size={10} />
-                        </div>
-                    }
-                    refreshFunction={mutate}
-                >
-                    {data?.map((item) => (
-                        <ListItem key={item.appid} source="game" item={item} />
-                    ))}
-                </InfiniteScroll>
+        <div className="mt-16 max-w-5xl mx-auto content-item px-2.5">
+            <div className="grid grid-cols-2 gap-x-2.5">
+                <AppList {...props} />
             </div>
         </div>
     );
 }
+
+type PageProps = SWRInfiniteConfiguration<GameList>;
+
+export default function Page({ ...props }: PageProps) {
+    return (
+        <>
+            <Head>
+                <title>게임 목록</title>
+            </Head>
+            <SWRConfig value={props}>
+                <GameListPage />
+            </SWRConfig>
+        </>
+    );
+}
+
+export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
+    const list = await getGameList();
+
+    const props: PageProps = {
+        fallback: {
+            [getGameListKey()]: list
+        }
+    };
+
+    return { props };
+};
