@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import React from 'react';
 import { useTheme } from 'next-themes';
+import Image from 'next/image';
 import { Popover, Transition } from '@headlessui/react';
 import classNames from 'classnames';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { FaIcon } from '@components/ReactIcon';
 import {
     HiDotsHorizontal,
@@ -11,8 +14,9 @@ import {
     HiOutlineMoon,
     HiOutlineSun,
     HiOutlineMail,
-    HiOutlineQuestionMarkCircle
+    HiOutlineHeart
 } from 'react-icons/hi';
+import { BiCopyAlt, BiMailSend } from 'react-icons/bi';
 import * as site from 'site.config.js';
 
 const ConfNav = () => {
@@ -89,25 +93,116 @@ const ConfNav = () => {
 
         case '메일 문의':
             nestedComponent = (
-                <address className="not-italic">
+                <address className="w-60 not-italic">
                     {confNav.mails.map((item) => (
-                        <a
-                            key={item.title}
-                            href={`mailto:${item.address}`}
-                            className="flex items-center w-full gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10"
+                        <CopyToClipboard
+                            text={item.address}
+                            onCopy={() => {
+                                alert(
+                                    `메일이 복사 되었습니다\r\n${item.address}`
+                                );
+                            }}
                         >
-                            <i className="flex-center w-5 h-5 text-lg">
-                                <HiOutlineQuestionMarkCircle />
-                            </i>
-                            <div>
-                                <h2>{item.title}</h2>
-                                <p className="text-xs text-gray-400">
-                                    {item.address}
-                                </p>
-                            </div>
-                        </a>
+                            <a
+                                key={item.title}
+                                href={`mailto:${item.address}`}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                }}
+                                className="flex items-center w-full gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10"
+                            >
+                                <i className="flex-center w-7 h-7 text-2xl">
+                                    <BiMailSend />
+                                </i>
+                                <div>
+                                    <h2>{item.title}</h2>
+                                    <p className="text-xs text-gray-400">
+                                        {item.address}
+                                    </p>
+                                </div>
+                            </a>
+                        </CopyToClipboard>
                     ))}
                 </address>
+            );
+            break;
+
+        case '후원':
+            nestedComponent = (
+                <nav className="w-72">
+                    {typeof confNav.donations.buymeacoffee !== 'undefined' && (
+                        <a
+                            href={confNav.donations.buymeacoffee.url}
+                            target="_blank"
+                            rel="external noopener noreferrer nofollow"
+                            className="flex items-center w-full gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10"
+                        >
+                            <i className="relative flex-center w-10 h-10">
+                                <Image
+                                    src="/logos/buymeacoffee/apple-icon-60x60.webp"
+                                    layout="fill"
+                                />
+                            </i>
+                            <span>Buy Me a Coffee</span>
+                            <i className="flex-center w-5 h-5 text-xs ml-auto">
+                                <FaIcon name="FaExternalLinkAlt" />
+                            </i>
+                        </a>
+                    )}
+                    {typeof confNav.donations.toss !== 'undefined' && (
+                        <a
+                            href={confNav.donations.toss.url}
+                            target="_blank"
+                            rel="external noopener noreferrer nofollow"
+                            className="flex items-center w-full gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10"
+                        >
+                            <i className="relative flex-center w-10 h-10 bg-[#12151e] rounded">
+                                <Image
+                                    src="/logos/toss/symbol-toss-blue.png"
+                                    layout="fill"
+                                />
+                            </i>
+                            <span>toss</span>
+                            <i className="flex-center w-5 h-5 text-xs ml-auto">
+                                <FaIcon name="FaExternalLinkAlt" />
+                            </i>
+                        </a>
+                    )}
+                    {typeof confNav.donations.kakaobank !== 'undefined' && (
+                        <CopyToClipboard
+                            text={confNav.donations.kakaobank.account}
+                            onCopy={() => {
+                                alert(
+                                    `계좌가 복사 되었습니다\r\n카카오뱅크\r\n${confNav.donations.kakaobank.name}\r\n${confNav.donations.kakaobank.account}`
+                                );
+                            }}
+                        >
+                            <button
+                                type="button"
+                                className="flex items-center w-full gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10"
+                            >
+                                <i className="relative flex-center w-10 h-10">
+                                    <Image
+                                        src="/logos/kakaobank/B120.gif"
+                                        layout="fill"
+                                    />
+                                </i>
+                                <div className="text-left flex flex-col gap-1">
+                                    <h2>
+                                        카카오뱅크 (
+                                        {confNav.donations.kakaobank.name})
+                                    </h2>
+                                    <p className="text-xs text-gray-400">
+                                        {confNav.donations.kakaobank.account}
+                                    </p>
+                                </div>
+                                <i className="flex-center w-5 h-5 text-lg ml-auto">
+                                    <BiCopyAlt />
+                                </i>
+                            </button>
+                        </CopyToClipboard>
+                    )}
+                </nav>
             );
             break;
 
@@ -157,12 +252,30 @@ const ConfNav = () => {
                     </div>
                     <div className="border-b border-black/10 dark:border-white/10 mx-2 mb-1 pt-1" />
                     <div>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setNested('후원');
+                            }}
+                            className="flex items-center w-full gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10 font-medium"
+                        >
+                            <i className="flex-center w-5 h-5 text-lg">
+                                <HiOutlineHeart />
+                            </i>
+                            <span>후원</span>
+                            <i className="flex-center w-5 h-5 ml-auto">
+                                <FaIcon name="FaChevronRight" />
+                            </i>
+                        </button>
+                    </div>
+                    <div className="border-b border-black/10 dark:border-white/10 mx-2 mb-1 pt-1" />
+                    <div>
                         {confNav.links.map((item) => (
                             <a
                                 key={item.name}
                                 href={item.href}
                                 target="_blank"
-                                rel="external noopener noreferrer"
+                                rel="external noopener noreferrer nofollow"
                                 aria-label={item.name}
                                 className="flex items-center w-full gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10"
                             >
@@ -207,7 +320,7 @@ const ConfNav = () => {
                         }}
                     >
                         <Popover.Panel className="absolute top-full right-0">
-                            <div className="w-52 p-2 text-sm backdrop-blur bg-white/95 shadow rounded dark:bg-dark/95 dark:shadow-black">
+                            <div className="min-w-[13rem] p-2 whitespace-nowrap text-sm backdrop-blur bg-white/95 shadow rounded dark:bg-dark/95 dark:shadow-black">
                                 {nested && (
                                     <>
                                         <h1>

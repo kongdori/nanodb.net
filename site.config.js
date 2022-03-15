@@ -24,6 +24,29 @@ module.exports = {
             }
         ],
         confNav: {
+            mails: [
+                {
+                    title: '나노디비 문의',
+                    address: 'nano@nanodb.net'
+                },
+                {
+                    title: '개인 문의',
+                    address: 'nckres14@gmail.com'
+                }
+            ],
+            donations: {
+                buymeacoffee: {
+                    name: 'NanoDB',
+                    url: 'https://www.buymeacoffee.com/nanodb'
+                },
+                kakaobank: {
+                    name: '공채운',
+                    account: '3333-22-8667531'
+                },
+                toss: {
+                    url: 'https://toss.me/nanodb'
+                }
+            },
             links: [
                 {
                     href: 'https://github.com/nanodbnet',
@@ -34,16 +57,6 @@ module.exports = {
                     href: 'https://steamcommunity.com/groups/nanodbnet',
                     name: 'Steam',
                     faIcon: 'FaSteamSymbol'
-                }
-            ],
-            mails: [
-                {
-                    title: '나노디비 문의',
-                    address: 'nano@nanodb.net'
-                },
-                {
-                    title: '개인 문의',
-                    address: 'nckres14@gmail.com'
                 }
             ]
         }
