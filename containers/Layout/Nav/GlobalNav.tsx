@@ -1,176 +1,136 @@
-import React, { Fragment, useRef } from 'react';
+import React from 'react';
 import * as site from 'site.config.js';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { Popover, Transition } from '@headlessui/react';
+import { createStateContext } from 'react-use';
 import classNames from 'classnames';
 import { Io5Icon } from '@components/ReactIcon';
 
-const { globalNav } = site.header;
+const [useActive, ActiveProvider] = createStateContext(false);
 
-const GlobalNav = () => {
+interface GlobalNavItemProps {
+    nav: {
+        name: string;
+        href: string;
+        active: string[];
+        subNav: {
+            name: string;
+            href: string;
+            active: string[];
+            io5Icon: string;
+            grid?: boolean;
+        }[];
+    };
+}
+
+const GlobalNavItem = ({ nav }: GlobalNavItemProps) => {
     const router = useRouter();
-    let currentRootPath: string;
+    const [, currentRootPath] = router.pathname.split('/');
 
-    if (router.pathname) {
-        [, currentRootPath] = router.pathname.split('/');
-    }
+    const [active, setActive] = useActive();
+    const [enter, setEnter] = React.useState(false);
 
-    let opened = false;
-    const timerDuration = 200;
+    const timerDuration = 300;
     let timer: ReturnType<typeof setTimeout>;
-    const popoverBtnRefs = useRef<HTMLAnchorElement[]>([]);
 
-    const openPopover = (index: number) => {
-        const current = popoverBtnRefs.current[index];
-
-        if (current) {
-            opened = true;
-            current.focus();
-            current.dispatchEvent(
-                new KeyboardEvent('keydown', {
-                    key: 'Enter',
-                    bubbles: true,
-                    cancelable: true
-                })
-            );
-        }
-    };
-
-    const closePopover = (index: number) => {
-        const current = popoverBtnRefs.current[index];
-
-        if (current) {
-            opened = false;
-            current.focus();
-            current.dispatchEvent(
-                new KeyboardEvent('keydown', {
-                    key: 'Escape',
-                    bubbles: true,
-                    cancelable: true
-                })
-            );
-            current.blur();
-        }
-    };
-
-    const onFocus = (open: boolean, index: number) => {
+    const onEnter = () => {
         clearTimeout(timer);
-        if (!open) {
-            openPopover(index);
-        }
+        setActive(true);
+        setEnter(true);
     };
 
-    const onBlur = (open: boolean, index: number) => {
-        if (open) {
-            timer = setTimeout(() => closePopover(index), timerDuration);
-        }
-    };
-
-    const openerClassNames = (active: string[], open: boolean) => {
-        if (currentRootPath && active.includes(currentRootPath)) {
-            if (open) {
-                return 'nav-anchor-static bg-black/10 dark:bg-white/10';
-            }
-
-            return 'nav-anchor-static';
+    const onLeave = () => {
+        if (active) {
+            setEnter(false);
+        } else {
+            timer = setTimeout(() => {
+                setEnter(false);
+            }, timerDuration);
         }
 
-        if (open) {
-            return '_nav-anchor bg-black/10 dark:bg-white/10 text-neutral-700 dark:text-neutral-300';
-        }
-
-        return '_nav-anchor text-neutral-600 dark:text-neutral-400';
+        setActive(false);
     };
 
     return (
-        <Popover.Group
-            as="nav"
-            className="flex items-stretch"
-            aria-label="Global"
+        <div
+            className="flex items-center relative"
+            // onFocus={() => {
+            //     onEnter();
+            // }}
+            // onBlur={() => {
+            //     onLeave();
+            // }}
+            onMouseEnter={() => {
+                onEnter();
+            }}
+            onMouseLeave={() => {
+                onLeave();
+            }}
         >
-            {globalNav.map((item, index) => (
-                <Popover key={item.name} as={Fragment}>
-                    {({ open }) => (
-                        <div
-                            className="relative flex items-center"
-                            onMouseLeave={() => {
-                                onBlur(open, index);
-                            }}
-                        >
-                            <Link href={item.href} passHref>
-                                <Popover.Button
-                                    as="a"
-                                    ref={(elm: HTMLAnchorElement) => {
-                                        popoverBtnRefs.current[index] = elm;
-                                    }}
-                                    onMouseEnter={() => {
-                                        onFocus(open, index);
-                                    }}
+            <Link href={nav.href}>
+                <a
+                    className={classNames(
+                        'relative rounded py-0.5 px-4 z-20',
+                        nav.active.includes(currentRootPath)
+                            ? 'text-black dark:text-white'
+                            : 'hover:bg-black/5 dark:hover:bg-white/10 hover:text-neutral-800 dark:hover:text-neutral-100',
+                        {
+                            'bg-black/5 dark:bg-white/10 text-neutral-800 dark:text-neutral-100':
+                                enter
+                        }
+                    )}
+                >
+                    {nav.name}
+                </a>
+            </Link>
+            <div
+                className={classNames('absolute top-10 -left-2 p-2', {
+                    'opacity-0 pointer-events-none': !enter,
+                    'transition duration-300 ease-out translate-y-2': !active
+                })}
+            >
+                <div className="text-sm whitespace-nowrap p-2 backdrop-blur bg-white/95 shadow rounded dark:bg-dark/95 dark:shadow-black">
+                    {nav.subNav.map((nav2) => (
+                        <div key={nav2.name}>
+                            <Link href={nav2.href}>
+                                <a
                                     className={classNames(
-                                        openerClassNames(
-                                            item.active as string[],
-                                            open
-                                        ),
-                                        'py-1 px-4 outline-none'
+                                        'flex items-center gap-2 py-1.5 px-2 rounded min-w-[12rem] hover:bg-black/5 dark:hover:bg-white/10',
+                                        nav2.active.includes(router.pathname)
+                                            ? 'text-black dark:text-white'
+                                            : 'hover:text-neutral-800 dark:hover:text-neutral-100'
                                     )}
                                 >
-                                    {item.name}
-                                </Popover.Button>
+                                    {nav2.io5Icon && (
+                                        <i className="flex-center">
+                                            <Io5Icon name={nav2.io5Icon} />
+                                        </i>
+                                    )}
+                                    <span>{nav2.name}</span>
+                                </a>
                             </Link>
-                            <Transition
-                                as={Fragment}
-                                {...(!opened && {
-                                    // enter: transition ease-out duration-200",
-                                    // enterFrom: opacity-0 translate-y-1",
-                                    // enterTo: opacity-100 translate-y-0",
-                                    leave: 'transition ease-in duration-200',
-                                    leaveFrom: 'opacity-100 translate-y-0',
-                                    leaveTo: 'opacity-0 translate-y-1'
-                                })}
-                            >
-                                <Popover.Panel
-                                    className="absolute top-full -left-2"
-                                    onMouseEnter={() => {
-                                        onFocus(open, index);
-                                    }}
-                                >
-                                    {item.subNav.map((item2) => (
-                                        <div
-                                            key={item2.name}
-                                            className="whitespace-nowrap w-52 p-2 backdrop-blur bg-white/80 border border-black/10 shadow rounded outline-0 dark:bg-dark/80 dark:border-white/10 dark:shadow-black"
-                                        >
-                                            <Link href={item2.href}>
-                                                <a
-                                                    className={classNames(
-                                                        router.pathname ===
-                                                            item2.href
-                                                            ? 'nav-anchor-static'
-                                                            : '_nav-anchor text-neutral-600 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300',
-                                                        'flex items-center py-1.5 px-2'
-                                                    )}
-                                                >
-                                                    {item2.io5Icon && (
-                                                        <i className="flex mr-1 text-base">
-                                                            <Io5Icon
-                                                                name={
-                                                                    item2.io5Icon
-                                                                }
-                                                            />
-                                                        </i>
-                                                    )}
-                                                    <span>{item2.name}</span>
-                                                </a>
-                                            </Link>
-                                        </div>
-                                    ))}
-                                </Popover.Panel>
-                            </Transition>
+                            {nav2.grid && (
+                                <div className="border-b border-black/10 dark:border-white/10 mx-2 mb-1 pt-1" />
+                            )}
                         </div>
-                    )}
-                </Popover>
-            ))}
-        </Popover.Group>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const GlobalNav = () => {
+    const { globalNav } = site.header;
+
+    return (
+        <ActiveProvider>
+            <nav className="flex items-stretch font-medium text-neutral-600 dark:text-neutral-400">
+                {globalNav.map((nav) => (
+                    <GlobalNavItem key={nav.href} nav={nav} />
+                ))}
+            </nav>
+        </ActiveProvider>
     );
 };
 
