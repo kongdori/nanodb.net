@@ -74,7 +74,18 @@
 
     // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prop-types.md
     // 타입스크립트 불필요
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+
+    // https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/issues/302
+    // label htmlFor Nested
+    "jsx-a11y/label-has-associated-control": [
+      "error",
+      {
+        "required": {
+          "some": ["nesting", "id"]
+        }
+      }
+    ]
   },
 
   "env": {
