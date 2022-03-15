@@ -1,12 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import * as site from 'site.config.js';
+import React from 'react';
 import { useTheme } from 'next-themes';
 import { Popover, Transition } from '@headlessui/react';
 import classNames from 'classnames';
-import { createStateContext } from 'react-use';
-/* icons */
 import { FaIcon } from '@components/ReactIcon';
 import {
     HiDotsHorizontal,
@@ -16,272 +13,182 @@ import {
     HiOutlineMail,
     HiOutlineQuestionMarkCircle
 } from 'react-icons/hi';
+import * as site from 'site.config.js';
 
-const { confNav } = site.header;
+const ConfNav = () => {
+    const { confNav } = site.header;
 
-type NestedTypes = null | 'themeSelector' | 'mailTo';
-
-const [useNested, NestedProvider] = createStateContext<NestedTypes>(null);
-
-/* Nested Lists */
-
-const ThemeSelector = ({
-    onThemeSelected
-}: {
-    onThemeSelected?: () => void;
-}) => {
     const { theme, setTheme } = useTheme();
+    let currentThemeIcon = <HiOutlineDesktopComputer />;
 
-    return (
-        <>
-            <button
-                type="button"
-                onClick={() => {
-                    setTheme('system');
-                    if (onThemeSelected) onThemeSelected();
-                }}
-                className="flex items-center w-full py-1.5 px-2 nav-anchor"
-            >
-                <span
-                    className={classNames('flex', {
-                        'text-amber-600 dark:text-amber-500': theme === 'system'
-                    })}
-                >
-                    <i className="flex-center w-5 h-5 text-lg mr-2">
-                        <HiOutlineDesktopComputer />
-                    </i>
-                    기기 테마
-                </span>
-            </button>
-            <button
-                type="button"
-                onClick={() => {
-                    setTheme('light');
-                    if (onThemeSelected) onThemeSelected();
-                }}
-                className="flex items-center w-full py-1.5 px-2 nav-anchor"
-            >
-                <span
-                    className={classNames('flex', {
-                        'text-amber-600 dark:text-amber-500': theme === 'light'
-                    })}
-                >
-                    <i className="flex-center w-5 h-5 text-lg mr-2">
-                        <HiOutlineSun />
-                    </i>
-                    밝은 테마
-                </span>
-            </button>
-            <button
-                type="button"
-                onClick={() => {
-                    setTheme('dark');
-                    if (onThemeSelected) onThemeSelected();
-                }}
-                className="flex items-center w-full py-1.5 px-2 nav-anchor"
-            >
-                <span
-                    className={classNames('flex', {
-                        'text-amber-600 dark:text-amber-500': theme === 'dark'
-                    })}
-                >
-                    <i className="flex-center w-5 h-5 text-lg mr-2">
-                        <HiOutlineMoon />
-                    </i>
-                    어두운 테마
-                </span>
-            </button>
-        </>
-    );
-};
+    const [nested, setNested] = React.useState('');
 
-ThemeSelector.defaultProps = {
-    onThemeSelected: undefined
-};
-
-const MailTo = () => (
-    <>
-        {confNav.mails.map((item) => (
-            <a
-                key={item.title}
-                href={`mailto:${item.address}`}
-                className="flex items-center w-full py-1.5 px-2 nav-anchor"
-            >
-                <i className="flex-center w-5 h-5 text-lg mr-2">
-                    <HiOutlineQuestionMarkCircle />
-                </i>
-                <div>
-                    <h2>{item.title}</h2>
-                    <em className="text-xs align-top text-gray-400 dark:text-gray-500">
-                        {item.address}
-                    </em>
-                </div>
-            </a>
-        ))}
-    </>
-);
-
-//
-
-const PanelNested = ({ close }: { close: () => void }) => {
-    const [nested, setNested] = useNested();
-
-    let nestedTitle = '';
-    let nestedComponent = <div />;
+    let nestedComponent: React.ReactNode = null;
 
     switch (nested) {
-        case 'themeSelector':
-            nestedTitle = '테마 설정';
+        case '테마 설정':
             nestedComponent = (
-                <ThemeSelector /* onThemeSelected={() => close()} */ />
-            );
-            break;
-
-        case 'mailTo':
-            nestedTitle = '메일 문의';
-            nestedComponent = <MailTo />;
-            break;
-
-        // no default
-    }
-
-    return (
-        <div className="w-full">
-            <div className="py-2">
-                <h1>
+                <nav>
                     <button
                         type="button"
                         onClick={() => {
-                            setNested(null);
+                            setTheme('system');
                         }}
-                        className="flex items-center w-full py-1.5 px-2 nav-anchor"
+                        className={classNames(
+                            'flex items-center w-full gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10',
+                            {
+                                'text-amber-600 dark:text-amber-500':
+                                    theme === 'system'
+                            }
+                        )}
                     >
-                        <i className="flex-center w-5 h-5 text-base mr-2">
-                            <FaIcon name="FaChevronLeft" />
+                        <i className="flex-center w-5 h-5 text-lg">
+                            <HiOutlineDesktopComputer />
                         </i>
-                        <span>{nestedTitle}</span>
+                        기기 테마 (기본)
                     </button>
-                </h1>
-                <div className="mx-2 my-2 border-t border-black/20 dark:border-white/20" />
-                {nestedComponent}
-            </div>
-        </div>
-    );
-};
+                    <button
+                        type="button"
+                        onClick={() => {
+                            setTheme('light');
+                        }}
+                        className={classNames(
+                            'flex items-center w-full gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10',
+                            {
+                                'text-amber-600 dark:text-amber-500':
+                                    theme === 'light'
+                            }
+                        )}
+                    >
+                        <i className="flex-center w-5 h-5 text-lg">
+                            <HiOutlineSun />
+                        </i>
+                        밝은 테마
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => {
+                            setTheme('dark');
+                        }}
+                        className={classNames(
+                            'flex items-center w-full gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10',
+                            {
+                                'text-amber-600 dark:text-amber-500':
+                                    theme === 'dark'
+                            }
+                        )}
+                    >
+                        <i className="flex-center w-5 h-5 text-lg">
+                            <HiOutlineMoon />
+                        </i>
+                        어두운 테마
+                    </button>
+                </nav>
+            );
+            break;
 
-const PanelMain = () => {
-    const [nested, setNested] = useNested();
-    const { theme } = useTheme();
+        case '메일 문의':
+            nestedComponent = (
+                <address className="not-italic">
+                    {confNav.mails.map((item) => (
+                        <a
+                            key={item.title}
+                            href={`mailto:${item.address}`}
+                            className="flex items-center w-full gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10"
+                        >
+                            <i className="flex-center w-5 h-5 text-lg">
+                                <HiOutlineQuestionMarkCircle />
+                            </i>
+                            <div>
+                                <h2>{item.title}</h2>
+                                <p className="text-xs text-gray-400">
+                                    {item.address}
+                                </p>
+                            </div>
+                        </a>
+                    ))}
+                </address>
+            );
+            break;
 
-    let currentThemeIcon = <HiOutlineDesktopComputer />;
+        default:
+            if (theme === 'light') {
+                currentThemeIcon = <HiOutlineSun className="fill-red-500" />;
+            } else if (theme === 'dark') {
+                currentThemeIcon = <HiOutlineMoon className="fill-amber-500" />;
+            }
 
-    if (theme === 'light') {
-        currentThemeIcon = <HiOutlineSun className="fill-red-500" />;
-    } else if (theme === 'dark') {
-        currentThemeIcon = <HiOutlineMoon className="fill-amber-500" />;
+            nestedComponent = (
+                <nav>
+                    <div>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setNested('테마 설정');
+                            }}
+                            className="flex items-center w-full gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10 font-medium"
+                        >
+                            <i className="flex-center w-5 h-5 text-lg">
+                                {currentThemeIcon}
+                            </i>
+                            <span>테마</span>
+                            <i className="flex-center w-5 h-5 ml-auto">
+                                <FaIcon name="FaChevronRight" />
+                            </i>
+                        </button>
+                    </div>
+                    <div className="border-b border-black/10 dark:border-white/10 mx-2 mb-1 pt-1" />
+                    <div>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setNested('메일 문의');
+                            }}
+                            className="flex items-center w-full gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10 font-medium"
+                        >
+                            <i className="flex-center w-5 h-5 text-lg">
+                                <HiOutlineMail />
+                            </i>
+                            <span>메일</span>
+                            <i className="flex-center w-5 h-5 ml-auto">
+                                <FaIcon name="FaChevronRight" />
+                            </i>
+                        </button>
+                    </div>
+                    <div className="border-b border-black/10 dark:border-white/10 mx-2 mb-1 pt-1" />
+                    <div>
+                        {confNav.links.map((item) => (
+                            <a
+                                key={item.name}
+                                href={item.href}
+                                target="_blank"
+                                rel="external noopener noreferrer"
+                                aria-label={item.name}
+                                className="flex items-center w-full gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10"
+                            >
+                                <i className="flex-center w-5 h-5 text-lg">
+                                    <FaIcon name={item.faIcon} />
+                                </i>
+                                <span>{item.name}</span>
+                                <i className="flex-center w-5 h-5 text-xs ml-auto">
+                                    <FaIcon name="FaExternalLinkAlt" />
+                                </i>
+                            </a>
+                        ))}
+                    </div>
+                </nav>
+            );
     }
 
     return (
-        <div className="w-full">
-            <div className="py-2">
-                <button
-                    type="button"
-                    onClick={() => {
-                        setNested('themeSelector');
-                    }}
-                    className="flex items-center w-full py-1.5 px-2 nav-anchor"
-                >
-                    <i className="flex-center w-5 h-5 text-lg mr-2">
-                        {currentThemeIcon}
-                    </i>
-                    <span>테마</span>
-                    <i className="flex-center w-5 h-5 text-base ml-auto">
-                        <FaIcon name="FaChevronRight" />
-                    </i>
-                </button>
-            </div>
-            <div className="mx-2 border-t border-black/20 dark:border-white/20" />
-            <div className="py-2">
-                <button
-                    type="button"
-                    onClick={() => {
-                        setNested('mailTo');
-                    }}
-                    className="flex items-center w-full py-1.5 px-2 nav-anchor"
-                >
-                    <i className="flex-center w-5 h-5 text-lg mr-2">
-                        <HiOutlineMail />
-                    </i>
-                    <span>메일</span>
-                    <i className="flex-center w-5 h-5 text-base ml-auto">
-                        <FaIcon name="FaChevronRight" />
-                    </i>
-                </button>
-            </div>
-            <div className="mx-2 border-t border-black/20 dark:border-white/20" />
-            <div className="py-2">
-                {confNav.links.map((item) => (
-                    <a
-                        key={item.name}
-                        href={item.href}
-                        target="_blank"
-                        rel="noreferrer nofollow external"
-                        aria-label={item.name}
-                        className="flex items-center w-full py-1.5 px-2 nav-anchor"
-                    >
-                        <i className="flex-center w-5 h-5 text-lg mr-2">
-                            <FaIcon name={item.faIcon} />
-                        </i>
-                        <span>{item.name}</span>
-                        <i className="flex-center w-5 h-5 text-xs ml-auto">
-                            <FaIcon name="FaExternalLinkAlt" />
-                        </i>
-                    </a>
-                ))}
-            </div>
-        </div>
-    );
-};
-
-interface ConfNavPopoverProps {
-    open: boolean;
-    close: () => void;
-}
-
-const ConfNavPopover = ({ open, close }: ConfNavPopoverProps) => {
-    const [nested, setNested] = useNested();
-
-    return (
-        <Transition
-            show={open}
-            leave="transition ease-out duration-200"
-            leaveFrom="transform opacity-100"
-            leaveTo="transform opacity-0"
-            afterLeave={() => {
-                setNested(null);
-            }}
-        >
-            <Popover.Panel className="absolute right-0">
-                <nav className="w-52 px-2 overflow-x-hidden nav-popover">
-                    {nested ? <PanelNested close={close} /> : <PanelMain />}
-                </nav>
-            </Popover.Panel>
-        </Transition>
-    );
-};
-
-const ConfNav = () => (
-    <NestedProvider>
-        <Popover>
+        <Popover className="relative flex items-center">
             {({ open, close }) => (
                 <>
-                    <Popover.Button className="relative h-full flex items-center outline-0">
+                    <Popover.Button>
                         <span
                             className={classNames(
-                                open
-                                    ? 'nav-anchor-static bg-black/10 dark:bg-white/10'
-                                    : 'nav-anchor',
-                                'flex items-center justify-center w-10 h-7 rounded'
+                                'flex items-center justify-center w-10 h-7 rounded',
+                                { 'bg-black/5 dark:bg-white/10': open }
                             )}
                         >
                             <i className="block text-3xl">
@@ -289,11 +196,45 @@ const ConfNav = () => (
                             </i>
                         </span>
                     </Popover.Button>
-                    <ConfNavPopover open={open} close={close} />
+                    <Transition
+                        as={React.Fragment}
+                        show={open}
+                        leave="transition ease-out duration-300"
+                        leaveFrom="opacity-100"
+                        leaveTo="opacity-0 translate-y-2"
+                        afterLeave={() => {
+                            setNested('');
+                        }}
+                    >
+                        <Popover.Panel className="absolute top-full right-0">
+                            <div className="w-52 p-2 text-sm backdrop-blur bg-white/95 shadow rounded dark:bg-dark/95 dark:shadow-black">
+                                {nested && (
+                                    <>
+                                        <h1>
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    setNested('');
+                                                }}
+                                                className="flex items-center w-full gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10 font-medium"
+                                            >
+                                                <i className="flex-center w-5 h-5">
+                                                    <FaIcon name="FaChevronLeft" />
+                                                </i>
+                                                <span>{nested}</span>
+                                            </button>
+                                        </h1>
+                                        <div className="border-b border-black/10 dark:border-white/10 mx-2 mb-1 pt-1" />
+                                    </>
+                                )}
+                                {nestedComponent}
+                            </div>
+                        </Popover.Panel>
+                    </Transition>
                 </>
             )}
         </Popover>
-    </NestedProvider>
-);
+    );
+};
 
 export default ConfNav;
