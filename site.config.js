@@ -57,6 +57,11 @@ module.exports = {
                     href: 'https://steamcommunity.com/groups/nanodbnet',
                     name: 'Steam',
                     faIcon: 'FaSteamSymbol'
+                },
+                {
+                    href: 'https://discord.gg/48yXEbVbZX',
+                    name: 'Discord',
+                    faIcon: 'FaDiscord'
                 }
             ]
         }
