@@ -1,0 +1,27 @@
+{
+  "presets": [
+    [
+      "next/babel",
+      {
+        "preset-react": {},
+        "preset-env": {},
+        "preset-typescript": {},
+        "transform-runtime": {}
+      }
+    ]
+  ],
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "alias": {
+          "@styles": "./styles",
+          "@components": "./components",
+          "@containers": "./containers",
+          "@lib": "./lib"
+        }
+      }
+    ],
+    ["@emotion"]
+  ]
+}

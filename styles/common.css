@@ -1,0 +1,153 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --color-primary: 28 31 35; /* #1c1f23 */
+    --color-dark: 32 33 36; /* #202124 */
+    --color-background: 245 246 250; /* #f5f6fa */
+    --color-background-dark: 14 14 15; /* #0e0e0f */
+    --swiper-pagination-color: #1c1f23;
+}
+
+body {
+    background-color: rgb(var(--color-background));
+}
+
+html.dark,
+html.dark body {
+    background-color: rgb(var(--color-background-dark));
+}
+
+.responsive {
+    @apply max-w-6xl mx-auto px-4;
+}
+
+.content-item {
+    @apply bg-white dark:bg-dark shadow rounded-sm;
+}
+
+.flex-center {
+    @apply flex items-center justify-center;
+}
+
+/*
+    Swiper
+*/
+.swiper-custom {
+    @apply relative pb-6;
+}
+
+.swiper-custom .swiper-button-disabled {
+    @apply opacity-70 !important;
+}
+
+.swiper-custom .swiper-pagination-screenshots {
+    @apply absolute bottom-2 !important;
+}
+
+.swiper-custom .swiper-navigation-screenshots {
+    @apply bg-white dark:bg-dark cursor-pointer transition-opacity rounded-full flex items-center justify-center text-2xl text-black dark:text-white shadow-lg shadow-black/20 dark:shadow-black/60;
+}
+
+.swiper-custom .swiper-pagination-screenshots .swiper-pagination-bullet {
+    @apply bg-black/90 dark:bg-white/90;
+}
+
+.swiper-custom .swiper-pagination-screenshots .swiper-pagination-bullet-active {
+    @apply bg-black dark:bg-white;
+}
+
+/*
+    Nprogress
+*/
+
+#nprogress .peg {
+    box-shadow: none !important;
+}
+
+/*
+    Reviews
+*/
+
+.steam_review_summary {
+    /* color: #a34c25; */
+    @apply text-yellow-600 dark:text-yellow-500;
+}
+.steam_review_summary.mixed {
+    /* color: #b9a074; */
+    @apply text-amber-700 dark:text-amber-600;
+}
+.steam_review_summary.positive {
+    /* color: #1774ee; */
+    @apply text-sky-600 dark:text-sky-500;
+}
+.steam_review_summary.no_reviews,
+.steam_review_summary.not_enough_reviews {
+    /* color: #929396; */
+    @apply text-neutral-500 dark:text-neutral-400;
+}
+
+.metacritic_review_summary {
+    @apply block not-italic text-center rounded;
+}
+
+.metacritic_review_summary.positive {
+    /* background: #6c3; */
+    @apply bg-green-500 dark:bg-green-600 hover:bg-green-600 dark:hover:bg-green-500;
+    color: #fff;
+}
+.metacritic_review_summary.mixed {
+    /* background: #fc3; */
+    @apply bg-yellow-500 dark:bg-yellow-600 hover:bg-yellow-600 dark:hover:bg-yellow-500;
+    color: #fff;
+}
+.metacritic_review_summary.negative {
+    /* background: #f00; */
+    @apply bg-red-500 dark:bg-red-600 hover:bg-red-600 dark:hover:bg-red-500;
+    color: #fff;
+}
+
+/*
+    Table
+*/
+
+.db-table {
+    @apply shadow dark:shadow-black/60 border dark:border-white/5 rounded divide-y dark:divide-white/5;
+}
+
+.db-table .head {
+    @apply py-1 px-3 flex items-center font-medium text-sm bg-slate-100 border-b dark:bg-black/40 dark:border-white/5;
+}
+
+.db-table .head .depth {
+    @apply flex flex-1 text-xs dark:text-neutral-200;
+}
+
+.db-table .key {
+    @apply w-40 font-medium text-sm;
+}
+
+.db-table .rows {
+    @apply divide-y dark:divide-white/5;
+}
+
+.db-table .rows > div {
+    @apply py-1.5 mx-3 flex items-baseline text-[0.8rem];
+}
+
+.db-table .rows > a {
+    @apply py-1.5 px-3 flex items-center text-[0.8rem] hover:bg-gray-100 dark:hover:bg-black/30;
+}
+
+.db-table .rows .key {
+    @apply text-xs;
+}
+
+.db-table .col {
+    @apply pl-40 flex flex-1 items-center;
+}
+
+.db-table .empty {
+    @apply h-6 text-neutral-500 text-center bg-gray-100 dark:bg-black/40;
+}

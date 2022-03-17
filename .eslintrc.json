@@ -1,0 +1,95 @@
+{
+  "extends": [
+    "next/core-web-vitals",
+
+    // https://www.npmjs.com/package/eslint-config-airbnb-typescript
+    "airbnb",
+    "airbnb/hooks",
+    "airbnb-typescript",
+
+    // https://www.npmjs.com/package/@typescript-eslint/eslint-plugin
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+
+    // https://www.npmjs.com/package/eslint-plugin-prettier
+    "prettier"
+  ],
+
+  "plugins": ["@typescript-eslint", "prettier"],
+
+  // https://www.npmjs.com/package/@typescript-eslint/parser
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+
+  // ignore *.config.js
+  "ignorePatterns": "*.config.js",
+
+  "rules": {
+    // https://www.npmjs.com/package/eslint-plugin-prettier
+    "prettier/prettier": "error",
+
+    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/function-component-definition.md
+    // arrow-function - 고정 사용
+    "react/function-component-definition": [
+      "error",
+      {
+        "namedComponents": ["function-declaration", "arrow-function"]
+      }
+    ],
+
+    // https://eslint.org/docs/rules/arrow-body-style
+    // arrow-function - return 필요할 때만
+    "arrow-body-style": ["error", "as-needed"],
+
+    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/react-in-jsx-scope.md
+    // import React from "react" - 모든 파일에서 사용 안하기
+    "react/react-in-jsx-scope": "off",
+
+    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-props-no-spreading.md
+    // <Component one_prop={one_prop} /> 변환 <Component {...pageProps} />
+    "react/jsx-props-no-spreading": "off",
+
+    // https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/30deacbf240f8cea7b88a977a72ed54b499c134e/docs/rules/anchor-is-valid.md
+    // Next.js - import Link from next/link <a> 태그 빈속성 에러
+    "jsx-a11y/anchor-is-valid": [
+      "error",
+      {
+        "components": ["Link"],
+        "specialLink": ["hrefLeft", "hrefRight"],
+        "aspects": ["invalidHref", "preferButton"]
+      }
+    ],
+
+    // https://github.com/typescript-eslint/typescript-eslint/blob/v5.7.0/packages/eslint-plugin/docs/rules/no-empty-interface.md
+    // 싱글 extends 허용 interface B extends Array<A> {}
+    "@typescript-eslint/no-empty-interface": [
+      "error",
+      {
+        "allowSingleExtends": true
+      }
+    ],
+
+    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prop-types.md
+    // 타입스크립트 불필요
+    "react/prop-types": "off",
+
+    // https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/issues/302
+    // label htmlFor Nested
+    "jsx-a11y/label-has-associated-control": [
+      "error",
+      {
+        "required": {
+          "some": ["nesting", "id"]
+        }
+      }
+    ]
+  },
+
+  "env": {
+    "browser": true,
+    "node": true
+  }
+}
