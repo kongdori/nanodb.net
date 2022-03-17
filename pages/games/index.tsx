@@ -14,8 +14,15 @@ function GameListPage() {
     const { ...props } = useGameList();
 
     return (
-        <div className="mt-16 max-w-5xl mx-auto content-item px-2.5">
-            <div className="grid grid-cols-2 gap-x-2.5">
+        <div className="mt-16 max-w-5xl mx-auto content-item">
+            <div className="h-2" />
+            <div className="py-2 px-4 text-xs flex items-center gap-x-4">
+                <h2>정렬</h2>
+                <span className="font-medium bg-black/5 rounded px-2 py-1 cursor-pointer">
+                    스팀 인기제품
+                </span>
+            </div>
+            <div className="grid grid-cols-2 gap-x-2.5 px-2.5">
                 <AppList {...props} />
             </div>
         </div>
