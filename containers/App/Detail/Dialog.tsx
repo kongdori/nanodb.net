@@ -73,8 +73,10 @@ const Link = ({ app, appid, slug, children, ...props }: LinkProps) => {
         const handleHistoryChange = (url: string) => {
             if (decodeURI(url) === href) {
                 setIsOpen(true);
+                document.body.style.overflow = 'hidden';
             } else if (isOpen) {
                 setIsOpen(false);
+                document.body.style.overflow = '';
             }
         };
 
