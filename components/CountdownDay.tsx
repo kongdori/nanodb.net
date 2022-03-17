@@ -8,7 +8,8 @@ const CountdownDay = ({ ...props }: CountdownProps) => (
 
             return (
                 <span suppressHydrationWarning>
-                    {`${days}일 ${zeroPad(hours)}:${zeroPad(minutes)}:${zeroPad(
+                    {days > 0 && `${days}일 `}
+                    {`${zeroPad(hours)}:${zeroPad(minutes)}:${zeroPad(
                         seconds
                     )}`}
                 </span>
