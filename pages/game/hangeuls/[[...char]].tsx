@@ -56,7 +56,7 @@ const IndexListItem = React.memo(
                     <h2
                         className={classNames(
                             item.char === char
-                                ? 'text-neutral-900 dark:text-neutral-100'
+                                ? 'text-black dark:text-white'
                                 : 'text-neutral-700 dark:text-neutral-300',
                             'w-10 text-sm'
                         )}
@@ -68,17 +68,19 @@ const IndexListItem = React.memo(
                             {item.desc}
                         </p>
                     )}
-                    <div className="ml-auto w-16 text-right">
-                        {item.user_counted !== 0 && (
+                    <div className="ml-auto flex">
+                        <div className="w-16 text-right">
+                            {item.user_counted !== 0 && (
+                                <em className="text-xs not-italic text-neutral-500 dark:text-neutral-400">
+                                    {item.user_counted}
+                                </em>
+                            )}
+                        </div>
+                        <div className="w-16 text-right">
                             <em className="text-xs not-italic text-neutral-500 dark:text-neutral-400">
-                                {item.user_counted}
+                                {item.official_counted}
                             </em>
-                        )}
-                    </div>
-                    <div className="ml-auto w-16 text-right">
-                        <em className="text-xs not-italic text-neutral-500 dark:text-neutral-400">
-                            {item.official_counted}
-                        </em>
+                        </div>
                     </div>
                 </a>
             </Link>
@@ -96,78 +98,113 @@ const HangeulListItem = React.memo(
         item: GameHangeulListItem;
         options: GameHangeulsPageOptions;
     }) => (
-        <div key={item.appid}>
-            <Dialog
-                app={item.app}
-                appid={item.appid}
-                slug={item.slug}
-                className="w-full p-1 flex items-start rounded hover:bg-gray-100 dark:hover:bg-white/10"
-            >
-                {!options.is_hide_image && (
-                    <div className="flex-none relative w-24 h-10 rounded-sm overflow-hidden mr-2.5">
-                        <ImageWithFallback
-                            src={item.image_header}
-                            fallbackSrc="/assets/apps/game/no_image_header.jpg"
-                            layout="fill"
-                            objectFit="cover"
-                            priority
-                        />
-                    </div>
-                )}
-                <div>
-                    <h2 className="text-sm font-semibold break-all">
+        <div key={item.appid} className="overflow-x-hidden">
+            <div className="relative rounded p-1.5 hover:bg-gray-100 dark:hover:bg-black/30">
+                <Dialog
+                    app={item.app}
+                    appid={item.appid}
+                    slug={item.slug}
+                    className="absolute inset-0 p-1.5 pointer-events-auto"
+                >
+                    {!options.is_hide_image && (
+                        <div className="relative w-32 h-14 rounded overflow-hidden">
+                            <ImageWithFallback
+                                src={item.image_header}
+                                fallbackSrc="/assets/apps/game/no_image_header.jpg"
+                                layout="fill"
+                                objectFit="cover"
+                            />
+                        </div>
+                    )}
+                </Dialog>
+                <div
+                    className={classNames(
+                        {
+                            'pl-[8.65rem]': !options.is_hide_image
+                        },
+                        'relative pointer-events-none'
+                    )}
+                >
+                    <h1 className="mb-2 text-sm font-semibold break-all leading-tight">
                         {item.name}
-                    </h2>
-                    <div className="mt-auto flex" />
+                    </h1>
+                    <div className="flex flex-col gap-y-4 text-xs dark:text-neutral-300">
+                        {item.hangeul.officials.length > 0 && (
+                            <div>
+                                <div className="mb-0.5 font-medium text-blue-600 dark:text-blue-500">
+                                    공식
+                                </div>
+                                <div className="flex flex-col gap-y-1">
+                                    {item.hangeul.officials.map((hangeul) => (
+                                        <div key={hangeul.id}>
+                                            <span className="font-medium">
+                                                {hangeul.source}
+                                            </span>
+                                            {' - '}
+                                            {hangeul.brief}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                        {item.hangeul.users.length > 0 && (
+                            <div>
+                                <div className="mb-0.5 font-medium text-amber-600 dark:text-amber-500">
+                                    유저
+                                </div>
+                                <div className="flex flex-col gap-y-2">
+                                    {item.hangeul.users.map((hangeul) => (
+                                        <div
+                                            key={hangeul.id}
+                                            className="flex flex-col gap-y-0.5 break-words"
+                                        >
+                                            <div>
+                                                {hangeul.source && (
+                                                    <>
+                                                        <span className="font-medium">
+                                                            {hangeul.source}
+                                                        </span>
+                                                        {(hangeul.brief ||
+                                                            hangeul.url) &&
+                                                            ' - '}
+                                                    </>
+                                                )}
+                                                {hangeul.brief ||
+                                                    (hangeul.url && (
+                                                        <a
+                                                            href={hangeul.url}
+                                                            target="_blank"
+                                                            rel="external noopener noreferrer nofollow"
+                                                            className="pointer-events-auto break-all hover:underline text-blue-700 dark:text-blue-400"
+                                                        >
+                                                            {hangeul.url}
+                                                        </a>
+                                                    ))}
+                                            </div>
+                                            {hangeul.source && hangeul.brief && (
+                                                <a
+                                                    href={hangeul.url}
+                                                    target="_blank"
+                                                    rel="external noopener noreferrer nofollow"
+                                                    className="pointer-events-auto break-all hover:underline text-blue-700 dark:text-blue-400"
+                                                >
+                                                    {hangeul.url}
+                                                </a>
+                                            )}
+                                            {hangeul.guide && (
+                                                <div className="whitespace-pre-wrap bg-black/5 dark:bg-white/10 p-2 rounded overflow-hidden">
+                                                    {hangeul.guide}
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
                 </div>
-            </Dialog>
-            <div className="text-xs py-1 px-1 bg-slate-50 dark:bg-white/10 dark:text-neutral-300 rounded">
-                {item.hangeul.officials.length > 0 && (
-                    <div className="flex items-start">
-                        <div
-                            className={classNames(
-                                'flex-none font-medium text-right text-blue-600 dark:text-blue-500',
-                                { 'w-24': !options.is_hide_image }
-                            )}
-                        >
-                            공식 지원
-                        </div>
-                        <div className="pl-2">
-                            {item.hangeul.officials.map((hangeul) => (
-                                <div key={hangeul.id}>
-                                    <span className="font-medium">
-                                        {hangeul.source}
-                                    </span>{' '}
-                                    - {hangeul.brief}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
-                {item.hangeul.users.length > 0 && (
-                    <div className="flex items-start">
-                        <div
-                            className={classNames(
-                                'flex-none font-medium text-right text-amber-600 dark:text-amber-500',
-                                { 'w-24': !options.is_hide_image }
-                            )}
-                        >
-                            유저 지원
-                        </div>
-                        <div className="pl-2">
-                            {item.hangeul.users.map((hangeul) => (
-                                <div key={hangeul.id}>
-                                    <span className="font-medium">
-                                        {hangeul.source}
-                                    </span>{' '}
-                                    - {hangeul.brief}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
             </div>
-            <div className="mx-1 mt-1 pb-1 border-t border-black/10 dark:border-white/10" />
+            <div className="mx-2 mt-1.5 pb-1.5 border-t border-black/10 dark:border-white/10" />
         </div>
     ),
     (prevProps, nextProps) =>
@@ -290,10 +327,12 @@ const GameHangeulsPage = ({ options }: Pick<PageProps, 'options'>) => {
                             이름 순 필터링
                         </div>
                     </h1>
-                    <div className="h-6 flex items-center px-4 font-medium text-xs text-neutral-800 dark:text-neutral-200">
+                    <div className="h-6 flex items-center px-4 font-medium text-xs">
                         <div className="flex-1">이름</div>
-                        <div className="w-16 ml-auto text-right">유저</div>
-                        <div className="w-16 ml-auto text-right">공식</div>
+                        <div className="ml-auto flex">
+                            <div className="w-16 text-right">유저</div>
+                            <div className="w-16 text-right">공식</div>
+                        </div>
                     </div>
                     <SimpleBar className="max-h-[calc(100vh-8.5rem)] py-1">
                         {indexList.map((item) => (
@@ -322,7 +361,7 @@ const GameHangeulsPage = ({ options }: Pick<PageProps, 'options'>) => {
                                 key={setting.name}
                                 className="h-6 flex items-center text-xs"
                             >
-                                <div className="w-28 font-medium text-gray-800 dark:text-gray-200">
+                                <div className="w-28 font-medium">
                                     {setting.label}
                                 </div>
                                 <div className="flex items-baseline gap-2">
@@ -352,10 +391,10 @@ const GameHangeulsPage = ({ options }: Pick<PageProps, 'options'>) => {
                     </div>
                 </div>
                 <div className="content-item">
-                    <h1 className="sticky top-12 px-4 py-2.5 bg-white/95 dark:bg-dark/95 backdrop-blur z-20 rounded-t font-semibold text-lg text-neutral-900 dark:text-white">
+                    <h1 className="sticky top-12 px-4 py-3 bg-white/95 dark:bg-dark/95 backdrop-blur z-20 rounded-t font-semibold text-lg text-neutral-900 dark:text-white">
                         {index.label}
                     </h1>
-                    <div className="grid grid-rows-1 px-2.5">
+                    <div className="grid grid-rows-1 px-2">
                         {hangeulList.data.map((item) => {
                             if (clientOptions.filter_hangeul) {
                                 if (
