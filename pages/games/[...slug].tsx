@@ -58,7 +58,7 @@ export const GameDetailPage = ({ appid }: GameDetailPageProps) => {
                                         if (item.name === 'steam')
                                             return (
                                                 <div key={item.name}>
-                                                    <div className="head flex items-center">
+                                                    <div className="head">
                                                         <div className="key">
                                                             STEAM
                                                         </div>
@@ -177,7 +177,7 @@ export const GameDetailPage = ({ appid }: GameDetailPageProps) => {
                             <div className="db-table">
                                 {detail.hangeul.officials.length > 0 && (
                                     <div>
-                                        <div className="head flex items-center">
+                                        <div className="head">
                                             <div className="key">공식 지원</div>
                                             <div className="depth">
                                                 지원 여부
@@ -201,21 +201,46 @@ export const GameDetailPage = ({ appid }: GameDetailPageProps) => {
                                 )}
                                 {detail.hangeul.users.length > 0 && (
                                     <div>
-                                        <div className="head flex items-center">
+                                        <div className="head">
                                             <div className="key">유저 지원</div>
                                             <div className="w-20 text-xs">
-                                                지원 여부
+                                                지원 여부 / 링크
                                             </div>
                                         </div>
                                         <div className="rows">
                                             {detail.hangeul.users.map(
                                                 (hangeul) => (
                                                     <div key={hangeul.id}>
-                                                        <h3 className="key">
-                                                            {hangeul.source}
-                                                        </h3>
-                                                        <div>
-                                                            {hangeul.brief}
+                                                        {hangeul.source && (
+                                                            <h3 className="key">
+                                                                {hangeul.source}
+                                                            </h3>
+                                                        )}
+                                                        <div className="flex flex-col gap-y-0.5 break-words">
+                                                            <div>
+                                                                {hangeul.brief ||
+                                                                    (hangeul.url && (
+                                                                        <a
+                                                                            href={
+                                                                                hangeul.url
+                                                                            }
+                                                                            target="_blank"
+                                                                            rel="external noopener noreferrer nofollow"
+                                                                            className="pointer-events-auto break-all hover:underline text-blue-700 dark:text-blue-400"
+                                                                        >
+                                                                            {
+                                                                                hangeul.url
+                                                                            }
+                                                                        </a>
+                                                                    ))}
+                                                            </div>
+                                                            {hangeul.guide && (
+                                                                <div className="whitespace-pre-wrap bg-black/5 dark:bg-white/10 p-2 rounded overflow-hidden">
+                                                                    {
+                                                                        hangeul.guide
+                                                                    }
+                                                                </div>
+                                                            )}
                                                         </div>
                                                     </div>
                                                 )
@@ -231,62 +256,77 @@ export const GameDetailPage = ({ appid }: GameDetailPageProps) => {
                             공식 스토어
                         </h2>
                         <div className="db-table">
-                            <div className="head">상점</div>
+                            <div className="head">
+                                <div className="key">상점</div>
+                                <div className="depth">
+                                    <div className="flex ml-auto">
+                                        <div className="w-[10rem]">
+                                            세일 / 남은시간
+                                        </div>
+                                        <div className="w-28 text-right">
+                                            가격
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div className="rows">
-                                {detail.esds.map((item, index) => (
+                                {detail.esds.map((price, index) => (
                                     <a
-                                        key={item.store + index.toString()}
-                                        href={item.url}
+                                        key={price.store + index.toString()}
+                                        href={price.url}
                                         target="_blank"
                                         rel="external noopener noreferrer nofollow"
                                     >
                                         <div className="w-24">
-                                            {item.store === 'Steam' && (
-                                                <a
-                                                    href={item.url}
-                                                    target="_blank"
-                                                    rel="external noopener noreferrer nofollow"
-                                                    className="flex items-center w-20 h-8"
-                                                >
+                                            {price.store === 'Steam' && (
+                                                <i className="flex items-center w-20 h-8">
                                                     <Steam />
-                                                </a>
+                                                </i>
                                             )}
                                         </div>
                                         <div className="flex-1">
                                             <span className="text-sm">
-                                                {item.store}
+                                                {price.store}
                                             </span>
                                             <p className="text-xs text-neutral-400">
                                                 마지막 업데이트:&nbsp;
                                                 {moment(
-                                                    item.last_updated
+                                                    price.last_updated
                                                 ).fromNow()}
                                             </p>
                                         </div>
-                                        {item.discount && (
-                                            <div className="w-[9rem] flex items-baseline justify-between">
-                                                {item.countdown && (
-                                                    <div className="text-sm text-right">
+                                        {price.discount && (
+                                            <div className="w-[10rem] flex items-baseline gap-x-2 text-sm">
+                                                <span className="bg-lime-600/90 dark:bg-lime-700/90 text-white rounded-sm px-1">
+                                                    {price.discount_formatted}
+                                                </span>
+                                                {price.countdown && (
+                                                    <div className="text-right font-medium text-lime-600 dark:text-lime-500">
                                                         <CountdownDay
                                                             date={
-                                                                item.countdown
+                                                                price.countdown
                                                             }
                                                         />
                                                     </div>
                                                 )}
-                                                <span className="text-base font-medium">
-                                                    {item.discount_formatted}
-                                                </span>
                                             </div>
                                         )}
                                         <div className="w-28 flex flex-col items-end">
-                                            {item.discount && (
+                                            {price.discount && (
                                                 <div className="font-medium text-xs text-neutral-400 line-through">
-                                                    {item.initial_formatted}
+                                                    {price.initial_formatted}
                                                 </div>
                                             )}
-                                            <em className="text-sm not-italic font-medium">
-                                                {item.final_formatted}
+                                            <em
+                                                className={classNames(
+                                                    'text-sm not-italic font-medium',
+                                                    {
+                                                        'text-red-600 dark:text-red-400':
+                                                            price.discount
+                                                    }
+                                                )}
+                                            >
+                                                {price.final_formatted}
                                             </em>
                                         </div>
                                     </a>

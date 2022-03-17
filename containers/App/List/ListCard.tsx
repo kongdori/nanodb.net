@@ -6,39 +6,41 @@ import CountdownDay from '@components/CountdownDay';
 
 const ListCard = ({ listItem }: AppListItemProps) => (
     <div className="py-1.5 relative">
-        <div className="h-[5.5rem] relative rounded hover:bg-gray-100 dark:hover:bg-white/10">
+        <div className="h-[5.5rem] relative rounded hover:bg-gray-100 dark:hover:bg-black/30">
             <Dialog
                 app={listItem.app}
                 appid={listItem.appid}
                 slug={listItem.slug}
                 className="absolute inset-0 p-1.5 pointer-events-auto"
             >
-                <div className="relative h-full w-[8.5rem] rounded overflow-hidden">
-                    <ImageWithFallback
-                        src={listItem.image_header}
-                        fallbackSrc={`/assets/apps/${listItem.app}/no_image_header.jpg`}
-                        layout="fill"
-                        objectFit="cover"
-                    />
-                </div>
-            </Dialog>
-            <div className="h-full py-1.5 pl-[9.5rem] pr-1.5 flex-1 flex flex-col overflow-hidden">
-                <h1 className="flex gap-4 font-semibold text-sm leading-tight mb-2">
-                    <span className="truncate">{listItem.name}</span>
+                <div className="relative h-full">
+                    <div className="relative h-full w-[8.5rem] rounded overflow-hidden">
+                        <ImageWithFallback
+                            src={listItem.image_header}
+                            fallbackSrc={`/assets/apps/${listItem.app}/no_image_header.jpg`}
+                            layout="fill"
+                            objectFit="cover"
+                        />
+                    </div>
                     {listItem.app === 'game' && listItem.is_hangeuls && (
-                        <div className="ml-auto flex-none">
+                        <div className="absolute -bottom-0.5 -left-1.5">
                             <span
                                 className={classNames(
-                                    'flex items-center text-[0.65rem] px-1.5 leading-4 font-medium rounded-full border-2',
+                                    'flex items-center text-xs py-0.5 px-1.5 text-white rounded-sm shadow',
                                     listItem.is_official_hangeuls
-                                        ? 'text-blue-600 border-blue-600 dark:text-blue-500 dark:border-blue-500'
-                                        : 'text-amber-600 border-amber-600'
+                                        ? 'bg-blue-600/95 dark:bg-blue-700/95'
+                                        : 'bg-amber-600/95 dark:bg-amber-700/95'
                                 )}
                             >
                                 한국어
                             </span>
                         </div>
                     )}
+                </div>
+            </Dialog>
+            <div className="h-full py-1.5 pl-[9.5rem] pr-1.5 flex-1 flex flex-col overflow-hidden">
+                <h1 className="flex gap-4 font-semibold text-sm leading-tight mb-2">
+                    <span className="truncate">{listItem.name}</span>
                 </h1>
                 <div className="flex items-center text-xs text-neutral-600 dark:text-neutral-400 truncate">
                     {listItem.genres.map((item) => (
@@ -50,12 +52,12 @@ const ListCard = ({ listItem }: AppListItemProps) => (
                 {listItem.prices.length > 0 && (
                     <div className="mt-auto w-full flex items-center text-xs">
                         {listItem.prices[0].discount && (
-                            <div className="flex items-baseline gap-2 mr-3 font-medium">
-                                <span className="bg-red-600/90 text-white leading-[1.1rem] rounded-sm px-1">
+                            <div className="flex items-baseline gap-2 font-medium">
+                                <span className="bg-lime-600/90 dark:bg-lime-700/90 text-white leading-[1.1rem] rounded-sm px-1">
                                     {listItem.prices[0].discount_formatted}
                                 </span>
                                 {listItem.prices[0].countdown && (
-                                    <span className="text-orange-600">
+                                    <span className="text-lime-600 dark:text-lime-500">
                                         <CountdownDay
                                             date={listItem.prices[0].countdown}
                                         />
@@ -71,7 +73,7 @@ const ListCard = ({ listItem }: AppListItemProps) => (
                             )}
                             <em
                                 className={classNames('not-italic text-sm', {
-                                    'text-red-600 dark:text-red-500':
+                                    'text-red-600 dark:text-red-400':
                                         listItem.prices[0].discount
                                 })}
                             >

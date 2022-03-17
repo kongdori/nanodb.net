@@ -117,11 +117,11 @@ html.dark body {
 }
 
 .db-table .head {
-    @apply py-1 px-3 flex font-medium text-sm bg-slate-100 border-b dark:bg-black/40 dark:border-white/5;
+    @apply py-1 px-3 flex items-center font-medium text-sm bg-slate-100 border-b dark:bg-black/40 dark:border-white/5;
 }
 
 .db-table .head .depth {
-    @apply flex flex-1 text-xs;
+    @apply flex flex-1 text-xs dark:text-neutral-200;
 }
 
 .db-table .key {
@@ -137,7 +137,7 @@ html.dark body {
 }
 
 .db-table .rows > a {
-    @apply py-1.5 px-3 flex items-center text-[0.8rem] hover:bg-gray-100 dark:hover:bg-white/10;
+    @apply py-1.5 px-3 flex items-center text-[0.8rem] hover:bg-gray-100 dark:hover:bg-black/30;
 }
 
 .db-table .rows .key {
