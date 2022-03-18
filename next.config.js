@@ -9,14 +9,5 @@ module.exports = {
     },
     experimental: {
         scrollRestoration: true
-    },
-    async redirects() {
-        return [
-            {
-                source: '/',
-                destination: '/games/',
-                permanent: true
-            }
-        ];
     }
 };
