@@ -1,6 +1,5 @@
 import useSWR from 'swr';
-import fetcher from '../fetcher';
-import { useAPICursorPage } from '../api';
+import apiAxios, { useAPICursorPage } from '../api';
 import { App, AppID, AppDetailBase, AppListItemBase } from './app';
 
 export type PlatformListItem = 'win' | 'mac' | 'linux';
@@ -46,14 +45,14 @@ export interface GameDetail extends AppDetailBase {
     languages: LanguageList;
 }
 
-export const getGameDetailKey = (appid: AppID) => `/games/${appid}`;
+export const getGameDetailKey = (appid: AppID) => `/api/games/${appid}`;
 
 export const getGameDetail = (appid: AppID) =>
-    fetcher.get<GameDetail>(getGameDetailKey(appid)).then((res) => res.data);
+    apiAxios.get<GameDetail>(getGameDetailKey(appid)).then((res) => res.data);
 
 export const useGameDetail = (appid: AppID) =>
     useSWR<GameDetail>(getGameDetailKey(appid), (url: string) =>
-        fetcher.get<GameDetail>(url).then((res) => res.data)
+        apiAxios.get<GameDetail>(url).then((res) => res.data)
     );
 
 /*
@@ -69,10 +68,10 @@ export interface GameListItem extends AppListItemBase {
 
 export interface GameList extends Array<GameListItem> {}
 
-export const getGameListKey = () => '/games/';
+export const getGameListKey = () => '/api/games/';
 
 export const getGameList = () =>
-    fetcher.get<GameList>(getGameListKey()).then((res) => res.data);
+    apiAxios.get<GameList>(getGameListKey()).then((res) => res.data);
 
 export const useGameList = () =>
     useAPICursorPage<GameListItem>(getGameListKey(), {
@@ -95,10 +94,10 @@ export interface GameHangeulListItem {
 export interface GameHangeulList extends Array<GameHangeulListItem> {}
 
 export const getGameHangeulListKey = (char: string) =>
-    `/game/hangeuls/${encodeURI(char)}/`;
+    `/api/game/hangeuls/${encodeURI(char)}/`;
 
 export const getGameHangeulList = (char: string) =>
-    fetcher
+    apiAxios
         .get<GameHangeulList>(getGameHangeulListKey(char))
         .then((res) => res.data);
 
@@ -120,10 +119,10 @@ export interface GameHangeulIndexListItem {
 
 export interface GameHangeulIndexList extends Array<GameHangeulIndexListItem> {}
 
-export const getGameHangeulIndexListKey = () => '/game/hangeuls-index/';
+export const getGameHangeulIndexListKey = () => '/api/game/hangeuls-index/';
 
 export const getGameHangeulIndexList = () =>
-    fetcher
+    apiAxios
         .get<GameHangeulIndexList>(getGameHangeulIndexListKey())
         .then((res) => res.data);
 

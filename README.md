@@ -4,8 +4,3 @@
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![lint passing](https://img.shields.io/github/workflow/status/prettier/prettier/Lint?label=Lint&style=flat-square)]()
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg?style=flat-square)](https://www.gnu.org/licenses/agpl-3.0)
-
-## Usage
-
--   [Next.js](https://github.com/vercel/next.js/)
--   [Tailwindcss](https://github.com/tailwindlabs/tailwindcss)
