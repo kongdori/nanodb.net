@@ -1,7 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-empty-interface */
-import { AxiosError } from 'axios';
+import axios, { AxiosError } from 'axios';
 import useSWRInfinite, { SWRInfiniteConfiguration } from 'swr/infinite';
-import fetcher from './fetcher';
+
+const apiAxios = axios.create({
+    responseType: 'json',
+    xsrfCookieName: 'csrftoken',
+    xsrfHeaderName: 'X-CSRFToken',
+    ...(process.env.NEXT_PUBLIC_API_URL && {
+        baseURL: process.env.NEXT_PUBLIC_API_URL
+    })
+});
 
 export interface APIResponseCursorPage<Data = any> {
     next: string | null;
@@ -9,7 +18,7 @@ export interface APIResponseCursorPage<Data = any> {
     results: Data[];
 }
 
-export interface APIResponse extends APIResponseCursorPage {}
+export type APIResponse = APIResponseCursorPage;
 
 export interface APIError {}
 
@@ -32,8 +41,7 @@ export const useAPICursorPage = <
             if (previousPageData.next) return previousPageData.next;
             return null;
         },
-        (url: string) =>
-            fetcher.get<Data, Request>(url).then((res) => res.data),
+        (url: string) => apiAxios.get<Data>(url).then((res) => res.data),
         config
         // {
         //     https://swr.vercel.app/ko/docs/revalidation
@@ -69,3 +77,5 @@ export const useAPICursorPage = <
         isValidating
     };
 };
+
+export default apiAxios;
