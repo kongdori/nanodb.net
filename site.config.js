@@ -4,9 +4,8 @@ module.exports = {
         globalNav: [
             {
                 name: '게임',
-                href: '/games',
                 active: ['games', 'game'],
-                subNav: [
+                menus: [
                     {
                         name: 'PC 게임',
                         href: '/games/',
