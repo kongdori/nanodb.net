@@ -168,8 +168,8 @@ const Detail = ({ swr, headerShowcase, children }: DetailProps) => {
                         )}
                         <div className="px-4">{children}</div>
                     </div>
-                    <div className="flex-none max-w-[22rem] px-6">
-                        <h1 className="font-semibold text-lg leading-tight pb-4">
+                    <div className="flex-none max-w-[22rem] pt-4 pb-10 px-6">
+                        <h1 className="font-semibold text-xl leading-tight pb-4">
                             {detail && detail.name}
                         </h1>
                         <div className="flex flex-col gap-3 pb-4">
