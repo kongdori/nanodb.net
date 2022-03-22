@@ -23,15 +23,18 @@ const ListCard = ({ listItem }: AppListItemProps) => (
                         />
                     </div>
                     {listItem.app === 'game' && listItem.is_hangeuls && (
-                        <div className="absolute -bottom-0.5 -left-1.5">
+                        <div className="absolute bottom-1 -left-1.5">
                             <span
                                 className={classNames(
-                                    'flex items-center text-xs py-0.5 px-1.5 text-white rounded-sm shadow',
+                                    'flex items-center text-[0.68rem] px-1 text-white rounded-sm shadow',
                                     listItem.is_official_hangeuls
                                         ? 'bg-blue-600/95 dark:bg-blue-700/95'
                                         : 'bg-amber-600/95 dark:bg-amber-700/95'
                                 )}
                             >
+                                {listItem.is_official_hangeuls
+                                    ? '공식 '
+                                    : '유저 '}
                                 한국어
                             </span>
                         </div>

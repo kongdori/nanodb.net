@@ -132,7 +132,7 @@ const HangeulListItem = React.memo(
                         {item.hangeul.officials.length > 0 && (
                             <div>
                                 <div className="mb-0.5 font-medium text-blue-600 dark:text-blue-500">
-                                    공식
+                                    공식 한국어 지원
                                 </div>
                                 <div className="flex flex-col gap-y-1">
                                     {item.hangeul.officials.map((hangeul) => (
@@ -150,7 +150,7 @@ const HangeulListItem = React.memo(
                         {item.hangeul.users.length > 0 && (
                             <div>
                                 <div className="mb-0.5 font-medium text-amber-600 dark:text-amber-500">
-                                    유저
+                                    유저 한국어 지원
                                 </div>
                                 <div className="flex flex-col gap-y-2">
                                     {item.hangeul.users.map((hangeul) => (
@@ -317,7 +317,7 @@ const GameHangeulsPage = ({ options }: Pick<PageProps, 'options'>) => {
 
     return (
         <div className="max-w-6xl mx-auto pt-16 pb-4 px-4">
-            <div className="w-[20rem] fixed top-16">
+            <div className="w-[18rem] fixed top-16">
                 <div className="content-item h-full">
                     <h1 className="pl-3 pt-2 h-8">
                         <div className="flex items-center text-sm">
@@ -345,7 +345,7 @@ const GameHangeulsPage = ({ options }: Pick<PageProps, 'options'>) => {
                     </SimpleBar>
                 </div>
             </div>
-            <div className="pl-[21rem]">
+            <div className="pl-[19rem]">
                 <div className="content-item mb-3">
                     <div className="pl-3 pt-2 h-8">
                         <div className="flex items-center text-sm">
