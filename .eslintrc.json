@@ -41,8 +41,7 @@
     ],
 
     // https://eslint.org/docs/rules/arrow-body-style
-    // arrow-function - return 필요할 때만
-    "arrow-body-style": ["error", "as-needed"],
+    "arrow-body-style": "off",
 
     // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/react-in-jsx-scope.md
     // import React from "react" - 모든 파일에서 사용 안하기
@@ -85,7 +84,11 @@
           "some": ["nesting", "id"]
         }
       }
-    ]
+    ],
+
+    // https://github.com/facebook/react/issues/14920
+    // React hooks dependencies
+    "react-hooks/exhaustive-deps": "warn"
   },
 
   "env": {
