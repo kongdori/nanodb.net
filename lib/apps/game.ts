@@ -41,6 +41,9 @@ export interface GameDetail extends AppDetailBase {
     developers: string[];
     publishers: string[];
     franchises: string[];
+    is_hangeuls: boolean;
+    is_official_hangeuls: boolean;
+    is_user_hangeuls: boolean;
     hangeul: Hangeul;
     languages: LanguageList;
 }
