@@ -1,11 +1,13 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-import * as site from 'site.config.js';
-import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { createStateContext } from 'react-use';
+import { useRouter } from 'next/router';
 import classNames from 'classnames';
-import { BiChevronDown } from 'react-icons/bi';
+import { createStateContext } from 'react-use';
+import { HiChevronDown, HiChevronUp } from 'react-icons/hi';
 import { Io5Icon } from '@components/ReactIcon';
+import * as site from 'site.config.js';
 
 const [useActive, ActiveProvider] = createStateContext(false);
 
@@ -51,22 +53,9 @@ const GlobalNavItem = ({ nav }: GlobalNavItemProps) => {
         setActive(false);
     };
 
-    // 페이지 이동 닫기 (Optional)
-    // React.useEffect(() => {
-    //     const handleRouteChange = () => {
-    //         onLeave();
-    //     };
-
-    //     router.events.on('routeChangeComplete', handleRouteChange);
-
-    //     return () => {
-    //         router.events.off('routeChangeComplete', handleRouteChange);
-    //     };
-    // }, []);
-
     return (
         <div
-            className="flex items-center relative cursor-pointer"
+            className="flex items-center cursor-pointer"
             // onFocus={() => {
             //     onEnter();
             // }}
@@ -83,10 +72,16 @@ const GlobalNavItem = ({ nav }: GlobalNavItemProps) => {
             <button
                 type="button"
                 onClick={() => {
-                    onEnter();
+                    if (window.innerWidth < 1024) {
+                        if (enter) {
+                            onLeave();
+                        } else {
+                            onEnter();
+                        }
+                    }
                 }}
                 className={classNames(
-                    'relative rounded flex items-center gap-x-1 py-1.5 pl-4 pr-2 z-20 font-medium leading-4',
+                    'rounded flex items-center gap-x-1 py-1.5 pl-4 pr-2 z-20 font-medium leading-4',
                     nav.active.includes(currentRootPath)
                         ? 'text-black dark:text-white'
                         : {
@@ -99,25 +94,41 @@ const GlobalNavItem = ({ nav }: GlobalNavItemProps) => {
             >
                 {nav.name}
                 <i className="flex self-end">
-                    <BiChevronDown />
+                    {enter ? <HiChevronUp /> : <HiChevronDown />}
                 </i>
             </button>
             <div
-                className={classNames('absolute top-10 -left-2 p-2', {
-                    'translate-y-2 opacity-0 pointer-events-none': !enter,
-                    'transition duration-300 ease-out': !active
-                })}
+                className={classNames(
+                    'absolute top-10 left-0 lg:left-auto py-2 lg:px-2 w-full lg:max-w-[14rem] lg:-ml-2',
+                    {
+                        'translate-y-2 opacity-0 pointer-events-none': !enter,
+                        'transition duration-300 ease-out': !active
+                    }
+                )}
             >
                 <div className="text-sm whitespace-nowrap p-2 backdrop-blur bg-white/95 shadow rounded dark:bg-dark/95 dark:shadow-black">
                     {nav.menus.map((nav2) => (
                         <div key={nav2.name}>
                             <Link href={nav2.href}>
                                 <a
+                                    onClick={() => {
+                                        if (window.innerWidth < 1024) {
+                                            setEnter(false);
+                                        }
+                                    }}
+                                    onKeyDown={(e) => {
+                                        if (
+                                            e.key === 'Enter' &&
+                                            window.innerWidth < 1024
+                                        ) {
+                                            setEnter(false);
+                                        }
+                                    }}
                                     className={classNames(
-                                        'flex items-center gap-2 py-1.5 px-2 rounded min-w-[12rem] hover:bg-black/5 dark:hover:bg-white/10',
+                                        'flex items-center gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10',
                                         nav2.active.includes(router.pathname)
                                             ? 'text-black dark:text-white'
-                                            : 'hover:text-neutral-900 dark:hover:text-neutral-100'
+                                            : 'hover:text-neutral-600 dark:hover:text-neutral-400'
                                     )}
                                 >
                                     {nav2.io5Icon && (

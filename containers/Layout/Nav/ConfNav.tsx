@@ -9,7 +9,8 @@ import classNames from 'classnames';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { FaIcon } from '@components/ReactIcon';
 import {
-    HiDotsHorizontal,
+    HiOutlineDotsHorizontal,
+    HiOutlineDotsVertical,
     HiOutlineDesktopComputer,
     HiOutlineMoon,
     HiOutlineSun,
@@ -96,6 +97,7 @@ const ConfNav = () => {
                 <address className="w-60 not-italic">
                     {confNav.mails.map((item) => (
                         <CopyToClipboard
+                            key={item.address}
                             text={item.address}
                             onCopy={() => {
                                 alert(
@@ -297,17 +299,18 @@ const ConfNav = () => {
         <Popover className="relative flex items-center">
             {({ open, close }) => (
                 <>
-                    <Popover.Button>
-                        <span
-                            className={classNames(
-                                'flex items-center justify-center w-10 h-7 rounded',
-                                { 'bg-black/5 dark:bg-white/10': open }
-                            )}
-                        >
-                            <i className="block text-3xl">
-                                <HiDotsHorizontal />
-                            </i>
-                        </span>
+                    <Popover.Button
+                        className={classNames(
+                            'flex items-center justify-center rounded w-8 h-8',
+                            { 'bg-black/5 dark:bg-white/10': open }
+                        )}
+                    >
+                        <i className="hidden md:flex text-3xl">
+                            <HiOutlineDotsHorizontal />
+                        </i>
+                        <i className="flex md:hidden text-2xl">
+                            <HiOutlineDotsVertical />
+                        </i>
                     </Popover.Button>
                     <Transition
                         as={React.Fragment}
