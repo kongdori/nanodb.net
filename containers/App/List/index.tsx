@@ -2,7 +2,7 @@
 import React, { useEffect, HTMLProps } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useMountedState } from 'react-use';
-import { AppID, AppListItem, AppListItemProps } from '@lib/apps';
+import { AppID, AppListItemProps } from '@lib/apps';
 import { useGameList } from '@lib/apps/game';
 import SyncLoader from 'react-spinners/SyncLoader';
 import classNames from 'classnames';
