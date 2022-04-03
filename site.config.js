@@ -9,7 +9,7 @@ module.exports = {
                     {
                         name: 'PC 게임',
                         href: '/games/',
-                        active: ['/games', '/games/[...slug]'],
+                        active: ['/games', '/games/[...queries]'],
                         io5Icon: 'IoDesktopOutline',
                         grid: true
                     },
