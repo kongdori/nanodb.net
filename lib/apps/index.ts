@@ -1,8 +1,8 @@
-import * as app from './app';
+import * as _app from './app';
 import { GameDetail, GameList, GameListItem } from './game';
 
-export type App = app.App;
-export type AppID = app.AppID;
+export type App = _app.App;
+export type AppID = _app.AppID;
 
 export interface AppProps {
     app: App;
@@ -21,3 +21,39 @@ export type AppListItem = GameListItem;
 export interface AppListItemProps {
     listItem: AppListItem;
 }
+
+export const getAppListQueries = (
+    queries: string | string[] | undefined
+): {
+    appid: number;
+    slug: string | undefined;
+    menu: string | undefined;
+} | null => {
+    if (!queries) return null;
+    if (!Array.isArray(queries)) return null;
+
+    return {
+        appid: Number(queries[0]),
+        slug: queries[1] || undefined,
+        menu: queries[2] || undefined
+    };
+};
+
+export const getAppListUrl = (
+    app: App,
+    appid: AppID,
+    slug?: string,
+    menu?: string
+) => {
+    let url = `/${app}s/${appid}/`;
+
+    if (slug) {
+        url += `${slug}/`;
+    }
+
+    if (menu) {
+        url += `${menu}/`;
+    }
+
+    return url;
+};
