@@ -1,94 +1,146 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { SWRResponse } from 'swr';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { BiCopyAlt } from 'react-icons/bi';
-import { HiChevronRight } from 'react-icons/hi';
+import { BiLink, BiLinkExternal } from 'react-icons/bi';
 import classNames from 'classnames';
+import { AppDetail } from '@lib/apps';
 import ImageWithFallback from '@components/ImageWithFallback';
-import { APIError } from '@lib/api';
-import { AppDetailProps, AppDetail } from '@lib/apps';
+import Breadcrumb from '@components/Breadcrumb';
 import Showcase from './Showcase';
+import About from './About';
 
 const appName = {
     game: '게임'
 };
 
-const AppInfo = ({ detail }: AppDetailProps) => {
-    let components = (
-        <div>
-            <h2 className="mb-0.5 text-xs text-neutral-600 dark:text-neutral-400">
-                장르
-            </h2>
-            <div className="overflow-hidden text-sm text-neutral-800 dark:text-neutral-200">
-                {detail.genres.join(', ')}
-            </div>
+const Review = React.memo(
+    ({ detail }: { detail: AppDetail }) => (
+        <div className="flex flex-1 flex-col w-full space-y-4 text-xs max-w-md">
+            {detail.reviews.steam && (
+                <div className="flex flex-wrap gap-y-2 items-start">
+                    <h3 className="w-28 flex items-center space-x-1 text-sm font-semibold">
+                        <Image
+                            src="/logos/steam/icon.png"
+                            width="20"
+                            height="20"
+                        />
+                        <span>Steam</span>
+                    </h3>
+                    <div className="flex flex-1 gap-x-2">
+                        {detail.reviews.steam.map((review) => (
+                            <div key={review.name} className="w-1/2">
+                                <h4 className="font-medium mb-1">
+                                    {review.name}
+                                </h4>
+                                <div className="flex items-center">
+                                    <a
+                                        href={review.url}
+                                        target="_blank"
+                                        rel="external noopener noreferrer nofollow"
+                                        className={classNames(
+                                            `steam_review_summary ${review.summary} hover:underline`,
+                                            'flex flex-wrap items-baseline gap-x-1'
+                                        )}
+                                    >
+                                        {review.summary_label}
+                                        <em className="not-italic text-[0.65rem] text-neutral-600 dark:text-neutral-400 tracking-tight">
+                                            (
+                                            {review.responsive
+                                                .toString()
+                                                .replace(
+                                                    /\B(?=(\d{3})+(?!\d))/g,
+                                                    ','
+                                                )}
+                                            )
+                                        </em>
+                                    </a>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+            {detail.reviews.metacritic && (
+                <div className="flex flex-wrap gap-y-2 items-start">
+                    <h3 className="w-28 flex items-center space-x-1 text-sm font-semibold">
+                        <Image
+                            src="/logos/metacritic/icon.svg"
+                            width="20"
+                            height="20"
+                        />
+                        <span>Metacritic</span>
+                    </h3>
+                    <div className="flex-1 items-center">
+                        <div className="flex items-center gap-x-2 mb-1 font-medium whitespace-nowrap">
+                            <div className="flex w-1/2">
+                                <div className="w-10 invisible">플랫폼</div>
+                                메타스코어
+                            </div>
+                            <div className="w-1/2">유저 평점</div>
+                        </div>
+                        {detail.reviews.metacritic.map((review) => (
+                            <div
+                                key={review.platform}
+                                className="flex items-center"
+                            >
+                                <div className="flex flex-1 gap-x-2">
+                                    {review.reviews.map((review2, index) => (
+                                        <div
+                                            key={review2.name}
+                                            className="flex items-center w-1/2"
+                                        >
+                                            {index === 0 && (
+                                                <div className="w-8 mr-2 border-r border-black/10 dark:border-white/10">
+                                                    {review.platform}
+                                                </div>
+                                            )}
+                                            {review2.url ? (
+                                                <a
+                                                    href={review2.url}
+                                                    rel="external noopener noreferrer nofollow"
+                                                    target="_blank"
+                                                    className={classNames(
+                                                        'inline-block px-1.5 text-base rounded',
+                                                        `metacritic_review_summary ${review2.summary}`
+                                                    )}
+                                                >
+                                                    <span>{review2.score}</span>
+                                                </a>
+                                            ) : (
+                                                <em
+                                                    className={classNames(
+                                                        'px-2 text-sm rounded',
+                                                        `metacritic_review_summary ${review2.summary}`
+                                                    )}
+                                                >
+                                                    {review2.score}
+                                                </em>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
-    );
-
-    switch (detail.app) {
-        case 'game':
-            components = (
-                <>
-                    {components}
-                    {detail.developers.length > 0 && (
-                        <div>
-                            <h2 className="mb-0.5 text-xs text-neutral-600 dark:text-neutral-400">
-                                개발사
-                            </h2>
-                            <div className="overflow-hidden text-sm text-neutral-800 dark:text-neutral-200">
-                                {detail.developers.map((item) => (
-                                    <div key={item}>{item}</div>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-                    {detail.publishers.length > 0 && (
-                        <div>
-                            <h2 className="mb-0.5 text-xs text-neutral-600 dark:text-neutral-400">
-                                배급사
-                            </h2>
-                            <div className="overflow-hidden text-sm text-neutral-800 dark:text-neutral-200">
-                                {detail.publishers.map((item) => (
-                                    <div key={item}>{item}</div>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-                    {detail.franchises.length > 0 && (
-                        <div>
-                            <h2 className="mb-0.5 text-xs text-neutral-600 dark:text-neutral-400">
-                                프렌차이즈
-                            </h2>
-                            <div className="overflow-hidden text-sm text-neutral-800 dark:text-neutral-200">
-                                {detail.franchises.map((item) => (
-                                    <div key={item}>{item}</div>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-                </>
-            );
-
-        // no default
-    }
-
-    return components;
-};
+    ),
+    (prevProps, nextProps) =>
+        JSON.stringify(prevProps.detail.reviews) ===
+        JSON.stringify(nextProps.detail.reviews)
+);
 
 interface DetailProps {
-    swr: SWRResponse<AppDetail, APIError>;
-    headerShowcase?: boolean;
+    detail?: AppDetail;
     children?: React.ReactNode;
 }
 
-const Detail = ({ swr, headerShowcase, children }: DetailProps) => {
+const Detail = ({ detail, children }: DetailProps) => {
     const router = useRouter();
-
-    const { data } = swr;
-    const detail = data;
 
     const appUrl = detail
         ? `/${detail.app}s/${detail.appid}/${detail.slug}/`
@@ -101,6 +153,8 @@ const Detail = ({ swr, headerShowcase, children }: DetailProps) => {
         }
     }, [fullAppUrl, appUrl]);
 
+    const isPopup = router.pathname !== '/games/[...queries]';
+
     return (
         <>
             {detail && (
@@ -110,13 +164,21 @@ const Detail = ({ swr, headerShowcase, children }: DetailProps) => {
                     </title>
                 </Head>
             )}
-            <div className="relative bg-white dark:bg-dark min-h-screen">
+            <div
+                className={classNames(
+                    'relative bg-white dark:bg-dark min-h-screen',
+                    {
+                        'pt-12': isPopup
+                    }
+                )}
+            >
                 <div
                     className={classNames(
                         'relative w-full saturate-50',
-                        router.pathname === '/games/[...slug]' ? 'h-36' : 'h-24'
+                        isPopup ? 'sm:h-28' : 'h-12 sm:h-40'
                     )}
                 >
+                    <div className="w-full h-full bg-slate-400/20 animate-pulse -z-10" />
                     {detail && (
                         <ImageWithFallback
                             src={detail.image_hero}
@@ -126,79 +188,215 @@ const Detail = ({ swr, headerShowcase, children }: DetailProps) => {
                         />
                     )}
                 </div>
-                <div className="max-w-6xl mx-auto relative z-16 pt-4 flex items-start bg-white dark:bg-dark rounded">
-                    <div className="flex-1">
-                        {detail && (
-                            <div className="px-4 mb-4">
-                                <div className="flex font-medium items-center gap-1 mb-1 text-sm">
-                                    <Link href={`/${detail.app}s/`}>
-                                        <a className="hover:underline">
-                                            {appName[detail.app]}
-                                        </a>
-                                    </Link>
-                                    <HiChevronRight className="text-neutral-500 dark:text-neutral-400 text-lg" />
-                                    <Link href={appUrl}>
-                                        <a className="hover:underline">
-                                            {detail.name}
-                                        </a>
-                                    </Link>
-                                </div>
-                                <div className="flex truncate">
-                                    <CopyToClipboard
-                                        text={fullAppUrl}
-                                        onCopy={() => {
-                                            alert(
-                                                `주소가 복사 되었습니다\r\n${fullAppUrl}`
-                                            );
-                                        }}
+                <div className="max-w-6xl mx-auto sm:px-4 relative">
+                    <div className="lg:flex items-stretch">
+                        <div className="lg:flex-1">
+                            <div className="relative flex flex-col sm:flex-row mb-2 sm:mb-0 sm:-ml-2 sm:pt-3 sm:pb-2 gap-y-3 gap-x-2">
+                                <div className="w-full h-48 sm:w-40 sm:h-24 md:w-52 md:h-28 sm:-mt-10 md:-mt-14 pt-0 sm:pt-2 sm:px-2 bg-white dark:bg-dark sm:rounded">
+                                    <div
+                                        className={classNames(
+                                            'relative w-full h-full',
+                                            {
+                                                'animate-pulse': !detail
+                                            }
+                                        )}
                                     >
-                                        <a
-                                            href={appUrl}
-                                            className="truncate text-xs text-neutral-400 hover:underline"
-                                            onClick={(e) => e.preventDefault()}
-                                        >
-                                            <i className="inline-block w-5 h-5 align-middle text-base">
-                                                <BiCopyAlt />
-                                            </i>
-                                            <span>{appUrl}</span>
-                                        </a>
-                                    </CopyToClipboard>
+                                        <div className="relative w-full h-full sm:rounded overflow-hidden">
+                                            {detail ? (
+                                                <ImageWithFallback
+                                                    src={detail.image_header}
+                                                    fallbackSrc={`/assets/apps/${detail.app}/no_image_header.png`}
+                                                    layout="fill"
+                                                    objectFit="cover"
+                                                />
+                                            ) : (
+                                                <div className="w-full h-full bg-slate-400/20 rounded" />
+                                            )}
+                                        </div>
+                                        {detail &&
+                                            detail.app === 'game' &&
+                                            detail.is_hangeuls && (
+                                                <div className="absolute bottom-2 sm:bottom-1 left-2 sm:-left-1.5">
+                                                    <span
+                                                        className={classNames(
+                                                            'flex items-center text-xs py-0.5 px-1.5 text-white rounded-sm shadow',
+                                                            detail.is_official_hangeuls
+                                                                ? 'bg-blue-600/95 dark:bg-blue-700/95'
+                                                                : 'bg-amber-600/95 dark:bg-amber-700/95'
+                                                        )}
+                                                    >
+                                                        {detail.is_official_hangeuls
+                                                            ? '공식 '
+                                                            : '유저 '}
+                                                        한국어
+                                                    </span>
+                                                </div>
+                                            )}
+                                    </div>
+                                </div>
+                                <div
+                                    className={classNames('px-4 sm:px-0', {
+                                        'animate-pulse': !detail
+                                    })}
+                                >
+                                    <h1
+                                        className={classNames(
+                                            'font-semibold text-lg text-slate-900 dark:text-slate-50',
+                                            {
+                                                'w-52 h-5 mb-2 bg-slate-400/20 rounded':
+                                                    !detail
+                                            }
+                                        )}
+                                    >
+                                        {detail && detail.name}
+                                    </h1>
+                                    <div
+                                        className={classNames(
+                                            'flex items-center text-xs text-slate-500 dark:text-slate-400',
+                                            {
+                                                'w-40 h-4 bg-slate-400/20 rounded':
+                                                    !detail
+                                            }
+                                        )}
+                                    >
+                                        {detail && (
+                                            <Breadcrumb
+                                                item={[
+                                                    <Link
+                                                        href={`/${detail.app}s/`}
+                                                    >
+                                                        <a className="hover:underline">
+                                                            {
+                                                                appName[
+                                                                    detail.app
+                                                                ]
+                                                            }
+                                                        </a>
+                                                    </Link>,
+                                                    <Link href={appUrl}>
+                                                        <a className="hover:underline">
+                                                            {detail.name}
+                                                        </a>
+                                                    </Link>
+                                                ]}
+                                            />
+                                        )}
+                                    </div>
                                 </div>
                             </div>
-                        )}
-                        <div className="px-4">{children}</div>
-                    </div>
-                    <div className="flex-none max-w-[22rem] pt-4 pb-10 px-6">
-                        <h1 className="font-semibold text-xl leading-tight pb-4">
-                            {detail && detail.name}
-                        </h1>
-                        <div className="flex flex-col gap-3 pb-4">
-                            <div className="relative w-full h-36 z-20 rounded overflow-hidden">
-                                {detail && (
-                                    <>
-                                        <ImageWithFallback
-                                            src={detail.image_header}
-                                            fallbackSrc={`/assets/apps/${detail.app}/no_image_header.png`}
-                                            layout="fill"
-                                            objectFit="cover"
+                            <div className="px-4 sm:px-0">
+                                <div className="flex flex-col md:flex-row gap-4 mb-4">
+                                    {detail && (
+                                        <div
+                                            className={classNames(
+                                                'flex flex-none items-center gap-x-2 text-xs',
+                                                {
+                                                    'md:w-48 md:flex-col gap-y-1.5':
+                                                        Object.keys(
+                                                            detail.reviews
+                                                        ).length > 0
+                                                }
+                                            )}
+                                        >
+                                            <CopyToClipboard
+                                                text={fullAppUrl}
+                                                onCopy={() => {
+                                                    alert(
+                                                        `주소가 복사 되었습니다\r\n${fullAppUrl}`
+                                                    );
+                                                }}
+                                            >
+                                                <a
+                                                    href={appUrl}
+                                                    className="md:w-full flex py-1 pl-1.5 pr-2.5 rounded space-x-1 bg-slate-400/20 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-400/40"
+                                                    onClick={(e) =>
+                                                        e.preventDefault()
+                                                    }
+                                                >
+                                                    <i className="flex-center text-sm">
+                                                        <BiLink />
+                                                    </i>
+                                                    <span className="truncate">
+                                                        링크 복사
+                                                    </span>
+                                                </a>
+                                            </CopyToClipboard>
+                                            {detail.links.map((item) => (
+                                                <a
+                                                    key={item.name}
+                                                    href={item.url}
+                                                    target="_blank"
+                                                    rel="external noopener noreferrer nofollow"
+                                                    className="md:w-full flex py-1 px-2 rounded space-x-1 bg-slate-400/20 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-400/40"
+                                                >
+                                                    <i className="flex-center text-sm">
+                                                        <BiLinkExternal />
+                                                    </i>
+                                                    <span className="truncate">
+                                                        {item.name}
+                                                    </span>
+                                                </a>
+                                            ))}
+                                        </div>
+                                    )}
+                                    {detail &&
+                                        Object.keys(detail.reviews).length >
+                                            0 && <Review detail={detail} />}
+                                </div>
+                                {detail && detail.screenshots.length > 0 && (
+                                    <div className="lg:hidden py-4">
+                                        <Showcase
+                                            detail={detail}
+                                            swiperId={2}
+                                            isMobile
+                                            options={{
+                                                spaceBetween: 2,
+                                                slidesPerView: 3,
+                                                freeMode: true,
+                                                breakpoints: {
+                                                    500: {
+                                                        spaceBetween: 4,
+                                                        slidesPerView: 4
+                                                    }
+                                                }
+                                            }}
                                         />
-                                        <span className="sr-only">
-                                            {detail.name} Header Image
-                                        </span>
-                                    </>
+                                    </div>
                                 )}
+                                {children}
                             </div>
-                            {detail &&
-                                detail.screenshots.length > 0 &&
-                                headerShowcase && (
-                                    <Showcase detail={detail} dynamicBullets />
-                                )}
                         </div>
-                        <p className="text-sm text-neutral-900 break-words dark:text-neutral-300">
-                            {detail && detail.snippet}
-                        </p>
-                        <div className="py-4 w-full flex flex-col gap-3">
-                            {detail && <AppInfo detail={detail} />}
+                        <div className="hidden lg:block pl-6 my-6 mr-4 border-r border-black/10 dark:border-white/10" />
+                        <div
+                            className={classNames(
+                                'w-80 py-6 px-2 hidden lg:flex flex-col space-y-4',
+                                {
+                                    'animate-pulse': !detail
+                                }
+                            )}
+                        >
+                            {detail ? (
+                                detail.screenshots.length > 0 && (
+                                    <Showcase
+                                        detail={detail}
+                                        swiperId={1}
+                                        options={{
+                                            mousewheel: true
+                                        }}
+                                    />
+                                )
+                            ) : (
+                                <div className="h-40 lg:h-48 bg-slate-400/20" />
+                            )}
+                            {detail ? (
+                                <About detail={detail} />
+                            ) : (
+                                <div className="flex flex-col space-y-1">
+                                    <div className="w-full h-5 bg-slate-400/20 rounded" />
+                                    <div className="w-full h-5 bg-slate-400/20 rounded" />
+                                    <div className="w-4/5 h-5 bg-slate-400/20 rounded" />
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -208,9 +406,8 @@ const Detail = ({ swr, headerShowcase, children }: DetailProps) => {
 };
 
 Detail.defaultProps = {
-    headerShowcase: false,
+    detail: null,
     children: null
 };
 
-export { Detail };
-export { default as Showcase } from './Showcase';
+export { Detail, Showcase, About };
