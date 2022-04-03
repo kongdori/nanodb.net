@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDetectClickOutside } from 'react-detect-click-outside';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -7,9 +8,12 @@ import classNames from 'classnames';
 import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
 import { getCookies, setCookies, removeCookies } from 'cookies-next';
-import { HiOutlineFilter, HiOutlineCog } from 'react-icons/hi';
+import { MdTouchApp } from 'react-icons/md';
+import { BsLayoutSidebarInset } from 'react-icons/bs';
+import { IoLanguage } from 'react-icons/io5';
+import { HiOutlineFilter, HiOutlineCog, HiX } from 'react-icons/hi';
 import ImageWithFallback from '@components/ImageWithFallback';
-import Dialog from '@containers/App/Detail/Dialog';
+import { getAppListUrl } from '@lib/apps';
 import {
     getGameHangeulIndexList,
     getGameHangeulIndexListKey,
@@ -17,12 +21,12 @@ import {
     getGameHangeulList,
     getGameHangeulListKey,
     useGameHangeulList,
-    GameHangeulListItem,
-    GameHangeulIndexListItem
+    GameHangeulListItem
 } from '@lib/apps/game';
+import Breadcrumb from '@components/Breadcrumb';
 
 interface GameHangeulsPageOptions {
-    is_hide_image: null | string;
+    is_show_image: null | string;
     filter_hangeul: null | string;
 }
 
@@ -35,61 +39,6 @@ interface PageProps {
     Components
 */
 
-const IndexListItem = React.memo(
-    ({ item, char }: { item: GameHangeulIndexListItem; char: string }) => (
-        <div className="px-2 before:block before:border-t before:border-black/5 dark:before:border-white/10 before:mx-1.5 before:my-0.5">
-            <Link
-                href={
-                    item.char === '_'
-                        ? '/game/hangeuls/'
-                        : `/game/hangeuls/${item.char}`
-                }
-            >
-                <a
-                    className={classNames(
-                        item.char === char
-                            ? 'bg-gray-200 dark:bg-white/20'
-                            : 'hover:bg-gray-100 dark:hover:bg-white/10',
-                        'relative flex items-center py-0.5 px-2 rounded'
-                    )}
-                >
-                    <h2
-                        className={classNames(
-                            item.char === char
-                                ? 'text-black dark:text-white'
-                                : 'text-neutral-700 dark:text-neutral-300',
-                            'w-10 text-sm'
-                        )}
-                    >
-                        {item.label}
-                    </h2>
-                    {item.desc && (
-                        <p className="italic text-xs text-neutral-500 dark:text-neutral-400">
-                            {item.desc}
-                        </p>
-                    )}
-                    <div className="ml-auto flex">
-                        <div className="w-16 text-right">
-                            {item.user_counted !== 0 && (
-                                <em className="text-xs not-italic text-neutral-500 dark:text-neutral-400">
-                                    {item.user_counted}
-                                </em>
-                            )}
-                        </div>
-                        <div className="w-16 text-right">
-                            <em className="text-xs not-italic text-neutral-500 dark:text-neutral-400">
-                                {item.official_counted}
-                            </em>
-                        </div>
-                    </div>
-                </a>
-            </Link>
-        </div>
-    ),
-    (prevProps, nextProps) =>
-        JSON.stringify(prevProps) === JSON.stringify(nextProps)
-);
-
 const HangeulListItem = React.memo(
     ({
         item,
@@ -98,43 +47,55 @@ const HangeulListItem = React.memo(
         item: GameHangeulListItem;
         options: GameHangeulsPageOptions;
     }) => (
-        <div key={item.appid} className="overflow-x-hidden">
-            <div className="relative rounded p-1.5 hover:bg-gray-100 dark:hover:bg-black/30">
-                <Dialog
-                    app={item.app}
-                    appid={item.appid}
-                    slug={item.slug}
-                    className="absolute inset-0 p-1.5 pointer-events-auto"
+        <div key={item.appid}>
+            <div className="relative rounded p-2">
+                <Link
+                    href={getAppListUrl(item.app, item.appid, item.slug)}
+                    shallow
                 >
-                    {!options.is_hide_image && (
-                        <div className="relative w-32 h-14 rounded overflow-hidden">
-                            <ImageWithFallback
-                                src={item.image_header}
-                                fallbackSrc="/assets/apps/game/no_image_header.jpg"
-                                layout="fill"
-                                objectFit="cover"
-                            />
-                        </div>
-                    )}
-                </Dialog>
+                    <a className="absolute inset-0 p-2 pointer-events-auto lg:hover:bg-black/5 lg:dark:hover:bg-black/10">
+                        {(options.is_show_image === 'true' ||
+                            options.is_show_image === null) && (
+                            <div
+                                className={classNames(
+                                    'relative w-24 lg:w-28 h-14 lg:h-16 rounded overflow-hidden',
+                                    {
+                                        'hidden sm:block':
+                                            options.is_show_image === null
+                                    }
+                                )}
+                            >
+                                <ImageWithFallback
+                                    src={item.image_header}
+                                    fallbackSrc="/assets/apps/game/no_image_header.jpg"
+                                    layout="fill"
+                                    objectFit="cover"
+                                />
+                            </div>
+                        )}
+                    </a>
+                </Link>
                 <div
                     className={classNames(
-                        {
-                            'pl-[8.65rem]': !options.is_hide_image
-                        },
-                        'relative pointer-events-none'
+                        options.is_show_image === 'true'
+                            ? 'pl-[6.6rem] lg:pl-[7.6rem]'
+                            : {
+                                  'sm:pl-[6.6rem] lg:pl-[7.6rem]':
+                                      options.is_show_image === null
+                              },
+                        'relative pointer-events-none min-h-[3.5rem] lg:min-h-[4rem]'
                     )}
                 >
-                    <h1 className="mb-2 text-sm font-semibold break-all leading-tight">
+                    <h1 className="mb-1 lg:mb-2 text-sm font-semibold break-all leading-tight dark:text-gray-200">
                         {item.name}
                     </h1>
-                    <div className="flex flex-col gap-y-4 text-xs dark:text-neutral-300">
+                    <div className="flex flex-col space-y-4 text-xs dark:text-neutral-300">
                         {item.hangeul.officials.length > 0 && (
                             <div>
                                 <div className="mb-0.5 font-medium text-blue-600 dark:text-blue-500">
                                     공식 한국어 지원
                                 </div>
-                                <div className="flex flex-col gap-y-1">
+                                <div className="flex flex-col space-y-1">
                                     {item.hangeul.officials.map((hangeul) => (
                                         <div key={hangeul.id}>
                                             <span className="font-medium">
@@ -152,11 +113,11 @@ const HangeulListItem = React.memo(
                                 <div className="mb-0.5 font-medium text-amber-600 dark:text-amber-500">
                                     유저 한국어 지원
                                 </div>
-                                <div className="flex flex-col gap-y-2">
+                                <div className="flex flex-col space-y-2">
                                     {item.hangeul.users.map((hangeul) => (
                                         <div
                                             key={hangeul.id}
-                                            className="flex flex-col gap-y-0.5 break-words"
+                                            className="flex flex-col space-y-0.5 break-words"
                                         >
                                             <div>
                                                 {hangeul.source && (
@@ -192,7 +153,7 @@ const HangeulListItem = React.memo(
                                                 </a>
                                             )}
                                             {hangeul.guide && (
-                                                <div className="whitespace-pre-wrap bg-black/5 dark:bg-white/10 p-2 rounded overflow-hidden">
+                                                <div className="whitespace-pre-wrap bg-black/5 dark:bg-white/10 p-2 rounded">
                                                     {hangeul.guide}
                                                 </div>
                                             )}
@@ -204,7 +165,7 @@ const HangeulListItem = React.memo(
                     </div>
                 </div>
             </div>
-            <div className="mx-2 mt-1.5 pb-1.5 border-t border-black/10 dark:border-white/10" />
+            <div className="mx-2 mt-1 pb-1 border-t border-black/10 dark:border-white/10" />
         </div>
     ),
     (prevProps, nextProps) =>
@@ -221,6 +182,14 @@ const GameHangeulsPage = ({ options }: Pick<PageProps, 'options'>) => {
     const index = indexList?.find((item) => item.char === char);
 
     const hangeulList = useGameHangeulList(char);
+
+    /* Mobile */
+    const [isOpen, setIsOpen] = React.useState(false);
+    const openRef = useDetectClickOutside({
+        onTriggered: () => {
+            setIsOpen(false);
+        }
+    });
 
     /* Options */
     const [clientOptions, setClientOptions] =
@@ -244,33 +213,49 @@ const GameHangeulsPage = ({ options }: Pick<PageProps, 'options'>) => {
                 }
             }
         });
-    }, [clientOptions, char]);
+
+        document.body.style.overflow = isOpen ? 'hidden' : '';
+
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, [clientOptions, char, isOpen]);
 
     if (!indexList || !index || !hangeulList) return null;
 
     const settings = [
         {
             label: '게임 이미지',
-            name: 'is_hide_image',
-            value: clientOptions.is_hide_image ? 'true' : 'false',
+            name: 'is_show_image',
+            value: clientOptions.is_show_image || '',
             choices: [
                 {
-                    label: '표시',
-                    value: 'false',
+                    label: '반응형 표시 (기본, 모바일 데이터 보호)',
+                    value: '',
                     onChange: () => {
                         setClientOptions({
                             ...clientOptions,
-                            is_hide_image: null
+                            is_show_image: null
+                        });
+                    }
+                },
+                {
+                    label: '표시',
+                    value: 'true',
+                    onChange: () => {
+                        setClientOptions({
+                            ...clientOptions,
+                            is_show_image: 'true'
                         });
                     }
                 },
                 {
                     label: '감추기',
-                    value: 'true',
+                    value: 'false',
                     onChange: () => {
                         setClientOptions({
                             ...clientOptions,
-                            is_hide_image: 'true'
+                            is_show_image: 'false'
                         });
                     }
                 }
@@ -316,55 +301,190 @@ const GameHangeulsPage = ({ options }: Pick<PageProps, 'options'>) => {
     ];
 
     return (
-        <div className="max-w-6xl mx-auto pt-16 pb-4 px-4">
-            <div className="w-[18rem] fixed top-16">
-                <div className="content-item h-full">
-                    <h1 className="pl-3 pt-2 h-8">
-                        <div className="flex items-center text-sm">
-                            <i className="block align-middle mr-1.5 text-neutral-900 dark:text-neutral-200">
+        <div className="max-w-6xl mx-auto pb-8 md:px-4 mt-12">
+            <div
+                ref={openRef}
+                className={classNames(
+                    'md:block fixed z-30',
+                    isOpen
+                        ? 'w-[70%] top-12 bottom-0 shadow dark:shadow-black'
+                        : 'hidden w-[6rem] lg:w-[18rem] top-16 bottom-4'
+                )}
+            >
+                <div
+                    className={classNames(
+                        'h-full content-item whitespace-nowrap',
+                        isOpen ? 'pt-16' : 'pt-14 lg:pt-16'
+                    )}
+                >
+                    <div className="absolute top-0 inset-x-0">
+                        <div
+                            className={classNames(
+                                'flex items-center gap-x-2 py-3 font-medium',
+                                isOpen
+                                    ? 'text-sm px-4'
+                                    : 'justify-center lg:justify-start text-xs lg:text-sm lg:px-4'
+                            )}
+                        >
+                            <i className="hidden lg:flex text-neutral-900 dark:text-neutral-200">
                                 <HiOutlineFilter />
                             </i>
                             이름 순 필터링
+                            {isOpen && (
+                                <button
+                                    type="button"
+                                    className="flex ml-auto text-base"
+                                    onClick={() => {
+                                        setIsOpen(false);
+                                    }}
+                                >
+                                    <HiX />
+                                </button>
+                            )}
                         </div>
-                    </h1>
-                    <div className="h-6 flex items-center px-4 font-medium text-xs">
-                        <div className="flex-1">이름</div>
-                        <div className="ml-auto flex">
-                            <div className="w-16 text-right">유저</div>
-                            <div className="w-16 text-right">공식</div>
+                        <div className="flex items-center px-4 py-1 font-medium text-xs">
+                            <div
+                                className={classNames(
+                                    'flex-1',
+                                    isOpen
+                                        ? 'text-left'
+                                        : 'text-center lg:text-left'
+                                )}
+                            >
+                                이름
+                            </div>
+                            <div
+                                className={classNames(
+                                    'items-center ml-auto',
+                                    isOpen ? 'flex' : 'hidden lg:flex'
+                                )}
+                            >
+                                <div className="w-16 text-right">유저</div>
+                                <div className="w-16 text-right">공식</div>
+                            </div>
                         </div>
                     </div>
-                    <SimpleBar className="max-h-[calc(100vh-8.5rem)] py-1">
+                    <SimpleBar className="h-full py-1">
                         {indexList.map((item) => (
-                            <IndexListItem
+                            <div
                                 key={item.char}
-                                item={item}
-                                char={char}
-                            />
+                                className="px-2 before:block before:border-t before:border-black/5 dark:before:border-white/10 before:mx-1.5 before:my-0.5"
+                            >
+                                <Link
+                                    href={
+                                        item.char === '_'
+                                            ? '/game/hangeuls/'
+                                            : `/game/hangeuls/${item.char}`
+                                    }
+                                >
+                                    {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/anchor-is-valid */}
+                                    <a
+                                        onClick={() => {
+                                            setIsOpen(false);
+                                        }}
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                                setIsOpen(false);
+                                            }
+                                        }}
+                                        className={classNames(
+                                            item.char === char
+                                                ? 'bg-black/10 dark:bg-white/20'
+                                                : 'hover:bg-black/5 dark:hover:bg-white/10',
+                                            'relative flex items-center justify-center lg:justify-start py-1 px-2 rounded'
+                                        )}
+                                    >
+                                        <h2
+                                            className={classNames(
+                                                item.char === char
+                                                    ? 'text-black dark:text-neutral-100'
+                                                    : 'text-neutral-700 dark:text-neutral-300',
+                                                'lg:w-10 text-sm'
+                                            )}
+                                        >
+                                            {item.label}
+                                        </h2>
+                                        {item.desc && (
+                                            <p className="hidden lg:block italic text-xs text-neutral-500 dark:text-neutral-400">
+                                                {item.desc}
+                                            </p>
+                                        )}
+                                        <div
+                                            className={classNames(
+                                                'items-center leading-4 ml-auto',
+                                                isOpen
+                                                    ? 'flex'
+                                                    : 'hidden lg:flex '
+                                            )}
+                                        >
+                                            <div className="w-16 text-right">
+                                                {item.user_counted !== 0 && (
+                                                    <em className="text-xs not-italic text-neutral-500 dark:text-neutral-400">
+                                                        {item.user_counted}
+                                                    </em>
+                                                )}
+                                            </div>
+                                            <div className="w-16 text-right">
+                                                <em className="text-xs not-italic text-neutral-500 dark:text-neutral-400">
+                                                    {item.official_counted}
+                                                </em>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </Link>
+                            </div>
                         ))}
                     </SimpleBar>
                 </div>
             </div>
-            <div className="pl-[19rem]">
-                <div className="content-item mb-3">
-                    <div className="pl-3 pt-2 h-8">
-                        <div className="flex items-center text-sm">
+            {isOpen && (
+                <div
+                    className="fixed top-12 bottom-0 inset-x-0 h-screen bg-black/60 z-20"
+                    role="presentation"
+                />
+            )}
+            <div className="md:pl-[7rem] lg:pl-[19rem]">
+                <div className="flex flex-col space-y-1 p-4 md:px-0 col-span-2">
+                    <div className="flex items-center space-x-1 text-xs">
+                        <Breadcrumb
+                            item={[
+                                <Link href="/games/">
+                                    <a className="hover:underline">게임</a>
+                                </Link>,
+                                <Link href="/game/hangeuls/">
+                                    <a className="hover:underline">
+                                        한국어 지원 목록
+                                    </a>
+                                </Link>
+                            ]}
+                        />
+                    </div>
+                    <h1 className="flex items-center gap-x-2 font-semibold text-gray-900 dark:text-gray-100">
+                        <i>
+                            <IoLanguage />
+                        </i>
+                        한국어 지원 목록
+                    </h1>
+                </div>
+                <div className="content-item mb-4 py-3 px-4">
+                    <div className="mb-2">
+                        <div className="flex items-center text-sm font-medium">
                             <i className="block align-middle mr-1.5 text-neutral-900 dark:text-neutral-200">
                                 <HiOutlineCog />
                             </i>
                             설정
                         </div>
                     </div>
-                    <div className="px-4 pb-1">
+                    <div className="flex flex-col space-y-2">
                         {settings.map((setting) => (
                             <div
                                 key={setting.name}
-                                className="h-6 flex items-center text-xs"
+                                className="flex items-baseline text-xs"
                             >
-                                <div className="w-28 font-medium">
+                                <div className="flex-none w-20 lg:w-28 font-medium">
                                     {setting.label}
                                 </div>
-                                <div className="flex items-baseline gap-2">
+                                <div className="flex flex-wrap items-baseline space-x-2">
                                     {setting.choices.map((choice) => (
                                         <label
                                             key={setting.label + choice.label}
@@ -380,7 +500,7 @@ const GameHangeulsPage = ({ options }: Pick<PageProps, 'options'>) => {
                                                 onChange={choice.onChange}
                                                 className="hidden peer"
                                             />
-                                            <span className="peer-checked:font-bold peer-checked:text-black dark:peer-checked:text-white">
+                                            <span className="tracking-tight peer-checked:font-bold peer-checked:text-neutral-900 dark:peer-checked:text-neutral-200">
                                                 {choice.label}
                                             </span>
                                         </label>
@@ -390,11 +510,29 @@ const GameHangeulsPage = ({ options }: Pick<PageProps, 'options'>) => {
                         ))}
                     </div>
                 </div>
-                <div className="content-item">
-                    <h1 className="sticky top-12 px-4 py-3 bg-white/95 dark:bg-dark/95 backdrop-blur z-20 rounded-t font-semibold text-lg text-neutral-900 dark:text-white">
-                        {index.label}
+                <div className="content-item py-1">
+                    <h1 className="sticky top-12 mx-4 mb-1 border-b border-b-black/10 dark:border-b-white/10 bg-white/95 dark:bg-dark/95 backdrop-blur z-10">
+                        <button
+                            type="button"
+                            onClick={(e) => {
+                                // MD Size
+                                if (window.innerWidth < 768) {
+                                    setIsOpen(true);
+                                    e.stopPropagation();
+                                }
+                            }}
+                            className="w-full flex items-center gap-x-2 py-2 font-medium cursor-pointer md:cursor-auto"
+                        >
+                            <i className="flex md:hidden">
+                                <BsLayoutSidebarInset />
+                            </i>
+                            {index.label}
+                            <i className="flex md:hidden ml-auto">
+                                <MdTouchApp />
+                            </i>
+                        </button>
                     </h1>
-                    <div className="grid grid-rows-1 px-2">
+                    <div className="px-2">
                         {hangeulList.data.map((item) => {
                             if (clientOptions.filter_hangeul) {
                                 if (
@@ -446,7 +584,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     });
 
     const options: GameHangeulsPageOptions = {
-        is_hide_image: cookies.is_hide_image || null,
+        is_show_image: cookies.is_show_image || null,
         filter_hangeul: cookies.filter_hangeul || null
     };
 
