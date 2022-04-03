@@ -20,8 +20,8 @@ module.exports = {
                 '-apple-system',
                 'BlinkMacSystemFont',
                 'Segoe UI',
-                'Helvetica',
-                'Roboto',
+                'Helvetica Neue',
+                'Inter',
                 'Noto Sans KR',
                 'Arial',
                 'sans-serif',
@@ -32,9 +32,7 @@ module.exports = {
         extend: {
             colors: {
                 primary: withOpacityValue('--color-primary'),
-                dark: withOpacityValue('--color-dark'),
-                background: withOpacityValue('--color-background'),
-                'background-dark': withOpacityValue('--color-background-dark')
+                dark: withOpacityValue('--color-dark')
             }
         }
     },
