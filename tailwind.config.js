@@ -19,7 +19,7 @@ module.exports = {
             sans: [
                 '-apple-system',
                 'BlinkMacSystemFont',
-                'Segoe UI',
+                'Apple SD Gothic Neo',
                 'Helvetica Neue',
                 'Inter',
                 'Noto Sans KR',
