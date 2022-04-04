@@ -163,7 +163,7 @@ const GameSummary = ({ detail }: { detail: GameDetail }) => (
                                             )}
                                         </div>
                                     )}
-                                    <div className="sm:w-28 flex flex-col gap-x-2 items-end font-medium">
+                                    <div className="sm:w-28 flex flex-col gap-x-2 items-baseline font-medium">
                                         {price.discount && (
                                             <div className="text-xs text-neutral-400 line-through">
                                                 {price.initial_formatted}

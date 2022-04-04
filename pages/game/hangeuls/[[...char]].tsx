@@ -78,9 +78,9 @@ const HangeulListItem = React.memo(
                 <div
                     className={classNames(
                         options.is_show_image === 'true'
-                            ? 'pl-[6.6rem] lg:pl-[7.6rem]'
+                            ? 'pl-[6.6rem] lg:pl-[7.8rem]'
                             : {
-                                  'sm:pl-[6.6rem] lg:pl-[7.6rem]':
+                                  'sm:pl-[6.6rem] lg:pl-[7.8rem]':
                                       options.is_show_image === null
                               },
                         'relative pointer-events-none min-h-[3.5rem] lg:min-h-[4rem]'

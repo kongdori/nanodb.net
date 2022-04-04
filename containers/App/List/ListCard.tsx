@@ -43,7 +43,7 @@ const ListCard = ({ listItem }: AppListItemProps) => (
             </DetailPopup>
             <div className="min-h-[4rem] sm:min-h-[5rem] flex flex-col sm:overflow-hidden">
                 <div
-                    className={classNames('pl-[7.6rem] sm:pl-[8.6rem]', {
+                    className={classNames('pl-[7.6rem] sm:pl-[8.8rem]', {
                         'min-h-[4rem] sm:min-h-0':
                             listItem.prices.length > 0 &&
                             listItem.prices[0].discount
@@ -59,7 +59,7 @@ const ListCard = ({ listItem }: AppListItemProps) => (
                     </div>
                 </div>
                 {listItem.prices.length > 0 && (
-                    <div className="pt-1 sm:pt-0 sm:pl-[8.6rem] mt-auto w-full flex items-center text-sm">
+                    <div className="pt-1 sm:pt-0 sm:pl-[8.8rem] mt-auto w-full flex items-center text-sm">
                         {listItem.prices[0].discount && (
                             <div className="flex items-baseline gap-x-2 text-xs">
                                 <span className="bg-lime-600/90 dark:bg-lime-700/90 text-white leading-[1.1rem] rounded-sm px-1">
@@ -74,7 +74,7 @@ const ListCard = ({ listItem }: AppListItemProps) => (
                                 )}
                             </div>
                         )}
-                        <div className="ml-auto flex items-end gap-x-2 font-medium tracking-tight">
+                        <div className="ml-auto flex items-baseline gap-x-2 font-medium tracking-tight">
                             {listItem.prices[0].discount && (
                                 <span className="text-neutral-400 line-through text-xs">
                                     {listItem.prices[0].initial_formatted}
