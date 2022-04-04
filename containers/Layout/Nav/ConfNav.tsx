@@ -158,7 +158,7 @@ const ConfNav = () => {
                             rel="external noopener noreferrer nofollow"
                             className="flex items-center w-full gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10"
                         >
-                            <i className="relative flex-center w-10 h-10 bg-[#12151e] rounded">
+                            <i className="relative flex-center w-10 h-10 bg-[#12151e] rounded-lg">
                                 <Image
                                     src="/logos/toss/symbol-toss-blue.png"
                                     layout="fill"
@@ -183,7 +183,7 @@ const ConfNav = () => {
                                 type="button"
                                 className="flex items-center w-full gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10"
                             >
-                                <i className="relative flex-center w-10 h-10">
+                                <i className="relative flex-center w-10 h-10 rounded-lg overflow-hidden">
                                     <Image
                                         src="/logos/kakaobank/B120.gif"
                                         layout="fill"

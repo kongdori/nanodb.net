@@ -81,7 +81,7 @@ const GlobalNavItem = ({ nav }: GlobalNavItemProps) => {
                     }
                 }}
                 className={classNames(
-                    'rounded flex items-center gap-x-1 py-1.5 pl-4 pr-2 z-20 font-medium leading-4',
+                    'rounded flex items-center gap-x-1 py-1.5 pl-4 pr-2 z-20 font-semibold leading-4',
                     nav.active.includes(currentRootPath)
                         ? 'text-black dark:text-white'
                         : {
@@ -155,7 +155,7 @@ const GlobalNav = () => {
 
     return (
         <ActiveProvider>
-            <nav className="flex items-stretch font-medium text-neutral-600 dark:text-neutral-400">
+            <nav className="flex items-stretch font-semibold text-neutral-600 dark:text-neutral-400">
                 {globalNav.map((nav) => (
                     <GlobalNavItem key={nav.name} nav={nav} />
                 ))}
