@@ -137,9 +137,9 @@ const GameSummary = ({ detail }: { detail: GameDetail }) => (
                                         )}
                                     </div>
                                     <div>
-                                        <span className="text-sm">
+                                        <strong className="text-sm font-medium">
                                             {price.store}
-                                        </span>
+                                        </strong>
                                         <p className="text-xs text-neutral-400">
                                             마지막 업데이트:{' '}
                                             {moment(
@@ -163,7 +163,7 @@ const GameSummary = ({ detail }: { detail: GameDetail }) => (
                                             )}
                                         </div>
                                     )}
-                                    <div className="sm:w-28 flex flex-col gap-x-2 items-baseline font-medium">
+                                    <div className="w-28 flex flex-col items-end font-medium">
                                         {price.discount && (
                                             <div className="text-xs text-neutral-400 line-through">
                                                 {price.initial_formatted}
