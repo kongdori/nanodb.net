@@ -21,7 +21,7 @@ const Review = React.memo(
         <div className="flex flex-1 flex-col w-full space-y-4 text-xs max-w-md">
             {detail.reviews.steam && (
                 <div className="flex flex-wrap gap-y-2 items-start">
-                    <h3 className="w-28 flex items-center space-x-1 text-sm font-semibold">
+                    <h3 className="w-28 flex items-center space-x-1 text-sm font-medium">
                         <Image
                             src="/logos/steam/icon.png"
                             width="20"
@@ -65,7 +65,7 @@ const Review = React.memo(
             )}
             {detail.reviews.metacritic && (
                 <div className="flex flex-wrap gap-y-2 items-start">
-                    <h3 className="w-28 flex items-center space-x-1 text-sm font-semibold">
+                    <h3 className="w-28 flex items-center space-x-1 text-sm font-medium">
                         <Image
                             src="/logos/metacritic/icon.svg"
                             width="20"
@@ -93,7 +93,7 @@ const Review = React.memo(
                                             className="flex items-center w-1/2"
                                         >
                                             {index === 0 && (
-                                                <div className="w-8 mr-2 border-r border-black/10 dark:border-white/10">
+                                                <div className="w-8 mr-2 border-r border-black/10 dark:border-white/10 font-medium">
                                                     {review.platform}
                                                 </div>
                                             )}

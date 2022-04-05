@@ -23,20 +23,16 @@ const ListCard = ({ listItem }: AppListItemProps) => (
                         />
                     </div>
                     {listItem.app === 'game' && listItem.is_hangeuls && (
-                        <div className="absolute bottom-1 -left-1 sm:-left-1.5">
-                            <span
-                                className={classNames(
-                                    'flex items-center text-[0.68rem] px-1 text-white rounded-sm shadow',
-                                    listItem.is_official_hangeuls
-                                        ? 'bg-blue-600/95 dark:bg-blue-700/95'
-                                        : 'bg-amber-600/95 dark:bg-amber-700/95'
-                                )}
-                            >
-                                {listItem.is_official_hangeuls
-                                    ? '공식 '
-                                    : '유저 '}
-                                한국어
-                            </span>
+                        <div
+                            className={classNames(
+                                'absolute bottom-1 -left-1 flex items-center text-[0.65rem] px-1 text-white rounded-sm shadow',
+                                listItem.is_official_hangeuls
+                                    ? 'bg-blue-600/95 dark:bg-blue-700/95'
+                                    : 'bg-amber-600/95 dark:bg-amber-700/95'
+                            )}
+                        >
+                            {listItem.is_official_hangeuls ? '공식 ' : '유저 '}
+                            한국어
                         </div>
                     )}
                 </div>
@@ -52,7 +48,7 @@ const ListCard = ({ listItem }: AppListItemProps) => (
                     <h1 className="font-semibold text-sm leading-tight mb-2 break-all sm:truncate dark:text-gray-200">
                         {listItem.name}
                     </h1>
-                    <div className="flex gap-x-2 flex-wrap font-me text-xs text-gray-700 dark:text-gray-400 sm:truncate">
+                    <div className="flex gap-x-2 flex-wrap text-xs text-gray-700 dark:text-gray-400 sm:truncate">
                         {listItem.genres.map((item) => (
                             <span key={item}>{item}</span>
                         ))}

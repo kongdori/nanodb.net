@@ -397,7 +397,7 @@ const GameHangeulsPage = ({ options }: Pick<PageProps, 'options'>) => {
                                         <h2
                                             className={classNames(
                                                 item.char === char
-                                                    ? 'text-black dark:text-neutral-100'
+                                                    ? 'text-black dark:text-neutral-100 font-medium'
                                                     : 'text-neutral-700 dark:text-neutral-300',
                                                 'lg:w-10 text-sm'
                                             )}
@@ -500,7 +500,7 @@ const GameHangeulsPage = ({ options }: Pick<PageProps, 'options'>) => {
                                                 onChange={choice.onChange}
                                                 className="hidden peer"
                                             />
-                                            <span className="tracking-tight peer-checked:font-bold peer-checked:text-neutral-900 dark:peer-checked:text-neutral-200">
+                                            <span className="tracking-tight peer-checked:font-semibold peer-checked:text-neutral-900 dark:peer-checked:text-neutral-200">
                                                 {choice.label}
                                             </span>
                                         </label>
@@ -511,7 +511,7 @@ const GameHangeulsPage = ({ options }: Pick<PageProps, 'options'>) => {
                     </div>
                 </div>
                 <div className="content-item py-1">
-                    <h1 className="sticky top-12 mx-4 mb-1 border-b border-b-black/10 dark:border-b-white/10 bg-white/95 dark:bg-dark/95 backdrop-blur z-10">
+                    <h1 className="sticky top-12 px-4 mb-1 bg-white/95 dark:bg-dark/95 backdrop-blur z-10">
                         <button
                             type="button"
                             onClick={(e) => {
@@ -521,7 +521,7 @@ const GameHangeulsPage = ({ options }: Pick<PageProps, 'options'>) => {
                                     e.stopPropagation();
                                 }
                             }}
-                            className="w-full flex items-center gap-x-2 py-2 font-medium cursor-pointer md:cursor-auto"
+                            className="w-full flex items-center gap-x-2 py-2 font-semibold cursor-pointer md:cursor-auto"
                         >
                             <i className="flex md:hidden">
                                 <BsLayoutSidebarInset />
@@ -531,6 +531,7 @@ const GameHangeulsPage = ({ options }: Pick<PageProps, 'options'>) => {
                                 <MdTouchApp />
                             </i>
                         </button>
+                        <div className="border-b border-b-black/10 dark:border-b-white/10" />
                     </h1>
                     <div className="px-2">
                         {hangeulList.data.map((item) => {

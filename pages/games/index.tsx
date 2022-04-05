@@ -41,8 +41,8 @@ function GameListPage() {
             <div className="content-item">
                 <div className="py-2 px-4 flex flex-col gap-y-2 text-xs">
                     <div className="flex items-center gap-x-4">
-                        <h2>정렬</h2>
-                        <span className="font-medium bg-black/5 dark:bg-white/20 rounded px-2 py-1 cursor-pointer">
+                        <h2 className="font-medium">정렬</h2>
+                        <span className="font-semibold bg-black/5 dark:bg-white/20 rounded px-2 py-1 cursor-pointer">
                             스팀 인기제품
                         </span>
                     </div>
