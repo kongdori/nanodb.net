@@ -10,9 +10,9 @@ function withOpacityValue(variable) {
 module.exports = {
     darkMode: 'class',
     content: [
-        './pages/**/*.{js,ts,jsx,tsx}',
         './components/**/*.{js,ts,jsx,tsx}',
-        './containers/**/*.{js,ts,jsx,tsx}'
+        './containers/**/*.{js,ts,jsx,tsx}',
+        './pages/**/*.{js,ts,jsx,tsx}'
     ],
     theme: {
         fontFamily: {
@@ -31,8 +31,7 @@ module.exports = {
         },
         extend: {
             colors: {
-                primary: withOpacityValue('--color-primary'),
-                dark: withOpacityValue('--color-dark')
+                dark: withOpacityValue('--dark')
             }
         }
     },

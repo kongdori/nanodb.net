@@ -3,33 +3,30 @@
 @tailwind utilities;
 
 :root {
-    --color-primary: 28 31 35; /* #1c1f23 */
-    --color-dark: 32 33 36; /* #202124 */
-    --color-background: 245 246 250; /* #f5f6fa */
-    --color-background-dark: 14 14 15; /* #0e0e0f */
-    --swiper-pagination-color: #1c1f23;
+    --dark: 32 33 36; /* #202124 */
+    --text: rgb(34, 41, 55);
+    --background: rgb(245, 246, 250); /* #f5f6fa */
+    --tap-highlight: rgba(0, 0, 0, 0.05);
+    --swiper-pagination-color: rgb(28, 31, 35);
+}
+
+:root.dark {
+    --text: rgb(189, 193, 198);
+    --background: rgb(14, 14, 15);
+    --tap-highlight: rgba(0, 0, 0, 0.1);
+    --swiper-pagination-color: rgb(214, 217, 222);
 }
 
 html,
 body {
+    color: var(--text);
+    background-color: var(--background);
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     text-size-adjust: 100%;
-    background-color: rgb(var(--color-background));
-    @apply text-gray-800;
-}
-
-html.dark,
-html.dark body {
-    background-color: rgb(var(--color-background-dark));
-    @apply text-[#bdc1c6];
 }
 
 a {
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
-}
-
-html.dark a {
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+    -webkit-tap-highlight-color: var(--tap-highlight);
 }
 
 .responsive {
