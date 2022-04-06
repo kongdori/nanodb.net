@@ -86,13 +86,13 @@ const HangeulListItem = React.memo(
                         'relative pointer-events-none min-h-[3.5rem] lg:min-h-[4rem]'
                     )}
                 >
-                    <h1 className="mb-1 lg:mb-2 text-sm font-semibold break-all leading-tight dark:text-gray-200">
+                    <h1 className="mb-1 lg:mb-2 text-sm font-medium break-all leading-tight dark:text-gray-200">
                         {item.name}
                     </h1>
-                    <div className="flex flex-col space-y-4 text-xs dark:text-neutral-300">
+                    <div className="flex flex-col space-y-4 text-xs">
                         {item.hangeul.officials.length > 0 && (
                             <div>
-                                <div className="mb-0.5 font-medium text-blue-600 dark:text-blue-500">
+                                <div className="mb-0.5 font-medium text-blue-500 dark:text-blue-400/80">
                                     공식 한국어 지원
                                 </div>
                                 <div className="flex flex-col space-y-1">
@@ -110,7 +110,7 @@ const HangeulListItem = React.memo(
                         )}
                         {item.hangeul.users.length > 0 && (
                             <div>
-                                <div className="mb-0.5 font-medium text-amber-600 dark:text-amber-500">
+                                <div className="mb-0.5 font-medium text-amber-600 dark:text-amber-400/80">
                                     유저 한국어 지원
                                 </div>
                                 <div className="flex flex-col space-y-2">
@@ -521,7 +521,7 @@ const GameHangeulsPage = ({ options }: Pick<PageProps, 'options'>) => {
                                     e.stopPropagation();
                                 }
                             }}
-                            className="w-full flex items-center gap-x-2 py-2 font-semibold cursor-pointer md:cursor-auto"
+                            className="w-full flex items-center gap-x-2 py-2 font-medium cursor-pointer md:cursor-auto text-slate-900 dark:text-slate-50"
                         >
                             <i className="flex md:hidden">
                                 <BsLayoutSidebarInset />

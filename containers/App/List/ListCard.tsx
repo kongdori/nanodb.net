@@ -39,13 +39,13 @@ const ListCard = ({ listItem }: AppListItemProps) => (
             </DetailPopup>
             <div className="min-h-[4rem] sm:min-h-[5rem] flex flex-col sm:overflow-hidden">
                 <div
-                    className={classNames('pl-[7.6rem] sm:pl-[8.8rem]', {
+                    className={classNames('pl-[7.8rem] sm:pl-[8.8rem]', {
                         'min-h-[4rem] sm:min-h-0':
                             listItem.prices.length > 0 &&
                             listItem.prices[0].discount
                     })}
                 >
-                    <h1 className="font-semibold text-sm leading-tight mb-2 break-all sm:truncate dark:text-gray-200">
+                    <h1 className="font-medium text-sm leading-tight mb-2 break-all sm:truncate dark:text-gray-200">
                         {listItem.name}
                     </h1>
                     <div className="flex gap-x-2 flex-wrap text-xs text-gray-700 dark:text-gray-400 sm:truncate">
