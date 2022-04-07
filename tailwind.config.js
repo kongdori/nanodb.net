@@ -1,12 +1,3 @@
-function withOpacityValue(variable) {
-    return ({ opacityValue }) => {
-        if (opacityValue === undefined) {
-            return `rgb(var(${variable}))`;
-        }
-        return `rgb(var(${variable}) / ${opacityValue})`;
-    };
-}
-
 module.exports = {
     darkMode: 'class',
     content: [
@@ -31,7 +22,7 @@ module.exports = {
         },
         extend: {
             colors: {
-                dark: withOpacityValue('--dark')
+                dark: '#202124'
             }
         }
     },
