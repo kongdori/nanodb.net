@@ -35,3 +35,6 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# naver search advisor
+naver975bc3fab99ce68b3ac6f88dad78c535.html
