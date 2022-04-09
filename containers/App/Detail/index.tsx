@@ -201,16 +201,14 @@ const Detail = ({ detail, children }: DetailProps) => {
                                             }
                                         )}
                                     >
-                                        <div className="relative w-full h-full sm:rounded overflow-hidden">
-                                            {detail ? (
+                                        <div className="relative w-full h-full sm:rounded overflow-hidden bg-slate-400/20">
+                                            {detail && (
                                                 <ImageWithFallback
                                                     src={detail.image_header}
-                                                    fallbackSrc={`/assets/apps/${detail.app}/no_image_header.png`}
+                                                    fallbackSrc="/assets/apps/no_image_header.png"
                                                     layout="fill"
                                                     objectFit="cover"
                                                 />
-                                            ) : (
-                                                <div className="w-full h-full bg-slate-400/20 rounded" />
                                             )}
                                         </div>
                                         {detail &&

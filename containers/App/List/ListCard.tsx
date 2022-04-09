@@ -14,10 +14,10 @@ const ListCard = ({ listItem }: AppListItemProps) => (
                 className="absolute inset-0 p-2 pointer-events-auto"
             >
                 <div className="relative">
-                    <div className="relative w-28 h-16 sm:h-20 sm:w-32 rounded overflow-hidden">
+                    <div className="relative w-28 h-16 sm:h-20 sm:w-32 rounded overflow-hidden bg-slate-400/20">
                         <ImageWithFallback
                             src={listItem.image_header}
-                            fallbackSrc={`/assets/apps/${listItem.app}/no_image_header.jpg`}
+                            fallbackSrc="/assets/apps/no_image_header.png"
                             layout="fill"
                             objectFit="cover"
                         />

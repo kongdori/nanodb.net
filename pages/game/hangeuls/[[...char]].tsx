@@ -58,7 +58,7 @@ const HangeulListItem = React.memo(
                             options.is_show_image === null) && (
                             <div
                                 className={classNames(
-                                    'relative w-24 lg:w-28 h-14 lg:h-16 rounded overflow-hidden',
+                                    'relative w-24 lg:w-28 h-14 lg:h-16 rounded overflow-hidden bg-slate-400/20',
                                     {
                                         'hidden sm:block':
                                             options.is_show_image === null
@@ -67,7 +67,7 @@ const HangeulListItem = React.memo(
                             >
                                 <ImageWithFallback
                                     src={item.image_header}
-                                    fallbackSrc="/assets/apps/game/no_image_header.jpg"
+                                    fallbackSrc="/assets/apps/game/no_image_header.png"
                                     layout="fill"
                                     objectFit="cover"
                                 />
