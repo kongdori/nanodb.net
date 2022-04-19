@@ -109,7 +109,7 @@ const MobileNav = () => {
     });
 
     return (
-        <div className="relative flex items-center">
+        <div className="md:hidden flex items-center relative">
             <button
                 ref={btnRef}
                 type="button"

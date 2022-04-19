@@ -40,7 +40,7 @@ const ConfNav = () => {
                             setTheme('system');
                         }}
                         className={classNames(
-                            'flex items-center w-full gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10',
+                            'flex items-center w-full gap-x-1.5 py-1.5 px-2 rounded lg:hover:bg-black/5 dark:lg:hover:bg-white/10',
                             {
                                 'text-amber-600 dark:text-amber-500':
                                     theme === 'system'
@@ -58,7 +58,7 @@ const ConfNav = () => {
                             setTheme('light');
                         }}
                         className={classNames(
-                            'flex items-center w-full gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10',
+                            'flex items-center w-full gap-x-1.5 py-1.5 px-2 rounded lg:hover:bg-black/5 dark:lg:hover:bg-white/10',
                             {
                                 'text-amber-600 dark:text-amber-500':
                                     theme === 'light'
@@ -76,7 +76,7 @@ const ConfNav = () => {
                             setTheme('dark');
                         }}
                         className={classNames(
-                            'flex items-center w-full gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10',
+                            'flex items-center w-full gap-x-1.5 py-1.5 px-2 rounded lg:hover:bg-black/5 dark:lg:hover:bg-white/10',
                             {
                                 'text-amber-600 dark:text-amber-500':
                                     theme === 'dark'
@@ -94,7 +94,7 @@ const ConfNav = () => {
 
         case '메일 문의':
             nestedComponent = (
-                <address className="w-60 not-italic">
+                <address className="w-52 not-italic">
                     {confNav.mails.map((item) => (
                         <CopyToClipboard
                             key={item.address}
@@ -111,7 +111,7 @@ const ConfNav = () => {
                                 onClick={(e) => {
                                     e.preventDefault();
                                 }}
-                                className="flex items-center w-full gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10"
+                                className="flex items-center w-full gap-x-1.5 py-1.5 px-2 rounded lg:hover:bg-black/5 dark:lg:hover:bg-white/10"
                             >
                                 <i className="flex-center w-7 h-7 text-2xl">
                                     <BiMailSend />
@@ -131,15 +131,15 @@ const ConfNav = () => {
 
         case '후원':
             nestedComponent = (
-                <nav className="w-72">
+                <nav className="w-60">
                     {typeof confNav.donations.buymeacoffee !== 'undefined' && (
                         <a
                             href={confNav.donations.buymeacoffee.url}
                             target="_blank"
                             rel="external noopener noreferrer nofollow"
-                            className="flex items-center w-full gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10"
+                            className="flex items-center w-full gap-x-2 py-1.5 px-2 rounded lg:hover:bg-black/5 dark:lg:hover:bg-white/10"
                         >
-                            <i className="relative flex-center w-10 h-10">
+                            <i className="relative flex-center w-8 h-8">
                                 <Image
                                     src="/logos/buymeacoffee/apple-icon-60x60.webp"
                                     layout="fill"
@@ -156,9 +156,9 @@ const ConfNav = () => {
                             href={confNav.donations.toss.url}
                             target="_blank"
                             rel="external noopener noreferrer nofollow"
-                            className="flex items-center w-full gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10"
+                            className="flex items-center w-full gap-x-2 py-1.5 px-2 rounded lg:hover:bg-black/5 dark:lg:hover:bg-white/10"
                         >
-                            <i className="relative flex-center w-10 h-10 bg-[#12151e] rounded-lg">
+                            <i className="relative flex-center w-8 h-8 bg-[#12151e] rounded-lg">
                                 <Image
                                     src="/logos/toss/symbol-toss-blue.png"
                                     layout="fill"
@@ -181,15 +181,15 @@ const ConfNav = () => {
                         >
                             <button
                                 type="button"
-                                className="flex items-center w-full gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10"
+                                className="flex items-center w-full gap-x-2 py-1.5 px-2 rounded lg:hover:bg-black/5 dark:lg:hover:bg-white/10"
                             >
-                                <i className="relative flex-center w-10 h-10 rounded-lg overflow-hidden">
+                                <i className="relative flex-center w-8 h-8 rounded-lg overflow-hidden">
                                     <Image
                                         src="/logos/kakaobank/B120.gif"
                                         layout="fill"
                                     />
                                 </i>
-                                <div className="text-left flex flex-col gap-1">
+                                <div className="text-left flex flex-col">
                                     <h2>
                                         카카오뱅크 (
                                         {confNav.donations.kakaobank.name})
@@ -223,7 +223,7 @@ const ConfNav = () => {
                             onClick={() => {
                                 setNested('테마 설정');
                             }}
-                            className="flex items-center w-full gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10 font-medium"
+                            className="flex items-center w-full gap-x-1.5 py-1.5 px-2 rounded lg:hover:bg-black/5 dark:lg:hover:bg-white/10 font-medium"
                         >
                             <i className="flex-center w-5 h-5 text-lg">
                                 {currentThemeIcon}
@@ -241,7 +241,7 @@ const ConfNav = () => {
                             onClick={() => {
                                 setNested('메일 문의');
                             }}
-                            className="flex items-center w-full gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10 font-medium"
+                            className="flex items-center w-full gap-x-1.5 py-1.5 px-2 rounded lg:hover:bg-black/5 dark:lg:hover:bg-white/10 font-medium"
                         >
                             <i className="flex-center w-5 h-5 text-lg">
                                 <HiOutlineMail />
@@ -259,7 +259,7 @@ const ConfNav = () => {
                             onClick={() => {
                                 setNested('후원');
                             }}
-                            className="flex items-center w-full gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10 font-medium"
+                            className="flex items-center w-full gap-x-1.5 py-1.5 px-2 rounded lg:hover:bg-black/5 dark:lg:hover:bg-white/10 font-medium"
                         >
                             <i className="flex-center w-5 h-5 text-lg">
                                 <HiOutlineHeart />
@@ -279,7 +279,7 @@ const ConfNav = () => {
                                 target="_blank"
                                 rel="external noopener noreferrer nofollow"
                                 aria-label={item.name}
-                                className="flex items-center w-full gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10"
+                                className="flex items-center w-full gap-x-1.5 py-1.5 px-2 rounded lg:hover:bg-black/5 dark:lg:hover:bg-white/10"
                             >
                                 <i className="flex-center w-5 h-5 text-lg">
                                     <FaIcon name={item.faIcon} />
@@ -322,8 +322,8 @@ const ConfNav = () => {
                             setNested('');
                         }}
                     >
-                        <Popover.Panel className="absolute top-full right-0">
-                            <div className="min-w-[13rem] p-2 whitespace-nowrap text-sm backdrop-blur bg-white/95 shadow rounded dark:bg-dark/95 dark:shadow-black">
+                        <Popover.Panel className="absolute top-10 right-0">
+                            <div className="min-w-[12rem] p-1.5 whitespace-nowrap text-sm backdrop-blur bg-white/95 shadow rounded dark:bg-dark/95 dark:shadow-black">
                                 {nested && (
                                     <>
                                         <h1>
@@ -332,7 +332,7 @@ const ConfNav = () => {
                                                 onClick={() => {
                                                     setNested('');
                                                 }}
-                                                className="flex items-center w-full gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10 font-medium"
+                                                className="flex items-center w-full gap-x-1.5 py-1.5 px-2 rounded lg:hover:bg-black/5 dark:lg:hover:bg-white/10 font-medium"
                                             >
                                                 <i className="flex-center w-5 h-5">
                                                     <FaIcon name="FaChevronLeft" />

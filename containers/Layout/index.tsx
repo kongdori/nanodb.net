@@ -2,25 +2,18 @@
 import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import NextNprogress from 'nextjs-progressbar';
 import { useTheme } from 'next-themes';
 import { NanoDB } from '@components/Logo';
 import * as site from 'site.config.js';
-import { GlobalNav, ConfNav, MobileNav } from './Nav';
+import { DesktopNav, MobileNav, ConfNav } from './Nav';
+import TitileHeader from './TitileHeader';
 
 interface LayoutContainerProps {
     children: React.ReactNode;
 }
 
 export default function LayoutContainer({ children }: LayoutContainerProps) {
-    const router = useRouter();
-    const { globalNav } = site.header;
-
-    const title = globalNav
-        .flatMap((item) => item.menus)
-        .find((item) => item.active.includes(router.pathname));
-
     const { theme, systemTheme } = useTheme();
     const favicon = systemTheme === 'dark' ? 'favicon-dark' : 'favicon';
 
@@ -51,11 +44,9 @@ export default function LayoutContainer({ children }: LayoutContainerProps) {
             <header className="fixed top-0 inset-x-0 z-40">
                 <div className="relative">
                     <div className="absolute inset-0 backdrop-blur border-b shadow-sm border-b-black/10 bg-white/95 dark:border-b-white/10 dark:bg-dark/95" />
-                    <div className="relative h-12 flex items-stretch gap-x-2 lg:gap-x-4 px-2 md:pl-4 lg:px-8">
+                    <div className="relative h-12 flex items-stretch gap-x-2 sm:gap-x-4 lg:gap-x-6 px-2 md:px-4 lg:px-8">
                         {/* Mobile */}
-                        <div className="md:hidden flex items-stretch">
-                            <MobileNav />
-                        </div>
+                        <MobileNav />
                         <div className="self-center">
                             <Link href="/">
                                 <a aria-label="Home">
@@ -65,25 +56,12 @@ export default function LayoutContainer({ children }: LayoutContainerProps) {
                                 </a>
                             </Link>
                         </div>
-                        {/* Tablet */}
-                        {title && (
-                            <h1 className="flex md:hidden self-center text-xs pl-2 border-l font-medium border-l-black/10 dark:border-l-white/10">
-                                <Link href={title.href}>
-                                    <a className="flex items-center gap-x-2">
-                                        {title.name}
-                                    </a>
-                                </Link>
-                            </h1>
-                        )}
+                        <h1 className="flex md:hidden self-center text-xs pl-1 font-medium">
+                            <TitileHeader />
+                        </h1>
                         {/* Desktop */}
-                        <div className="hidden md:flex flex-1 items-stretch">
-                            <GlobalNav />
-                            <div className="flex items-stretch ml-auto">
-                                <ConfNav />
-                            </div>
-                        </div>
-                        {/* Mobile */}
-                        <div className="md:hidden flex items-stretch ml-auto">
+                        <DesktopNav />
+                        <div className="flex items-center gap-x-2 md:gap-x-4 ml-auto">
                             <ConfNav />
                         </div>
                     </div>

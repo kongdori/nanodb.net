@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import classNames from 'classnames';
 import { createStateContext } from 'react-use';
-import { HiChevronDown, HiChevronUp } from 'react-icons/hi';
 import { Io5Icon } from '@components/ReactIcon';
 import * as site from 'site.config.js';
 
@@ -55,7 +54,7 @@ const GlobalNavItem = ({ nav }: GlobalNavItemProps) => {
 
     return (
         <div
-            className="flex items-center cursor-pointer"
+            className="flex items-center relative"
             // onFocus={() => {
             //     onEnter();
             // }}
@@ -81,7 +80,7 @@ const GlobalNavItem = ({ nav }: GlobalNavItemProps) => {
                     }
                 }}
                 className={classNames(
-                    'rounded flex items-center gap-x-1 py-1.5 pl-4 pr-2 z-20 font-semibold leading-4',
+                    'rounded flex py-0.5 px-3 z-20 font-medium cursor-default',
                     nav.active.includes(currentRootPath)
                         ? 'text-black dark:text-white'
                         : {
@@ -93,20 +92,17 @@ const GlobalNavItem = ({ nav }: GlobalNavItemProps) => {
                 )}
             >
                 {nav.name}
-                <i className="flex self-end">
-                    {enter ? <HiChevronUp /> : <HiChevronDown />}
-                </i>
             </button>
             <div
                 className={classNames(
-                    'absolute top-10 py-2 px-2 w-full max-w-[12rem] lg:max-w-[14rem] -ml-2',
+                    'absolute top-10 left-0 p-2 w-44 lg:w-48 -ml-2',
                     {
                         'translate-y-2 opacity-0 pointer-events-none': !enter,
                         'transition duration-300 ease-out': !active
                     }
                 )}
             >
-                <div className="text-sm whitespace-nowrap p-2 backdrop-blur bg-white/95 shadow rounded dark:bg-dark/95 dark:shadow-black">
+                <div className="text-sm whitespace-nowrap p-1.5 backdrop-blur bg-white/95 shadow rounded dark:bg-dark/95 dark:shadow-black">
                     {nav.menus.map((nav2) => (
                         <div key={nav2.name}>
                             <Link href={nav2.href}>
@@ -125,7 +121,7 @@ const GlobalNavItem = ({ nav }: GlobalNavItemProps) => {
                                         }
                                     }}
                                     className={classNames(
-                                        'flex items-center gap-2 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10',
+                                        'flex items-center gap-x-1.5 py-1.5 px-2 rounded hover:bg-black/5 dark:hover:bg-white/10',
                                         nav2.active.includes(router.pathname)
                                             ? 'text-black dark:text-white'
                                             : 'hover:text-neutral-600 dark:hover:text-neutral-400'
@@ -155,7 +151,7 @@ const GlobalNav = () => {
 
     return (
         <ActiveProvider>
-            <nav className="flex items-stretch font-semibold text-neutral-600 dark:text-neutral-400">
+            <nav className="flex items-stretch font-medium text-neutral-600 dark:text-neutral-400">
                 {globalNav.map((nav) => (
                     <GlobalNavItem key={nav.name} nav={nav} />
                 ))}
@@ -164,4 +160,10 @@ const GlobalNav = () => {
     );
 };
 
-export default GlobalNav;
+const DesktopNav = () => (
+    <div className="hidden md:flex flex-1 gap-x-3 items-stretch">
+        <GlobalNav />
+    </div>
+);
+
+export default DesktopNav;
