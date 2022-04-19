@@ -98,9 +98,7 @@ const HangeulListItem = React.memo(
                                 <div className="flex flex-col space-y-1">
                                     {item.hangeul.officials.map((hangeul) => (
                                         <div key={hangeul.id}>
-                                            <span className="font-medium">
-                                                {hangeul.source}
-                                            </span>
+                                            {hangeul.source}
                                             {' - '}
                                             {hangeul.brief}
                                         </div>
@@ -122,9 +120,7 @@ const HangeulListItem = React.memo(
                                             <div>
                                                 {hangeul.source && (
                                                     <>
-                                                        <span className="font-medium">
-                                                            {hangeul.source}
-                                                        </span>
+                                                        {hangeul.source}
                                                         {(hangeul.brief ||
                                                             hangeul.url) &&
                                                             ' - '}

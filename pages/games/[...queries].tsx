@@ -20,12 +20,12 @@ import { Steam } from '@components/Logo';
 const GameSummary = ({ detail }: { detail: GameDetail }) => (
     <>
         <p className="text-sm break-words">{detail && detail.snippet}</p>
-        <div className="lg:hidden py-2">
+        <div className="lg:hidden pt-1">
             {detail && <About detail={detail} />}
         </div>
         {detail.is_hangeuls && (
             <div className="py-3">
-                <h2 className="flex items-center py-2 font-medium dark:text-gray-300">
+                <h2 className="flex items-center py-1 font-medium dark:text-gray-300">
                     한국어화
                 </h2>
                 <div className="flex flex-col space-y-4 text-sm dark:text-neutral-300">
@@ -34,12 +34,10 @@ const GameSummary = ({ detail }: { detail: GameDetail }) => (
                             <div className="mb-0.5 font-medium text-blue-600 dark:text-blue-500">
                                 공식 한국어 지원
                             </div>
-                            <div className="flex flex-col space-y-1">
+                            <div className="flex flex-col space-y-1 text-xs">
                                 {detail.hangeul.officials.map((hangeul) => (
                                     <div key={hangeul.id}>
-                                        <span className="font-medium">
-                                            {hangeul.source}
-                                        </span>
+                                        {hangeul.source}
                                         {' - '}
                                         {hangeul.brief}
                                     </div>
@@ -52,7 +50,7 @@ const GameSummary = ({ detail }: { detail: GameDetail }) => (
                             <div className="mb-0.5 font-medium text-amber-600 dark:text-amber-500">
                                 유저 한국어 지원
                             </div>
-                            <div className="flex flex-col space-y-2">
+                            <div className="flex flex-col space-y-2 text-xs">
                                 {detail.hangeul.users.map((hangeul) => (
                                     <div
                                         key={hangeul.id}
@@ -61,9 +59,7 @@ const GameSummary = ({ detail }: { detail: GameDetail }) => (
                                         <div>
                                             {hangeul.source && (
                                                 <>
-                                                    <span className="font-medium">
-                                                        {hangeul.source}
-                                                    </span>
+                                                    {hangeul.source}
                                                     {(hangeul.brief ||
                                                         hangeul.url) &&
                                                         ' - '}
@@ -106,7 +102,7 @@ const GameSummary = ({ detail }: { detail: GameDetail }) => (
         )}
         {detail.prices.length > 0 && (
             <div className="py-3">
-                <h2 className="flex items-center py-2 font-medium dark:text-gray-300">
+                <h2 className="flex items-center py-1 font-medium dark:text-gray-300">
                     가격 목록
                 </h2>
                 <div>
@@ -137,9 +133,7 @@ const GameSummary = ({ detail }: { detail: GameDetail }) => (
                                         )}
                                     </div>
                                     <div>
-                                        <strong className="text-sm font-medium">
-                                            {price.store}
-                                        </strong>
+                                        {price.store}
                                         <p className="text-xs text-neutral-400">
                                             마지막 업데이트:{' '}
                                             {moment(

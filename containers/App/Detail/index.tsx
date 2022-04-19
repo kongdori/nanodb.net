@@ -32,9 +32,7 @@ const Review = React.memo(
                     <div className="flex flex-1 gap-x-2">
                         {detail.reviews.steam.map((review) => (
                             <div key={review.name} className="w-1/2">
-                                <h4 className="font-medium mb-1">
-                                    {review.name}
-                                </h4>
+                                <h4 className="mb-1">{review.name}</h4>
                                 <div className="flex items-center">
                                     <a
                                         href={review.url}
@@ -74,7 +72,7 @@ const Review = React.memo(
                         <span>Metacritic</span>
                     </h3>
                     <div className="flex-1 items-center">
-                        <div className="flex items-center gap-x-2 mb-1 font-medium whitespace-nowrap">
+                        <div className="flex items-center gap-x-2 mb-1 whitespace-nowrap">
                             <div className="flex w-1/2">
                                 <div className="w-10 invisible">플랫폼</div>
                                 메타스코어
@@ -93,7 +91,7 @@ const Review = React.memo(
                                             className="flex items-center w-1/2"
                                         >
                                             {index === 0 && (
-                                                <div className="w-8 mr-2 border-r border-black/10 dark:border-white/10 font-medium">
+                                                <div className="w-8 mr-2 border-r border-black/10 dark:border-white/10">
                                                     {review.platform}
                                                 </div>
                                             )}

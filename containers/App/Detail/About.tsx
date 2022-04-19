@@ -9,13 +9,13 @@ const About = ({ detail }: AppDetailProps) => {
     let components = (
         <>
             <div className="flex space-x-2 items-baseline">
-                <h2 className="flex-none font-medium">장르:</h2>
+                <h2 className="flex-none">장르:</h2>
                 <div className="flex flex-wrap gap-x-2 text-gray-700 dark:text-gray-400">
                     {detail.genres.join(', ')}
                 </div>
             </div>
             <div className="flex space-x-2 items-baseline">
-                <h2 className="flex-none font-medium">태그:</h2>
+                <h2 className="flex-none">태그:</h2>
                 <div className="flex flex-wrap gap-x-2 text-gray-700 dark:text-gray-400">
                     {detail.tags.join(', ')}
                 </div>
@@ -30,7 +30,7 @@ const About = ({ detail }: AppDetailProps) => {
                     {components}
                     {detail.developers.length > 0 && (
                         <div className="flex space-x-2 items-baseline">
-                            <h2 className="flex-none font-medium">개발사:</h2>
+                            <h2 className="flex-none">개발사:</h2>
                             <div className="flex flex-wrap gap-x-2 text-gray-700 dark:text-gray-400">
                                 {detail.developers.map((item) => (
                                     <div key={item}>{item}</div>
@@ -40,7 +40,7 @@ const About = ({ detail }: AppDetailProps) => {
                     )}
                     {detail.publishers.length > 0 && (
                         <div className="flex space-x-2 items-baseline">
-                            <h2 className="flex-none font-medium">배급사:</h2>
+                            <h2 className="flex-none">배급사:</h2>
                             <div className="flex flex-wrap gap-x-2 text-gray-700 dark:text-gray-400">
                                 {detail.publishers.map((item) => (
                                     <div key={item}>{item}</div>
@@ -50,9 +50,7 @@ const About = ({ detail }: AppDetailProps) => {
                     )}
                     {detail.franchises.length > 0 && (
                         <div className="flex space-x-2 items-baseline">
-                            <h2 className="flex-none font-medium">
-                                프렌차이즈:
-                            </h2>
+                            <h2 className="flex-none">프렌차이즈:</h2>
                             <div className="flex flex-wrap gap-x-2 text-gray-700 dark:text-gray-400">
                                 {detail.franchises.map((item) => (
                                     <div key={item}>{item}</div>
