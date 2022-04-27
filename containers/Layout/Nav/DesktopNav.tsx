@@ -95,7 +95,7 @@ const GlobalNavItem = ({ nav }: GlobalNavItemProps) => {
             </button>
             <div
                 className={classNames(
-                    'absolute top-10 left-0 p-2 w-44 lg:w-48 -ml-2',
+                    'absolute top-10 left-0 p-2 w-44 lg:w-52 -ml-2',
                     {
                         'translate-y-2 opacity-0 pointer-events-none': !enter,
                         'transition duration-300 ease-out': !active
