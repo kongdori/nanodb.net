@@ -97,8 +97,4 @@ const List = ({ ...props }: ListProps) => {
     );
 };
 
-List.defaultProps = {
-    data: undefined
-};
-
 export default List;
