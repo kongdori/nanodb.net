@@ -14,7 +14,7 @@ import Breadcrumb from '@components/Breadcrumb';
 import AppList from '@containers/App/List';
 
 function GameListPage() {
-    const { ...props } = useGameList();
+    const { ...cursorPage } = useGameList();
 
     return (
         <div className="mt-12 max-w-5xl mx-auto md:px-4">
@@ -49,7 +49,7 @@ function GameListPage() {
                     <div className="border-b border-black/10 dark:border-white/10" />
                 </div>
                 <div className="lg:grid lg:grid-cols-2 gap-x-2.5 px-2">
-                    <AppList {...props} />
+                    <AppList cursorPage={cursorPage} />
                 </div>
             </div>
         </div>

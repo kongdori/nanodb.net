@@ -1,5 +1,5 @@
 import * as _app from './app';
-import { GameDetail, GameList, GameListItem } from './game';
+import { GameDetail, GameList, GameListItem, useGameList } from './game';
 
 export type App = _app.App;
 export type AppID = _app.AppID;
@@ -18,6 +18,9 @@ export interface AppDetailProps {
 export type AppList = GameList;
 export type AppListItem = GameListItem;
 
+export interface AppListCursorPageProps {
+    cursorPage: ReturnType<typeof useGameList>;
+}
 export interface AppListItemProps {
     listItem: AppListItem;
 }

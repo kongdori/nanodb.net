@@ -1,16 +1,25 @@
-import { AppListItemProps } from '@lib/apps';
+import { MouseEvent } from 'react';
+import { AppListItem, AppListItemProps, getAppListUrl } from '@lib/apps';
 import classNames from 'classnames';
 import ImageWithFallback from '@components/ImageWithFallback';
 import CountdownDay from '@components/CountdownDay';
-import DetailPopup from './DetailPopup';
 
-const ListCard = ({ listItem }: AppListItemProps) => (
+interface ListCardProps extends AppListItemProps {
+    onClick?: (e: MouseEvent<HTMLAnchorElement>, listItem: AppListItem) => void;
+}
+
+const ListCard = ({ listItem, onClick }: ListCardProps) => (
     <div>
         <div className="p-2 relative rounded lg:hover:bg-black/5 dark:lg:hover:bg-black/30">
-            <DetailPopup
-                app={listItem.app}
-                appid={listItem.appid}
-                slug={listItem.slug}
+            <a
+                href={getAppListUrl(
+                    listItem.app,
+                    listItem.appid,
+                    listItem.slug
+                )}
+                onClick={(e) => {
+                    if (typeof onClick === 'function') onClick(e, listItem);
+                }}
                 className="absolute inset-0 p-2 pointer-events-auto"
             >
                 <div className="relative">
@@ -36,7 +45,7 @@ const ListCard = ({ listItem }: AppListItemProps) => (
                         </div>
                     )}
                 </div>
-            </DetailPopup>
+            </a>
             <div className="min-h-[4rem] sm:min-h-[5rem] flex flex-col sm:overflow-hidden">
                 <div
                     className={classNames('pl-[7.8rem] sm:pl-[8.8rem]', {
@@ -92,5 +101,9 @@ const ListCard = ({ listItem }: AppListItemProps) => (
         <div className="mt-1 mx-2 pb-1 border-t border-t-black/10 dark:border-t-white/10" />
     </div>
 );
+
+ListCard.defaultProps = {
+    onClick: undefined
+};
 
 export default ListCard;

@@ -1,11 +1,22 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, HTMLProps } from 'react';
+/* eslint-disable @typescript-eslint/no-floating-promises */
+import React, { HTMLProps, MouseEvent } from 'react';
+import ReactDOM from 'react-dom';
+import { withRouter, NextRouter } from 'next/router';
 import { useInView } from 'react-intersection-observer';
+import { useDetectClickOutside } from 'react-detect-click-outside';
 import { useMountedState } from 'react-use';
-import { AppID, AppListItemProps } from '@lib/apps';
-import { useGameList } from '@lib/apps/game';
+import {
+    App,
+    AppID,
+    AppListItem,
+    AppListCursorPageProps,
+    AppListItemProps,
+    getAppListUrl
+} from '@lib/apps';
 import SyncLoader from 'react-spinners/SyncLoader';
 import classNames from 'classnames';
+import { GameDetailPage } from 'pages/games/[...queries]';
 import ListCard from './ListCard';
 
 interface ItemsPos extends HTMLProps<HTMLDivElement> {
@@ -15,7 +26,11 @@ interface ItemsPos extends HTMLProps<HTMLDivElement> {
 type ItemsPosType = ItemsPos | undefined;
 const itemsPos = new Map<AppID, ItemsPos>();
 
-const ListItem = ({ listItem }: AppListItemProps) => {
+interface ListItemProps extends AppListItemProps {
+    onClick?: (e: MouseEvent<HTMLAnchorElement>, listItem: AppListItem) => void;
+}
+
+const ListItem = ({ listItem, onClick }: ListItemProps) => {
     const isMounted = useMountedState();
 
     const { ref, inView, entry } = useInView({
@@ -24,7 +39,7 @@ const ListItem = ({ listItem }: AppListItemProps) => {
         rootMargin: '500px'
     });
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (isMounted() && inView) {
             itemsPos.delete(listItem.appid);
         }
@@ -48,7 +63,7 @@ const ListItem = ({ listItem }: AppListItemProps) => {
         () => (
             <div ref={ref} {...wrapProps}>
                 <div className={classNames({ hidden: !!wrapProps })}>
-                    <ListCard listItem={listItem} />
+                    <ListCard listItem={listItem} onClick={onClick} />
                 </div>
             </div>
         ),
@@ -56,45 +71,151 @@ const ListItem = ({ listItem }: AppListItemProps) => {
     );
 };
 
-type ListProps = ReturnType<typeof useGameList>;
+interface ListProps extends AppListCursorPageProps {
+    router: NextRouter;
+}
 
-const List = ({ ...props }: ListProps) => {
+const List = ({ cursorPage, router }: ListProps) => {
     const isMounted = useMountedState();
+
+    // popup opener
+
+    const [detail, setDetail] = React.useState<Partial<AppListItem> | null>(
+        null
+    );
+    const [referrer, setReferrer] = React.useState('');
+
+    const openAsPath = (listItem: AppListItem) => {
+        setReferrer(router.asPath);
+
+        router.push(
+            {},
+            getAppListUrl(listItem.app, listItem.appid, listItem.slug),
+            { shallow: true }
+        );
+    };
+
+    const closeAsPath = () => {
+        if (router.asPath !== referrer) {
+            router.push({}, referrer, { shallow: true });
+        } else {
+            router.back();
+        }
+    };
+
+    const portalRef = useDetectClickOutside({
+        onTriggered: () => {
+            closeAsPath();
+        }
+    });
+
+    const portalRender = () => {
+        if (!detail) return null;
+
+        switch (detail.app) {
+            case 'game':
+                return <GameDetailPage appid={detail.appid} />;
+
+            default:
+                return null;
+        }
+    };
+
+    // observer
 
     const { ref, inView } = useInView({
         rootMargin: '552px',
         threshold: 0
     });
 
-    useEffect(() => {
-        if (!isMounted() || props.isLoadingMore) return;
+    React.useEffect(() => {
+        if (!isMounted()) return undefined;
 
-        if (inView) {
+        if (!cursorPage.isLoadingMore && inView) {
             const fetchData = async () => {
-                await props.setSize(props.size + 1);
+                await cursorPage.setSize(cursorPage.size + 1);
             };
 
             fetchData().catch(console.error);
         }
-    }, [inView]);
+
+        const handleBeforeChange = (url: string) => {
+            const matches = url.match(
+                /^\/(?<app>\w+)s\/(?<appid>\d+)\/(?<slug>.*)/u
+            );
+
+            if (matches && matches.groups) {
+                setDetail({
+                    app: matches.groups.app as App,
+                    appid: Number(matches.groups.appid),
+                    slug: matches.groups.slug
+                });
+                document.body.style.overflow = 'hidden';
+            } else {
+                setDetail(null);
+                document.body.style.overflow = '';
+            }
+        };
+
+        router.events.on('beforeHistoryChange', handleBeforeChange);
+
+        return () => {
+            router.events.off('beforeHistoryChange', handleBeforeChange);
+        };
+    }, [inView, detail]);
 
     return (
         <>
-            {props.data.map((item) => (
-                <ListItem key={item.appid} listItem={item} />
+            {cursorPage.data.map((item) => (
+                <ListItem
+                    key={item.appid}
+                    listItem={item}
+                    onClick={(e, listItem) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        openAsPath(listItem);
+                    }}
+                />
             ))}
-            {!props.isReachingEnd && (
+            {!cursorPage.isReachingEnd && (
                 <div ref={ref} className="flex-center h-32 col-span-full">
                     <SyncLoader color="#dddddd" size={10} />
                 </div>
             )}
-            {props.isReachingEnd && (
+            {cursorPage.isReachingEnd && (
                 <div className="flex-center h-20">
                     <span>더 이상 불러올 항목이 없습니다</span>
                 </div>
             )}
+            {detail &&
+                ReactDOM.createPortal(
+                    <div className="fixed inset-0 overflow-y-auto z-30">
+                        <div
+                            ref={portalRef}
+                            className="relative z-40 max-w-6xl mx-auto shadow-xl dark:shadow-black/60 overflow-hidden"
+                        >
+                            <div className="w-full flex items-center justify-between absolute top-16 px-6 z-50 font-medium text-white">
+                                <div className="text-sm">
+                                    닫기: ESC, 뒤로가기
+                                    <span className="hidden xl:inline">
+                                        , 화면 밖 클릭
+                                    </span>
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => closeAsPath()}
+                                    className="ml-auto"
+                                >
+                                    close
+                                </button>
+                            </div>
+                            <div>{portalRender()}</div>
+                        </div>
+                    </div>,
+                    document.body
+                )}
         </>
     );
 };
 
-export default List;
+export default withRouter(List);
