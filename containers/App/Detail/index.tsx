@@ -409,7 +409,7 @@ const Detail = ({ detail, children }: DetailProps) => {
                             <div className="px-4 sm:px-0">
                                 {/* 스크린샷 - 모바일 */}
                                 {detail && detail.screenshots.length > 0 && (
-                                    <div className="lg:hidden mb-2">
+                                    <div className="lg:hidden mb-3 sm:mb-4">
                                         <Showcase
                                             detail={detail}
                                             swiperId={2}
@@ -431,7 +431,7 @@ const Detail = ({ detail, children }: DetailProps) => {
                                 {/* 평가 - 모바일 */}
                                 {detail &&
                                     Object.keys(detail.reviews).length > 0 && (
-                                        <div className="lg:hidden py-2">
+                                        <div className="lg:hidden mb-3 sm:mb-4">
                                             <h2 className="flex items-center py-1 font-medium dark:text-gray-300">
                                                 평가
                                             </h2>
