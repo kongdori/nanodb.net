@@ -13,18 +13,14 @@ import {
     getGameDetailKey,
     useGameDetail
 } from '@lib/apps/game';
-import { Detail, About } from '@containers/App/Detail';
+import { Detail } from '@containers/App/Detail';
 import CountdownDay from '@components/CountdownDay';
 import { Steam } from '@components/Logo';
 
 const GameSummary = ({ detail }: { detail: GameDetail }) => (
     <>
-        <p className="text-sm break-words">{detail && detail.snippet}</p>
-        <div className="lg:hidden pt-1">
-            {detail && <About detail={detail} />}
-        </div>
         {detail.is_hangeuls && (
-            <div className="py-3">
+            <div className="py-2 sm:py-3">
                 <h2 className="flex items-center py-1 font-medium dark:text-gray-300">
                     한국어화
                 </h2>
@@ -101,7 +97,7 @@ const GameSummary = ({ detail }: { detail: GameDetail }) => (
             </div>
         )}
         {detail.prices.length > 0 && (
-            <div className="py-3">
+            <div className="py-2 sm:py-3">
                 <h2 className="flex items-center py-1 font-medium dark:text-gray-300">
                     가격 목록
                 </h2>
@@ -247,7 +243,7 @@ export const GameDetailPage = ({ appid }: Partial<AppProps>) => {
                     'animate-pulse': !detail
                 })}
             >
-                <div className="mb-2 border-b border-b-black/10 dark:border-b-white/10">
+                <div className="border-b border-b-black/10 dark:border-b-white/10">
                     <div className="flex space-x-2 text-sm">
                         {menuList ? (
                             menuList.map((menu) =>

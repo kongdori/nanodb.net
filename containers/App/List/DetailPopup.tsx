@@ -115,7 +115,7 @@ const DetailPopup = ({
                     <div className="fixed inset-0 overflow-y-auto z-30">
                         <div
                             ref={portalRef}
-                            className="relative z-40 max-w-[74rem] mx-auto shadow-xl dark:shadow-black/60 overflow-hidden"
+                            className="relative z-40 max-w-6xl mx-auto shadow-xl dark:shadow-black/60 overflow-hidden"
                         >
                             <div className="w-full flex items-center justify-between absolute top-16 px-6 z-50 font-medium text-white">
                                 <div className="text-sm">

@@ -10,18 +10,17 @@ import { AppDetail } from '@lib/apps';
 import ImageWithFallback from '@components/ImageWithFallback';
 import Breadcrumb from '@components/Breadcrumb';
 import Showcase from './Showcase';
-import About from './About';
 
 const appName = {
     game: '게임'
 };
 
-const Review = React.memo(
+const Reviews = React.memo(
     ({ detail }: { detail: AppDetail }) => (
-        <div className="flex flex-1 flex-col w-full space-y-4 text-xs max-w-md">
+        <>
             {detail.reviews.steam && (
-                <div className="flex flex-wrap gap-y-2 items-start">
-                    <h3 className="w-28 flex items-center space-x-1 text-sm font-medium">
+                <div>
+                    <h3 className="flex items-center space-x-1 mb-2 text-sm font-medium">
                         <Image
                             src="/logos/steam/icon.png"
                             width="20"
@@ -32,7 +31,9 @@ const Review = React.memo(
                     <div className="flex flex-1 gap-x-2">
                         {detail.reviews.steam.map((review) => (
                             <div key={review.name} className="w-1/2">
-                                <h4 className="mb-1">{review.name}</h4>
+                                <h4 className="mb-1 font-medium">
+                                    {review.name}
+                                </h4>
                                 <div className="flex items-center">
                                     <a
                                         href={review.url}
@@ -62,8 +63,8 @@ const Review = React.memo(
                 </div>
             )}
             {detail.reviews.metacritic && (
-                <div className="flex flex-wrap gap-y-2 items-start">
-                    <h3 className="w-28 flex items-center space-x-1 text-sm font-medium">
+                <div>
+                    <h3 className="flex items-center space-x-1 mb-2 text-sm font-medium">
                         <Image
                             src="/logos/metacritic/icon.svg"
                             width="20"
@@ -71,61 +72,57 @@ const Review = React.memo(
                         />
                         <span>Metacritic</span>
                     </h3>
-                    <div className="flex-1 items-center">
-                        <div className="flex items-center gap-x-2 mb-1 whitespace-nowrap">
-                            <div className="flex w-1/2">
-                                <div className="w-10 invisible">플랫폼</div>
-                                메타스코어
-                            </div>
+                    <div>
+                        <div className="flex items-center gap-x-2 mb-1 font-medium whitespace-nowrap">
+                            <div className="flex w-1/2">메타스코어</div>
                             <div className="w-1/2">유저 평점</div>
                         </div>
                         {detail.reviews.metacritic.map((review) => (
-                            <div
-                                key={review.platform}
-                                className="flex items-center"
-                            >
-                                <div className="flex flex-1 gap-x-2">
-                                    {review.reviews.map((review2, index) => (
-                                        <div
-                                            key={review2.name}
-                                            className="flex items-center w-1/2"
-                                        >
-                                            {index === 0 && (
-                                                <div className="w-8 mr-2 border-r border-black/10 dark:border-white/10">
-                                                    {review.platform}
-                                                </div>
-                                            )}
-                                            {review2.url ? (
-                                                <a
-                                                    href={review2.url}
-                                                    rel="external noopener noreferrer nofollow"
-                                                    target="_blank"
-                                                    className={classNames(
-                                                        'inline-block px-1.5 text-base rounded',
-                                                        `metacritic_review_summary ${review2.summary}`
-                                                    )}
-                                                >
-                                                    <span>{review2.score}</span>
-                                                </a>
-                                            ) : (
-                                                <em
-                                                    className={classNames(
-                                                        'px-2 text-sm rounded',
-                                                        `metacritic_review_summary ${review2.summary}`
-                                                    )}
-                                                >
-                                                    {review2.score}
-                                                </em>
-                                            )}
-                                        </div>
-                                    ))}
+                            <div key={review.platform}>
+                                <div className="mb-1 border-black/10 dark:border-white/10">
+                                    {review.platform}
+                                </div>
+                                <div className="flex items-center">
+                                    <div className="flex flex-1 gap-x-2">
+                                        {review.reviews.map((review2) => (
+                                            <div
+                                                key={review2.name}
+                                                className="flex items-center w-1/2"
+                                            >
+                                                {review2.url ? (
+                                                    <a
+                                                        href={review2.url}
+                                                        rel="external noopener noreferrer nofollow"
+                                                        target="_blank"
+                                                        className={classNames(
+                                                            'inline-block px-1.5 text-base rounded',
+                                                            `metacritic_review_summary ${review2.summary}`
+                                                        )}
+                                                    >
+                                                        <span>
+                                                            {review2.score}
+                                                        </span>
+                                                    </a>
+                                                ) : (
+                                                    <em
+                                                        className={classNames(
+                                                            'px-2 text-sm rounded',
+                                                            `metacritic_review_summary ${review2.summary}`
+                                                        )}
+                                                    >
+                                                        {review2.score}
+                                                    </em>
+                                                )}
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                         ))}
                     </div>
                 </div>
             )}
-        </div>
+        </>
     ),
     (prevProps, nextProps) =>
         JSON.stringify(prevProps.detail.reviews) ===
@@ -170,6 +167,7 @@ const Detail = ({ detail, children }: DetailProps) => {
                     }
                 )}
             >
+                {/* 배경 이미지 */}
                 <div
                     className={classNames(
                         'relative w-full saturate-50',
@@ -186,14 +184,15 @@ const Detail = ({ detail, children }: DetailProps) => {
                         />
                     )}
                 </div>
-                <div className="max-w-6xl mx-auto sm:px-4 relative">
+                <div className="max-w-6xl mx-auto sm:pl-6 sm:pr-4 relative">
                     <div className="lg:flex items-stretch">
-                        <div className="lg:flex-1">
-                            <div className="relative flex flex-col sm:flex-row mb-2 sm:mb-0 sm:-ml-2 sm:pt-3 sm:pb-2 gap-y-3 gap-x-2">
-                                <div className="w-full h-48 sm:w-40 sm:h-24 md:w-52 md:h-28 sm:-mt-10 md:-mt-14 pt-0 sm:pt-2 sm:px-2 bg-white dark:bg-dark sm:rounded">
+                        <div className="lg:flex-1 sm:py-6">
+                            <div className="relative flex flex-col sm:flex-row mb-3 gap-y-2 gap-x-4">
+                                <div className="w-full sm:w-40 md:w-52">
+                                    {/* 대표 이미지 */}
                                     <div
                                         className={classNames(
-                                            'relative w-full h-full',
+                                            'relative w-full h-48 sm:h-24 md:h-32',
                                             {
                                                 'animate-pulse': !detail
                                             }
@@ -212,7 +211,7 @@ const Detail = ({ detail, children }: DetailProps) => {
                                         {detail &&
                                             detail.app === 'game' &&
                                             detail.is_hangeuls && (
-                                                <div className="absolute bottom-2 sm:bottom-1 left-2 sm:-left-1.5">
+                                                <div className="absolute bottom-2 sm:bottom-1 left-4 sm:-left-1.5">
                                                     <span
                                                         className={classNames(
                                                             'flex items-center text-xs py-0.5 px-1.5 text-white rounded-sm shadow',
@@ -229,12 +228,60 @@ const Detail = ({ detail, children }: DetailProps) => {
                                                 </div>
                                             )}
                                     </div>
+                                    {/* 관련 링크 */}
+                                    {detail && (
+                                        <div className="flex gap-x-2 mt-3 px-4 sm:px-0 text-xs">
+                                            <CopyToClipboard
+                                                text={fullAppUrl}
+                                                onCopy={() => {
+                                                    alert(
+                                                        `주소가 복사 되었습니다\r\n${fullAppUrl}`
+                                                    );
+                                                }}
+                                            >
+                                                <a
+                                                    href={appUrl}
+                                                    className="flex py-1 pl-1.5 pr-2.5 rounded space-x-1 bg-slate-400/20 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-400/40"
+                                                    onClick={(e) =>
+                                                        e.preventDefault()
+                                                    }
+                                                >
+                                                    <i className="flex-center text-sm">
+                                                        <BiLink />
+                                                    </i>
+                                                    <span className="truncate">
+                                                        링크 복사
+                                                    </span>
+                                                </a>
+                                            </CopyToClipboard>
+                                            {detail.links.map((item) => (
+                                                <a
+                                                    key={item.name}
+                                                    href={item.url}
+                                                    target="_blank"
+                                                    rel="external noopener noreferrer nofollow"
+                                                    className="flex py-1 px-2 rounded space-x-1 bg-slate-400/20 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-400/40"
+                                                >
+                                                    <i className="flex-center text-sm">
+                                                        <BiLinkExternal />
+                                                    </i>
+                                                    <span className="truncate">
+                                                        {item.name}
+                                                    </span>
+                                                </a>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                                 <div
-                                    className={classNames('px-4 sm:px-0', {
-                                        'animate-pulse': !detail
-                                    })}
+                                    className={classNames(
+                                        'flex-1 px-4 sm:px-0',
+                                        {
+                                            'animate-pulse': !detail
+                                        }
+                                    )}
                                 >
+                                    {/* 제목 */}
                                     <h1
                                         className={classNames(
                                             'font-semibold text-lg text-slate-900 dark:text-slate-50',
@@ -246,6 +293,7 @@ const Detail = ({ detail, children }: DetailProps) => {
                                     >
                                         {detail && detail.name}
                                     </h1>
+                                    {/* 이동 경로 */}
                                     <div
                                         className={classNames(
                                             'flex items-center text-xs text-slate-500 dark:text-slate-400',
@@ -278,69 +326,90 @@ const Detail = ({ detail, children }: DetailProps) => {
                                             />
                                         )}
                                     </div>
+                                    {/* 상세내용 */}
+                                    {detail && (
+                                        <>
+                                            <div className="text-sm py-2">
+                                                {detail.snippet}
+                                            </div>
+                                            <div className="flex flex-col gap-y-0.5">
+                                                {detail.developers.length >
+                                                    0 && (
+                                                    <div className="flex gap-x-2 text-xs">
+                                                        <h2 className="flex-none">
+                                                            개발사:
+                                                        </h2>
+                                                        <div className="flex flex-wrap gap-x-2 text-gray-700 dark:text-gray-400">
+                                                            {detail.developers.map(
+                                                                (item) => (
+                                                                    <div
+                                                                        key={
+                                                                            item
+                                                                        }
+                                                                    >
+                                                                        {item}
+                                                                    </div>
+                                                                )
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                )}
+                                                {detail.publishers.length >
+                                                    0 && (
+                                                    <div className="flex gap-x-2 text-xs">
+                                                        <h2 className="flex-none">
+                                                            배급사:
+                                                        </h2>
+                                                        <div className="flex flex-wrap gap-x-2 text-gray-700 dark:text-gray-400">
+                                                            {detail.publishers.map(
+                                                                (item) => (
+                                                                    <div
+                                                                        key={
+                                                                            item
+                                                                        }
+                                                                    >
+                                                                        {item}
+                                                                    </div>
+                                                                )
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                )}
+                                                {detail.franchises.length >
+                                                    0 && (
+                                                    <div className="flex gap-x-2 text-xs">
+                                                        <h2 className="flex-none">
+                                                            프렌차이즈:
+                                                        </h2>
+                                                        <div className="flex flex-wrap gap-x-2 text-gray-700 dark:text-gray-400">
+                                                            {detail.franchises.map(
+                                                                (item) => (
+                                                                    <div
+                                                                        key={
+                                                                            item
+                                                                        }
+                                                                    >
+                                                                        {item}
+                                                                    </div>
+                                                                )
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </>
+                                    )}
+                                    {/* {detail && (
+                                        <div className="flex mt-2 gap-x-2 flex-wrap text-sm text-gray-700 dark:text-gray-400">
+                                            {detail.tags.join(', ')}
+                                        </div>
+                                    )} */}
                                 </div>
                             </div>
                             <div className="px-4 sm:px-0">
-                                <div className="flex flex-col md:flex-row gap-4 mb-4">
-                                    {detail && (
-                                        <div
-                                            className={classNames(
-                                                'flex flex-none items-center gap-x-2 text-xs',
-                                                {
-                                                    'md:w-48 md:flex-col gap-y-1.5':
-                                                        Object.keys(
-                                                            detail.reviews
-                                                        ).length > 0
-                                                }
-                                            )}
-                                        >
-                                            <CopyToClipboard
-                                                text={fullAppUrl}
-                                                onCopy={() => {
-                                                    alert(
-                                                        `주소가 복사 되었습니다\r\n${fullAppUrl}`
-                                                    );
-                                                }}
-                                            >
-                                                <a
-                                                    href={appUrl}
-                                                    className="md:w-full flex py-1 pl-1.5 pr-2.5 rounded space-x-1 bg-slate-400/20 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-400/40"
-                                                    onClick={(e) =>
-                                                        e.preventDefault()
-                                                    }
-                                                >
-                                                    <i className="flex-center text-sm">
-                                                        <BiLink />
-                                                    </i>
-                                                    <span className="truncate">
-                                                        링크 복사
-                                                    </span>
-                                                </a>
-                                            </CopyToClipboard>
-                                            {detail.links.map((item) => (
-                                                <a
-                                                    key={item.name}
-                                                    href={item.url}
-                                                    target="_blank"
-                                                    rel="external noopener noreferrer nofollow"
-                                                    className="md:w-full flex py-1 px-2 rounded space-x-1 bg-slate-400/20 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-400/40"
-                                                >
-                                                    <i className="flex-center text-sm">
-                                                        <BiLinkExternal />
-                                                    </i>
-                                                    <span className="truncate">
-                                                        {item.name}
-                                                    </span>
-                                                </a>
-                                            ))}
-                                        </div>
-                                    )}
-                                    {detail &&
-                                        Object.keys(detail.reviews).length >
-                                            0 && <Review detail={detail} />}
-                                </div>
+                                {/* 스크린샷 - 모바일 */}
                                 {detail && detail.screenshots.length > 0 && (
-                                    <div className="lg:hidden py-4">
+                                    <div className="lg:hidden mb-2">
                                         <Showcase
                                             detail={detail}
                                             swiperId={2}
@@ -359,6 +428,19 @@ const Detail = ({ detail, children }: DetailProps) => {
                                         />
                                     </div>
                                 )}
+                                {/* 평가 - 모바일 */}
+                                {detail &&
+                                    Object.keys(detail.reviews).length > 0 && (
+                                        <div className="lg:hidden py-2">
+                                            <h2 className="flex items-center py-1 font-medium dark:text-gray-300">
+                                                평가
+                                            </h2>
+                                            <div className="w-full space-y-4 text-xs">
+                                                <Reviews detail={detail} />
+                                            </div>
+                                        </div>
+                                    )}
+                                {/* 개별 내용 */}
                                 {children}
                             </div>
                         </div>
@@ -371,6 +453,7 @@ const Detail = ({ detail, children }: DetailProps) => {
                                 }
                             )}
                         >
+                            {/* 스크린샷 */}
                             {detail ? (
                                 detail.screenshots.length > 0 && (
                                     <Showcase
@@ -384,13 +467,10 @@ const Detail = ({ detail, children }: DetailProps) => {
                             ) : (
                                 <div className="h-40 lg:h-48 bg-slate-400/20" />
                             )}
-                            {detail ? (
-                                <About detail={detail} />
-                            ) : (
-                                <div className="flex flex-col space-y-1">
-                                    <div className="w-full h-5 bg-slate-400/20 rounded" />
-                                    <div className="w-full h-5 bg-slate-400/20 rounded" />
-                                    <div className="w-4/5 h-5 bg-slate-400/20 rounded" />
+                            {/* 평가 */}
+                            {detail && Object.keys(detail.reviews).length > 0 && (
+                                <div className="w-full space-y-4 text-xs">
+                                    <Reviews detail={detail} />
                                 </div>
                             )}
                         </div>
@@ -406,4 +486,4 @@ Detail.defaultProps = {
     children: null
 };
 
-export { Detail, Showcase, About };
+export { Detail, Showcase };
