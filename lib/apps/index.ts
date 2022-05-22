@@ -39,20 +39,11 @@ export const getAppListQueries = (
     };
 };
 
-export const getAppListUrl = (
-    app: App,
-    appid: AppID,
-    slug?: string,
-    menu?: string
-) => {
+export const getAppListUrl = (app: App, appid: AppID, slug?: string) => {
     let url = `/${app}s/${appid}/`;
 
     if (slug) {
         url += `${slug}/`;
-    }
-
-    if (menu) {
-        url += `${menu}/`;
     }
 
     return url;
