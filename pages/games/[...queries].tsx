@@ -47,15 +47,15 @@ export const GameDetailPage = ({ appid }: Partial<AppProps>) => {
                 })}
             >
                 <div
-                    className={classNames('space-y-3 sm:space-y-4', {
+                    className={classNames('pb-6', {
                         'h-72 bg-slate-400/20 rounded': !detail
                     })}
                 >
                     {detail && (
                         <>
                             {detail.is_hangeuls && (
-                                <div>
-                                    <h2 className="flex items-center py-1 font-medium dark:text-gray-300">
+                                <div className="mb-3 pb-3 md:mb-4 md:pb-4 border-b border-black/10 dark:border-white/10">
+                                    <h2 className="flex items-center mb-1 font-medium dark:text-gray-300">
                                         한국어화
                                     </h2>
                                     <div className="flex flex-col space-y-4 text-sm dark:text-neutral-300">
@@ -152,7 +152,7 @@ export const GameDetailPage = ({ appid }: Partial<AppProps>) => {
                             )}
                             {detail.prices.length > 0 && (
                                 <div>
-                                    <h2 className="flex items-center py-1 font-medium dark:text-gray-300">
+                                    <h2 className="flex items-center mb-1 font-medium dark:text-gray-300">
                                         가격 목록
                                     </h2>
                                     <div>

@@ -186,8 +186,10 @@ const Detail = ({ detail, children }: DetailProps) => {
                 </div>
                 <div className="max-w-6xl mx-auto sm:pl-6 sm:pr-4 relative">
                     <div className="lg:flex items-stretch">
+                        {/* 메인 */}
                         <div className="lg:flex-1 sm:py-6">
-                            <div className="relative flex flex-col sm:flex-row mb-3 gap-y-2 gap-x-4">
+                            {/* 대표 설명 */}
+                            <div className="relative flex flex-col sm:flex-row mb-3 md:mb-4 gap-y-2 gap-x-4">
                                 <div className="w-full sm:w-40 md:w-52">
                                     {/* 대표 이미지 */}
                                     <div
@@ -406,10 +408,11 @@ const Detail = ({ detail, children }: DetailProps) => {
                                     )} */}
                                 </div>
                             </div>
+                            {/* 상세 설명 */}
                             <div className="px-4 sm:px-0">
                                 {/* 스크린샷 - 모바일 */}
                                 {detail && detail.screenshots.length > 0 && (
-                                    <div className="lg:hidden mb-3 sm:mb-4">
+                                    <div className="lg:hidden mb-3 md:mb-4">
                                         <Showcase
                                             detail={detail}
                                             swiperId={2}
@@ -431,8 +434,8 @@ const Detail = ({ detail, children }: DetailProps) => {
                                 {/* 평가 - 모바일 */}
                                 {detail &&
                                     Object.keys(detail.reviews).length > 0 && (
-                                        <div className="lg:hidden mb-3 sm:mb-4">
-                                            <h2 className="flex items-center py-1 font-medium dark:text-gray-300">
+                                        <div className="lg:hidden mb-3 pb-3 md:mb-4 md:pb-4 border-b border-black/10 dark:border-white/10">
+                                            <h2 className="flex items-center mb-1 font-medium dark:text-gray-300">
                                                 평가
                                             </h2>
                                             <div className="w-full space-y-4 text-xs">
@@ -445,6 +448,7 @@ const Detail = ({ detail, children }: DetailProps) => {
                             </div>
                         </div>
                         <div className="hidden lg:block pl-6 my-6 mr-4 border-r border-black/10 dark:border-white/10" />
+                        {/* 데스크탑 사이드 */}
                         <div
                             className={classNames(
                                 'w-80 py-6 px-2 hidden lg:flex flex-col space-y-4',
