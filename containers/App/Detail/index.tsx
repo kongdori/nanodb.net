@@ -189,7 +189,7 @@ const Detail = ({ detail, children }: DetailProps) => {
                         {/* 메인 */}
                         <div className="lg:flex-1 sm:py-6">
                             {/* 대표 설명 */}
-                            <div className="relative flex flex-col sm:flex-row mb-3 md:mb-4 gap-y-2 gap-x-4">
+                            <div className="relative flex flex-col sm:flex-row mb-4 gap-y-2 gap-x-4">
                                 <div className="w-full sm:w-40 md:w-52">
                                     {/* 대표 이미지 */}
                                     <div
@@ -412,7 +412,7 @@ const Detail = ({ detail, children }: DetailProps) => {
                             <div className="px-4 sm:px-0">
                                 {/* 스크린샷 - 모바일 */}
                                 {detail && detail.screenshots.length > 0 && (
-                                    <div className="lg:hidden mb-3 md:mb-4">
+                                    <div className="lg:hidden mb-4">
                                         <Showcase
                                             detail={detail}
                                             swiperId={2}
@@ -434,7 +434,7 @@ const Detail = ({ detail, children }: DetailProps) => {
                                 {/* 평가 - 모바일 */}
                                 {detail &&
                                     Object.keys(detail.reviews).length > 0 && (
-                                        <div className="lg:hidden mb-3 pb-3 md:mb-4 md:pb-4 border-b border-black/10 dark:border-white/10">
+                                        <div className="lg:hidden mb-4 md:mb-6 lg:mb-8">
                                             <h2 className="flex items-center mb-1 font-medium dark:text-gray-300">
                                                 평가
                                             </h2>

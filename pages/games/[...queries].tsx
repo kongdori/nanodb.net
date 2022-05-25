@@ -47,14 +47,17 @@ export const GameDetailPage = ({ appid }: Partial<AppProps>) => {
                 })}
             >
                 <div
-                    className={classNames('pb-6', {
-                        'h-72 bg-slate-400/20 rounded': !detail
-                    })}
+                    className={classNames(
+                        'pb-6 space-y-4 md:space-y-6 lg:space-y-8',
+                        {
+                            'h-72 bg-slate-400/20 rounded': !detail
+                        }
+                    )}
                 >
                     {detail && (
                         <>
                             {detail.is_hangeuls && (
-                                <div className="mb-3 pb-3 md:mb-4 md:pb-4 border-b border-black/10 dark:border-white/10">
+                                <div>
                                     <h2 className="flex items-center mb-1 font-medium dark:text-gray-300">
                                         한국어화
                                     </h2>
